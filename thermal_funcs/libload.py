@@ -66,7 +66,7 @@ def make_wrapper(default):
     wrapped_func = 'f_wrapped_gen = lambda f_load: lambda {}: f_load({})'.format(wrapped_arg_str, arg_str)
     return wrapped_func
 
-def libload(lib_name, header_name):
+def libload(lib_name, header_name, decorate=False):
     """
     Load functions from a header file/library.
     """
@@ -93,7 +93,7 @@ def libload(lib_name, header_name):
         exec(f_wrapped_str, globals())  # NB that this exec call defines f_wrapped_gen
         f_wrapped = f_wrapped_gen(f_load)
 
-        f_decorated = decorate(f_wrapped)
+        f_decorated = decorate(f_wrapped) if decorate else f_wrapped
         f_decorated.__name__ = f_name
         f_decorated.__doc__ = "Python interface to {} loaded from {}".format(f_name, lib_name)
 
