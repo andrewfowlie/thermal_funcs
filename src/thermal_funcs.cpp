@@ -198,8 +198,8 @@ double J_quad(double y_squared, double abs_error, double rel_error, int max_n, b
 
 double J_B_quad(double y_squared, double abs_error, double rel_error, int max_n) {
   double integral = J_quad(y_squared, abs_error, rel_error, max_n, true);
-  double bound = J_B_lim(y_squared);
   #ifdef THROW
+    double bound = J_B_lim(y_squared);
     if (y_squared < neg_y_squared && std::abs(integral) > bound) {
       printf("quad = %e > bound = %e\n", integral, bound);
       throw std::runtime_error("quad exceeds upper bound");
@@ -210,8 +210,8 @@ double J_B_quad(double y_squared, double abs_error, double rel_error, int max_n)
 
 double J_F_quad(double y_squared, double abs_error, double rel_error, int max_n) {
   double integral = J_quad(y_squared, abs_error, rel_error, max_n, false);
-  double bound = J_F_lim(y_squared);
   #ifdef THROW
+    double bound = J_F_lim(y_squared);
     if (y_squared < neg_y_squared && std::abs(integral) > bound) {
       printf("quad = %e > bound = %e\n", integral, bound);
       throw std::runtime_error("quad exceeds upper bound");
@@ -245,11 +245,11 @@ double gamma_summand(int l, double y_squared) {
 double gamma_sum(double y_squared, double abs_error, double rel_error, int max_n, bool bosonic, double sum = 0.) {
   // Sum of Gamma functions in Wainwright eq. (2.18) and eq. (2.19).
 
-  if (std::abs(y_squared) >= 1.) {
-    #ifdef THROW
+  #ifdef THROW
+    if (std::abs(y_squared) >= 1.) {
       throw std::invalid_argument("|y_squared| >= 1. - Taylor expansion invalid");
-    #endif
-  }
+    }
+  #endif
 
   double term;
 
@@ -376,11 +376,11 @@ double bessel_sum(double y_squared, double abs_error, double rel_error, int max_
   // Curtin eq. (2.14). Converges fastest (i.e. fewer terms required) if |y_squared| >> 1, though
   // valid for all |y_squared| except y_squared = 0.
 
-  if (y_squared == 0.) {
-    #ifdef THROW
+  #ifdef THROW
+    if (y_squared == 0.) {
       throw std::invalid_argument("y_squared == 0 invalid");
-    #endif
-  }
+    }
+  #endif
 
   std::complex<double> y = sqrt(std::complex<double>(y_squared));
   double sign = 2. * static_cast<double>(bosonic) - 1.;
@@ -454,9 +454,9 @@ double J_B_bessel(double y_squared, double abs_error, double rel_error, int max_
 double J_B_lim(double y_squared) {
   // Found from Eq. (14) in http://mathworld.wolfram.com/BesselFunctionoftheSecondKind.html
   #ifdef DEBUG
-  if (y_squared > neg_y_squared) {
-    printf("limit applicable for y_squared << 0. only\n");
-  }
+    if (y_squared > neg_y_squared) {
+      printf("limit applicable for y_squared << 0. only\n");
+    }
   #endif
 
   double y = sqrt(std::abs(y_squared));
