@@ -42,7 +42,7 @@ def asscalar(func):
 
     return rfunc
 
-decorate = lambda func: asscalar(np.vectorize(functools.lru_cache()(func)))
+decorator = lambda func: asscalar(np.vectorize(functools.lru_cache()(func)))
 
 def make_arg_wrapper(name, default):
     """
@@ -93,7 +93,7 @@ def libload(lib_name, header_name, decorate=False):
         exec(f_wrapped_str, globals())  # NB that this exec call defines f_wrapped_gen
         f_wrapped = f_wrapped_gen(f_load)
 
-        f_decorated = decorate(f_wrapped) if decorate else f_wrapped
+        f_decorated = decorator(f_wrapped) if decorate else f_wrapped
         f_decorated.__name__ = f_name
         f_decorated.__doc__ = "Python interface to {} loaded from {}".format(f_name, lib_name)
 

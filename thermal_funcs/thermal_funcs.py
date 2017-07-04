@@ -15,10 +15,11 @@ They should be called via
 The method is an optional argument.
 
 >>> import numpy as np
+>>> from libload import decorator
 >>> y_squared = np.linspace(-10, 10, 10)
 >>> for method in METHODS:
-...     J_B(y_squared, method)
-...     J_F(y_squared, method)
+...     decorator(J_B)(y_squared, method)
+...     decorator(J_F)(y_squared, method)
 array([-1.03301551, -2.37643967, -3.22920627, -3.4586863 , -2.87437545,
        -1.65904686, -1.13857283, -0.83787385, -0.63967438, -0.50041956])
 array([ 2.55378622,  4.62466887,  4.57599995,  3.66746647,  2.44541129,
