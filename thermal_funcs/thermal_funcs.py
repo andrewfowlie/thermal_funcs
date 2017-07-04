@@ -59,7 +59,7 @@ FUNC_DICT = libload(LIB_NAME, HEADER_NAME)
 METHODS = ['quad', 'bessel', 'taylor', 'lim', 'approx']
 
 
-def J_F(y_squared, method="quad", **kwargs):
+def J_F(y_squared, method="bessel", **kwargs):
     """
     :param y_squared: Thermal function argument
     :type y_squared: float
@@ -76,7 +76,7 @@ def J_F(y_squared, method="quad", **kwargs):
     return func(y_squared, **kwargs)
 
 
-def J_B(y_squared, method="quad", **kwargs):
+def J_B(y_squared, method="bessel", **kwargs):
     """
     :param y_squared: Thermal function argument
     :type y_squared: float
