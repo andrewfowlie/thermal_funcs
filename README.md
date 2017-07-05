@@ -9,7 +9,7 @@ representation, an approximation and an upper bound for the integrals.
 
 # Dependencies
 
-The C++ requires gsl and gslcblas.
+The C++ requires `gsl` and `gslcblas`.
 
 # Build
 
@@ -30,7 +30,7 @@ is compatible with Python 2 and 3, though must be built for a specific version. 
 SWIG will build for your `python --version`. To alter this, change the PYTHON variable in the makefile to compile with
 your chosen `Python.h` header.
 
-# Results
+# Performance
 
-The functions are fast and accurate even for `y^2 << 0`. See e.g. ![this plot](https://github.com/andrewfowlie/thermal_funcs/blob/master/test/J_B_neg.pdf). The time per evaluation is typically 1E-5 seconds or so.
+The functions are fast and accurate even for `y^2 << 0`. See e.g. ![this plot](https://github.com/andrewfowlie/thermal_funcs/blob/master/test/J_B_neg.pdf). The time per evaluation is typically about `1E-5` seconds.
 
