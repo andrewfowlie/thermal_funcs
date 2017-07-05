@@ -1,15 +1,16 @@
 .DEFAULT_GOAL := all
-FLAGS = -O3  # -D FAST -D DEBUG -D THROW 
+FLAGS = -O3  # -D DEBUG -D THROW 
 CC = g++
+PYTHON = `pkg-config --cflags python`
 
 thermal_funcs.o: thermal_funcs.h
 	$(CC) $(FLAGS) -c thermal_funcs.cpp -I./
 	
 thermal_funcs_wrap.cxx:
-	swig -c++ -python thermal_funcs.i
+	swig -c++ -python -py3 thermal_funcs.i
 	
 thermal_funcs_wrap.o: thermal_funcs_wrap.cxx
-	$(CC) -c -fPIC thermal_funcs.cpp thermal_funcs_wrap.cxx -lgsl -lgslcblas -I/usr/include/python2.7/ -I./
+	$(CC) -c -fPIC thermal_funcs.cpp thermal_funcs_wrap.cxx -lgsl -lgslcblas $(PYTHON) -I./
 	
 _thermal_funcs.so: thermal_funcs_wrap.o thermal_funcs.o
 	$(CC) -shared thermal_funcs.o thermal_funcs_wrap.o -lgsl -lgslcblas -o _thermal_funcs.so
