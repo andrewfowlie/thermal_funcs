@@ -1,6 +1,6 @@
 """
-Fetch thermal functions from C++ library
-========================================
+Wrapper for thermal functions from C++ library with SWIG
+========================================================
 
 There are various implmentations of the thermal functions J_F(y^2) and J_B(y^2).
 
@@ -15,11 +15,10 @@ They should be called via
 The method is an optional argument.
 
 >>> import numpy as np
->>> from libload import decorator
 >>> y_squared = np.linspace(-10, 10, 10)
 >>> for method in METHODS:
-...     decorator(J_B)(y_squared, method)
-...     decorator(J_F)(y_squared, method)
+...     np.vectorize(J_B)(y_squared, method)
+...     np.vectorize(J_F)(y_squared, method)
 array([-1.03301551, -2.37643967, -3.22920627, -3.4586863 , -2.87437545,
        -1.65904686, -1.13857283, -0.83787385, -0.63967438, -0.50041956])
 array([ 2.55378622,  4.62466887,  4.57599995,  3.66746647,  2.44541129,
@@ -43,18 +42,11 @@ array([ 4.87947524,  5.29925691,  4.53529364,  2.66696586,  0.36007938,
         0.47270639,  0.49809179,  0.42950048,  0.35893197,  0.29833225])
 """
 
-from libload import libload
-import os
-
 
 # Load library
 
-FILE = os.path.abspath(__file__)
-PATH = os.path.dirname(FILE)
-LIB_NAME = os.path.join(PATH, "../lib/thermal_funcs.so")
-HEADER_NAME = os.path.join(PATH, "../src/thermal_funcs.h")
 
-FUNC_DICT = libload(LIB_NAME, HEADER_NAME)
+import _thermal_funcs
 
 
 METHODS = ['quad', 'bessel', 'taylor', 'lim', 'approx']
@@ -70,10 +62,13 @@ def J_F(y_squared, method="bessel", **kwargs):
     :returns: Thermal function J_F(y^2)
     :rtype: float
     """
-    error = "{} is not a known method: {}".format(method, METHODS)
-    assert method in METHODS, error
+    try:
+        name = "J_F_{}".format(method)
+        func = getattr(_thermal_funcs, name)
+    except AttributeError:
+        error = "{} is not a known method: {}".format(method, METHODS)
+        raise RuntimeError(error)
 
-    func = FUNC_DICT["J_F_{}".format(method)]
     return func(y_squared, **kwargs)
 
 
@@ -87,13 +82,17 @@ def J_B(y_squared, method="bessel", **kwargs):
     :returns: Thermal function J_B(y^2)
     :rtype: float
     """
-    error = "{} is not a known method: {}".format(method, METHODS)
-    assert method in METHODS, error
+    try:
+        name = "J_B_{}".format(method)
+        func = getattr(_thermal_funcs, name)
+    except AttributeError:
+        error = "{} is not a known method: {}".format(method, METHODS)
+        raise RuntimeError(error)
 
-    func = FUNC_DICT["J_B_{}".format(method)]
     return func(y_squared, **kwargs)
 
 
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
+

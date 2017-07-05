@@ -25,7 +25,7 @@ delta = [J_F(y_squared) + _Jf_exact2(y_squared), J_B(y_squared) - _Jb_exact2(y_s
 print "delta = {}".format(delta)
 print "C++ min time  = {}. Python min time = {}".format(cpp, python)
 # delta = [-1.3653467245688944e-11, 1.4502621326073495e-11]
-# C++ min time  = 4.11880016327e-05. Python min time = 0.000731825113297
+# C++ min time  = 4.57348823547e-05. Python min time = 0.000633282184601
 
 # Timing for Bessel
 
@@ -41,7 +41,7 @@ delta = [J_F(y_squared) + Jf_high(y), J_B(y_squared) - Jb_high(y)]
 print "delta = {}".format(delta)
 print "C++ min time  = {}. Python min time = {}".format(cpp, python)
 # delta = [6.0715321659188248e-18, 5.2041704279304213e-18]
-# C++ min time  = 5.73301315308e-06. Python min time = 2.7764081955e-05
+# C++ min time  = 2.77400016785e-06. Python min time = 2.82788276672e-05
 
 # Timing for Taylor
 
@@ -57,4 +57,4 @@ delta = [J_F(y_squared) + Jf_low(y), J_B(y_squared) - Jb_low(y)]
 print "delta = {}".format(delta)
 print "C++ min time  = {}. Python min time = {}".format(cpp, python)
 # delta = [5.6349129806676501e-09, 1.8799717782513881e-08]
-# C++ min time  = 5.5570602417e-06. Python min time = 3.29279899597e-05
+# C++ min time  = 2.690076828e-06. Python min time = 3.17878723145e-05
