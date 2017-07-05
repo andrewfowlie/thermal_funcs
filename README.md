@@ -26,5 +26,6 @@ The Python interface
     from thermal_funcs import J_B, J_F
     J_F(100., method='quad')
     
-is compatible with Python 2 and 3. It requires CppHeaderParser, future, 
-and functools32 for Python 2, all of which may be installed via pip.
+is compatible with Python 2 and 3, though must be built for a specific version. It has no dependencies. By default,
+SWIG will build for your `python --version`. To alter this, change the PYTHON variable in the makefile compile with
+your chosen Python.h header.
