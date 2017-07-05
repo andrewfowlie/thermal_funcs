@@ -24,6 +24,7 @@
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_sf.h>
 #include <gsl/gsl_errno.h>
+#include <gsl/gsl_math.h>
 #include <stdexcept>
 #include <complex>
 #include <algorithm>
@@ -55,9 +56,9 @@ double J_integrand(double x, double y_squared, bool bosonic) {
   double r_squared = pow(x, 2) + y_squared;
   double abs_r = sqrt(std::abs(r_squared));
   if (r_squared >= 0.) {
-    return pow(x, 2) * log(1. + sign * exp(-abs_r));
+    return pow(x, 2) * gsl_log1p(sign * exp(-abs_r));
   } else {
-    return 0.5 * pow(x, 2) * log(2. + sign * 2. * cos(abs_r));
+    return 0.5 * pow(x, 2) * (gsl_log1p(sign * cos(abs_r)) + log(2.));
   }
 }
 
