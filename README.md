@@ -1,6 +1,6 @@
 # Thermal functions
 
-We provide a C++ library and Python interface to thermal functions, defined
+We provide a C++ library and Python and Mathematica interfaces to thermal functions, defined
 
     J_{B/F}(y^2)=\Re\int_0^{\infty}dx\,x^2 \ln(1\mp\exp(-\sqrt{x^2+y^2}))
     
@@ -34,6 +34,19 @@ The Python interface
 is compatible with Python 2 and 3, though must be built for a specific version. It has no dependencies. By default,
 SWIG will build for your `python --version`. To alter this, change the `PYTHON` variable in the makefile to compile with
 your chosen `Python.h` header.
+
+# Mathematica interface
+
+This is slightly more involved:
+
+    cd src;
+    make
+    make math.exe
+    
+You may have to tweak the `makefile` variables `MATH` and `MATH_INC` for the locations of your `wscc` linker and `wstp.h` header file. Then within Mathematica
+
+    Install["math.exe"];
+    Plot[{JB[ysq], JF[ysq]}, {ysq, -100, 100}]
 
 # Performance
 
