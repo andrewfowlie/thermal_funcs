@@ -62,11 +62,14 @@ def plot_func(bosonic, methods, y_squared, name):
     plt.savefig(name)
 
 
-plot_func(True, ['quad', 'bessel', 'approx', 'lim'], np.linspace(-1000., 0., 1000), 'J_B_neg.pdf')
-plot_func(False, ['quad', 'bessel', 'approx', 'lim'], np.linspace(-1000., 0., 1000), 'J_F_neg.pdf')
+plot_func(True, ['quad', 'bessel', 'approx', 'lim', 'zeta'], np.linspace(-1000., 0., 1000), 'J_B_neg.pdf')
+plot_func(False, ['quad', 'bessel', 'approx', 'lim', 'zeta'], np.linspace(-1000., 0., 1000), 'J_F_neg.pdf')
 
-plot_func(True, ['quad', 'bessel', 'approx', 'taylor'], np.linspace(-3., 3., 1000), 'J_B_small.pdf')
-plot_func(False, ['quad', 'bessel', 'approx', 'taylor'], np.linspace(-3., 3., 1000), 'J_F_small.pdf')
+plot_func(True, ['quad', 'bessel', 'approx', 'lim', 'zeta'], np.linspace(-100., 0., 1000), 'J_B_small_neg.pdf')
+plot_func(False, ['quad', 'bessel', 'approx', 'lim', 'zeta'], np.linspace(-100., 0., 1000), 'J_F_small_neg.pdf')
+
+plot_func(True, ['quad', 'bessel', 'approx', 'taylor', 'zeta'], np.linspace(-3., 3., 1000), 'J_B_small.pdf')
+plot_func(False, ['quad', 'bessel', 'approx', 'taylor', 'zeta'], np.linspace(-3., 3., 1000), 'J_F_small.pdf')
 
 plot_func(True, ['quad', 'bessel', 'approx'], np.linspace(0., 50., 1000), 'J_B_pos.pdf')
 plot_func(False, ['quad', 'bessel', 'approx'], np.linspace(0., 50., 1000), 'J_F_pos.pdf')
