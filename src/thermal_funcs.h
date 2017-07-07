@@ -37,6 +37,6 @@ extern "C" double J_B_lim(double y_squared);
 extern "C" double J_F_lim(double y_squared);
 extern "C" double J_B_approx(double y_squared);
 extern "C" double J_F_approx(double y_squared);
-extern "C" double J_B_zeta(double y_squared);
-extern "C" double J_F_zeta(double y_squared);
+extern "C" double J_B_zeta(double y_squared, int n = 5);
+extern "C" double J_F_zeta(double y_squared, int n = 5);
 #endif  // _THERMAL_FUNCS_H_

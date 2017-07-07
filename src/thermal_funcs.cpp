@@ -503,7 +503,7 @@ double shift_B(double y) {
   return fmod(y, 2. * M_PI) - 2. * M_PI;
 }
 
-double J_F_zeta(double y_squared) {
+double J_F_zeta(double y_squared, int max_n) {
   double y = sqrt(std::abs(y_squared));
   if (y_squared < 0.) {
     #ifdef DEBUG
@@ -511,7 +511,7 @@ double J_F_zeta(double y_squared) {
         printf("approx applicable for y_squared << 0. only\n");
       }
     #endif    
-    return - pow(y, 1.5) * 8. / 3. * pow(M_PI, 2.5) * hurwitz_zeta(-1.5, 0.5 - shift_F(y) / (2. * M_PI));
+    return - pow(y, 1.5) * 8. / 3. * pow(M_PI, 2.5) * hurwitz_zeta(-1.5, 0.5 - shift_F(y) / (2. * M_PI), max_n);
   } else {
     #ifdef DEBUG
       if (y_squared < pos_y_squared) {
@@ -522,7 +522,7 @@ double J_F_zeta(double y_squared) {
   }
 }
 
-double J_B_zeta(double y_squared) {
+double J_B_zeta(double y_squared, int max_n) {
   double y = sqrt(std::abs(y_squared));
   if (y_squared < 0.) {
     #ifdef DEBUG
@@ -531,7 +531,7 @@ double J_B_zeta(double y_squared) {
       }
     #endif
     const double y_shift  = fmod(y, 2. * M_PI) - 2. * M_PI;
-    return - pow(y, 1.5) * 8. / 3. * pow(M_PI, 2.5) * hurwitz_zeta(-1.5, - shift_B(y) / (2. * M_PI));
+    return - pow(y, 1.5) * 8. / 3. * pow(M_PI, 2.5) * hurwitz_zeta(-1.5, - shift_B(y) / (2. * M_PI), max_n);
   } else {
     #ifdef DEBUG
       if (y_squared < pos_y_squared) {

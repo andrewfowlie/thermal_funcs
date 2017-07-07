@@ -30,6 +30,19 @@ double I(double s, double a, int N) {
 double T(double s, double a, int N, int M) {
   const double k = pow(a + N, -s);
 
+  if (M > B_2n_fact_size) {
+    #ifdef DEBUG
+      printf("M = %d > B_2n_fact_size = %d. Using M = B_2n_fact_size\n");
+    #endif
+
+    #ifdef THROW
+      throw std::invalid_argument("Bernoulli numbers out of bounds");
+    #endif
+
+    M = B_2n_fact_size;
+  }
+
+
   double sum = 0.;
 
   for (int k = 1; k <= M; k += 1) {
@@ -40,5 +53,17 @@ double T(double s, double a, int N, int M) {
 }
 
 double hurwitz_zeta(double s, double a, int N) {
+  if (N > B_2n_fact_size) {
+    #ifdef DEBUG
+      printf("N = %d > B_2n_fact_size = %d. Using N = B_2n_fact_size\n");
+    #endif
+
+    #ifdef THROW
+      throw std::invalid_argument("Bernoulli numbers out of bounds");
+    #endif
+
+    N = B_2n_fact_size;
+  }
+
   return S(s, a, N) + I(s, a, N) + T(s, a, N, N);
 }

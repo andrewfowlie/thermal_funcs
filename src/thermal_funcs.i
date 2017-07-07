@@ -9,4 +9,6 @@
 %feature("kwargs") J_F_taylor;
 %feature("kwargs") J_F_bessel;
 %feature("kwargs") J_B_bessel;
+%feature("kwargs") J_F_zeta;
+%feature("kwargs") J_B_zeta;
 %include <thermal_funcs.h>;
