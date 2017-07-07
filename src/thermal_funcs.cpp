@@ -541,6 +541,6 @@ double J_B_zeta(double y_squared, int max_n) {
       }
     #endif
     const double poly = std::real(polylog(2.5, exp(-y), max_n));
-    return sqrt(0.5 * M_PI) * pow(y, 1.5) * poly;
+    return -sqrt(0.5 * M_PI) * pow(y, 1.5) * poly;
   }
 }

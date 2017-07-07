@@ -67,9 +67,10 @@ cdouble hurwitz_zeta(double s, cdouble a, int N) {
   return S(s, a, N) + I(s, a, N) + T(s, a, N, N);
 }
 
-cdouble polylog(double s, double a, int N) {
-  const cdouble factor = pow(static_cast<cdouble>(0.5i) / M_PI, 1. - s) * gsl_sf_gamma(1. - s);
-  const cdouble arg = -0.5 + 0.5i * log(std::abs(a)) / M_PI;
-  const cdouble zeta = - pow(static_cast<cdouble>(1.i), 2. * s) * hurwitz_zeta(1. - s, arg, N) + hurwitz_zeta(1. - s, 1. - arg, N);
+cdouble polylog(double s, cdouble a, int N) {
+  const cdouble j(0., 1.);
+  const cdouble factor = pow(0.5 * j / M_PI, 1. - s) * gsl_sf_gamma(1. - s);
+  const cdouble arg = 0.5 * j * log(a) / M_PI;
+  const cdouble zeta = - pow(j, 2. * s) * hurwitz_zeta(1. - s, arg, N) + hurwitz_zeta(1. - s, 1. - arg, N);
   return factor * zeta;
 }
