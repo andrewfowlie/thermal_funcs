@@ -51,7 +51,7 @@ cdouble T(double s, cdouble a, int N, int M) {
   return factor * (0.5 + sum);
 }
 
-cdouble hurwitz_zeta(double s, double a, int N) {
+cdouble hurwitz_zeta(double s, cdouble a, int N) {
   if (N > B_2n_fact_size) {
     #ifdef DEBUG
       printf("N = %d > B_2n_fact_size = %d. Using N = B_2n_fact_size\n");
