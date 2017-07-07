@@ -519,7 +519,8 @@ double J_F_zeta(double y_squared, int max_n) {
         printf("approx applicable for y_squared >> 0. only\n");
       }
     #endif
-    return sqrt(0.5 * M_PI) * pow(y, 1.5) * exp(-y);
+    const double poly = std::real(polylog(2.5, -exp(-y), max_n));
+    return -sqrt(0.5 * M_PI) * pow(y, 1.5) * poly;
   }
 }
 
@@ -539,6 +540,7 @@ double J_B_zeta(double y_squared, int max_n) {
         printf("approx applicable for y_squared >> 0. only\n");
       }
     #endif
-    return -sqrt(0.5 * M_PI) * pow(y, 1.5) * exp(-y);
+    const double poly = std::real(polylog(2.5, exp(-y), max_n));
+    return sqrt(0.5 * M_PI) * pow(y, 1.5) * poly;
   }
 }
