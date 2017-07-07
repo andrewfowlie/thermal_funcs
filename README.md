@@ -22,7 +22,10 @@ Build the library via
 
     make
     
-This should build `./lib/thermal_funcs.so`. The header file is `./src/thermal_funcs.h`. 
+This should build `./lib/thermal_funcs.so`. The header file is `./src/thermal_funcs.h`. It should also build a Python interface, but not a Mathematica interface. 
+If you only want the C++ library,
+
+    make thermal_funcs.so 
 
 # Python interface
 
@@ -37,13 +40,11 @@ your chosen `Python.h` header.
 
 # Mathematica interface
 
-This is slightly more involved:
+This is slightly more involved. This may work:
 
-    cd src;
-    make
     make math.exe
     
-You may have to tweak the `makefile` variables `MATH` and `MATH_INC` for the locations of your `wscc` linker and `wstp.h` header file. Then within Mathematica
+But you may have to tweak the `makefile` variables `MATH` and `MATH_INC` for the locations of your `wscc` linker and `wstp.h` header file. Then within Mathematica
 
     Install["math.exe"];
     Plot[{JB[ysq], JF[ysq]}, {ysq, -100, 100}]
@@ -54,7 +55,7 @@ The functions are fast and accurate even for `y^2 << 0`:
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/3758193/27900262-fad8eaf8-6270-11e7-8324-4e745fd04301.png"/>
-</p>   
+</p>
 
 The time per evaluation is typically about `1E-5` seconds.
 
