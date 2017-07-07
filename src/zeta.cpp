@@ -28,7 +28,7 @@ double I(double s, double a, int N) {
 }
 
 double T(double s, double a, int N, int M) {
-  const double k = pow(a + N, -s);
+  const double factor = pow(a + N, -s);
 
   if (M > B_2n_fact_size) {
     #ifdef DEBUG
@@ -49,7 +49,7 @@ double T(double s, double a, int N, int M) {
     sum += B_2n_fact[k] * gsl_sf_gamma(s + 2. * k - 1.) / gsl_sf_gamma(s) / pow(a + N, 2. * k - 1.);
   }
 
-  return k * (0.5 + sum);
+  return factor * (0.5 + sum);
 }
 
 double hurwitz_zeta(double s, double a, int N) {

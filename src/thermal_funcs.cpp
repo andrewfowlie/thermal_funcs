@@ -510,7 +510,7 @@ double J_F_zeta(double y_squared, int max_n) {
       if (y_squared > neg_y_squared) {
         printf("approx applicable for y_squared << 0. only\n");
       }
-    #endif    
+    #endif
     return - pow(y, 1.5) * 8. / 3. * pow(M_PI, 2.5) * hurwitz_zeta(-1.5, 0.5 - shift_F(y) / (2. * M_PI), max_n);
   } else {
     #ifdef DEBUG
@@ -530,7 +530,6 @@ double J_B_zeta(double y_squared, int max_n) {
         printf("approx applicable for y_squared << 0. only\n");
       }
     #endif
-    const double y_shift  = fmod(y, 2. * M_PI) - 2. * M_PI;
     return - pow(y, 1.5) * 8. / 3. * pow(M_PI, 2.5) * hurwitz_zeta(-1.5, - shift_B(y) / (2. * M_PI), max_n);
   } else {
     #ifdef DEBUG
