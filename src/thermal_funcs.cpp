@@ -52,7 +52,7 @@ double J_integrand(double x, double y_squared, bool bosonic) {
   // x^2 Log[1 -+ Exp[-Sqrt[x^2 + y^2]]]
   // If r^2 = x^2 + y^2 < 0, this can be written
   // x^2 * 0.5 * Log[2. + 2. * Cos[r]]
-  double sign = 1. - 2. * static_cast<float>(bosonic);
+  double sign = 1. - 2. * static_cast<double>(bosonic);
   double r_squared = pow(x, 2) + y_squared;
   double abs_r = sqrt(std::abs(r_squared));
   if (r_squared >= 0.) {
@@ -511,7 +511,8 @@ double J_F_zeta(double y_squared, int max_n) {
         printf("approx applicable for y_squared << 0. only\n");
       }
     #endif
-    return - pow(y, 1.5) * 8. / 3. * pow(M_PI, 2.5) * hurwitz_zeta(-1.5, 0.5 - shift_F(y) / (2. * M_PI), max_n);
+    const double zeta = std::real(hurwitz_zeta(-1.5, 0.5 - shift_F(y) / (2. * M_PI), max_n));
+    return - pow(y, 1.5) * 8. / 3. * pow(M_PI, 2.5) * zeta;
   } else {
     #ifdef DEBUG
       if (y_squared < pos_y_squared) {
@@ -530,7 +531,8 @@ double J_B_zeta(double y_squared, int max_n) {
         printf("approx applicable for y_squared << 0. only\n");
       }
     #endif
-    return - pow(y, 1.5) * 8. / 3. * pow(M_PI, 2.5) * hurwitz_zeta(-1.5, - shift_B(y) / (2. * M_PI), max_n);
+    const double zeta = std::real(hurwitz_zeta(-1.5, - shift_B(y) / (2. * M_PI), max_n));
+    return - pow(y, 1.5) * 8. / 3. * pow(M_PI, 2.5) * zeta;
   } else {
     #ifdef DEBUG
       if (y_squared < pos_y_squared) {
