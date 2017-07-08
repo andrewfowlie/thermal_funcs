@@ -9,7 +9,15 @@
 
 typedef std::complex<double> cdouble;
 
-extern "C" cdouble hurwitz_zeta(double s, cdouble a, int N = 50);
-extern "C" cdouble polylog(double s, cdouble a, int N = 50);
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+cdouble hurwitz_zeta(double s, cdouble a, int N = 50);
+cdouble polylog(double s, cdouble a, int N = 50);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  // _ZETA_H_
