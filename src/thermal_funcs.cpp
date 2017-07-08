@@ -225,24 +225,6 @@ double J_F_quad(double y_squared, double abs_error, double rel_error, int max_n)
 
 // Thermal functions by Taylor expansion
 
-double gamma_summand(int l, double y_squared) {
-  // Summand in Wainwright eq. (2.18).
-  // NB that the summand in eq. (2.19)
-  // = -summand(l, y_squared) - 1/8 * summand(l, 4 * y_squared)
-  gsl_set_error_handler_off();  // Default handler aborts
-
-  double summand = -2. * pow(M_PI, 3.5) * pow(-1., l)
-                   * gsl_sf_zeta_int(2 * l + 1)
-                   * gsl_sf_gamma(l + 0.5)
-                   * pow(0.25 * y_squared / pow(M_PI, 2), l + 2)
-                   / gsl_sf_fact(l + 2);
-
-  #ifdef DEBUG
-    printf("gamma_%d(y^2 = %e) = %e\n", l, y_squared, summand);
-  #endif
-
-  return summand;
-}
 
 double gamma_sum(double y_squared, double abs_error, double rel_error, int max_n, bool bosonic, double sum = 0.) {
   // Sum of Gamma functions in Wainwright eq. (2.18) and eq. (2.19).
@@ -253,13 +235,19 @@ double gamma_sum(double y_squared, double abs_error, double rel_error, int max_n
     }
   #endif
 
-  double term;
+  double factor = 2. * pow(M_PI, -2.5) * pow(y_squared, 3) * pow(4., -3) / gsl_sf_fact(3) * gsl_sf_gamma(1.5);
+  double zeta = gsl_sf_zeta_int(3);
+  double term = factor * zeta;
+  sum += term;
 
-  for (int n=1; n <= max_n; n+=1) {
+  for (int n = 2; n <= max_n; n += 1) {
+    factor *= - y_squared * n / (n + 2.) * 0.25 / pow(M_PI, 2);
+    zeta = gsl_sf_zeta_int(2 * n + 1);
+
     if (bosonic) {
-      term = gamma_summand(n, y_squared);
+      term = zeta * factor;
     } else {
-      term = -gamma_summand(n, y_squared) + 0.125 * gamma_summand(n, 0.25 * y_squared);
+      term = zeta * factor * (-1. + 0.125 * pow(0.25, n + 2));
     }
 
     sum += term;
