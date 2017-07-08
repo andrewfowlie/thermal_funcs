@@ -289,7 +289,7 @@ double J_B_taylor(double y_squared, double abs_error, double rel_error, int max_
     #endif
   }
 
-  double real_y_cubed = real(pow(std::complex<double>(y_squared), 1.5));
+  double real_y_cubed = std::abs(real(pow(std::complex<double>(y_squared), 1.5)));
 
   double taylor_sum = - pow(M_PI, 4) / 45.
                       + pow(M_PI, 2) / 12. * y_squared
