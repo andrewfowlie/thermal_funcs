@@ -11,6 +11,7 @@
 
 #include <gsl/gsl_sf.h>
 #include <complex>
+#include <stdexcept>
 
 
 cdouble S(double s, cdouble a, int N) {
