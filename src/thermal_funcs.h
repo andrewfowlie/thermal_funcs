@@ -12,29 +12,29 @@ extern "C" {
 #endif
 
 double J_B_quad(double y_squared,
-                double abs_error = 1E-8,
-                double rel_error = 1E-8,
+                double abs_error = 1E-3,
+                double rel_error = 1E-4,
                 int max_n = 10000);
 double J_F_quad(double y_squared,
-                double abs_error = 1E-8,
-                double rel_error = 1E-8,
+                double abs_error = 1E-3,
+                double rel_error = 1E-4,
                 int max_n = 10000);
 double J_B_taylor(double y_squared,
-                  double abs_error = 1E-8,
-                  double rel_error = 1E-8,
+                  double abs_error = 1E-3,
+                  double rel_error = 1E-4,
                   int max_n = 10000);
 double J_F_taylor(double y_squared,
-                  double abs_error = 1E-8,
-                  double rel_error = 1E-8,
+                  double abs_error = 1E-3,
+                  double rel_error = 1E-4,
                   int max_n = 10000);
 double J_F_bessel(double y_squared,
-                  double abs_error = 1E-8,
-                  double rel_error = 1E-8,
+                  double abs_error = 1E-3,
+                  double rel_error = 1E-4,
                   int max_n = 10000,
                   bool fast = false);
 double J_B_bessel(double y_squared,
-                  double abs_error = 1E-8,
-                  double rel_error = 1E-8,
+                  double abs_error = 1E-3,
+                  double rel_error = 1E-4,
                   int max_n = 10000,
                   bool fast = false);
 double J_B_lim(double y_squared, bool upper = true);
