@@ -69,11 +69,11 @@ cdouble hurwitz_zeta(double s, cdouble a, int N) {
 
 cdouble polylog(double s, cdouble a, int N) {
   if (s > 1 && std::abs(a) <= 1) {
-    cdouble sum = 0.;
-    cdouble numerator = 1.;
-    for (int i = 1; i <= N; i += 1) {
-      numerator *= a;
-      sum += numerator / pow(i, s);
+    cdouble term = a;
+    cdouble sum = term;
+    for (int i = 2; i <= N; i += 1) {
+      term *= a * pow((i - 1) / i, 2.5);
+      sum += term;
     }
     return sum;
   }
