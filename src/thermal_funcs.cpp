@@ -442,7 +442,13 @@ double J_B_bessel(double y_squared, double abs_error, double rel_error, int max_
 
 // Limits and approximations
 
-double J_B_lim(double y_squared) {
+
+
+// Maxima and minima of Zeta[-3/2, x] from Mathematica
+const double zeta_maxima = 0.024145376807240715;
+const double zeta_minima = -0.03154228985099239;
+
+double J_B_lim(double y_squared, bool upper) {
   // Found from Eq. (14) in http://mathworld.wolfram.com/BesselFunctionoftheSecondKind.html
   #ifdef DEBUG
     if (y_squared > neg_y_squared) {
@@ -451,11 +457,16 @@ double J_B_lim(double y_squared) {
   #endif
 
   double y = sqrt(std::abs(y_squared));
-  return pow(y, 1.5) * sqrt(0.5 * M_PI) * gsl_sf_zeta(2.5);
+  double zeta;
+  if (upper) {
+    return -pow(y, 1.5) * 8. / 3. * pow(M_PI, 2.5) * zeta_minima;
+  } else {
+    return pow(y, 1.5) * 8. / 3. * pow(M_PI, 2.5) * zeta_maxima;
+  }
 }
 
-double J_F_lim(double y_squared) {
-  return J_B_lim(y_squared);
+double J_F_lim(double y_squared, bool upper) {
+  return J_B_lim(y_squared, upper);
 }
 
 double J_F_approx(double y_squared) {

@@ -11,4 +11,6 @@
 %feature("kwargs") J_B_bessel;
 %feature("kwargs") J_F_zeta;
 %feature("kwargs") J_B_zeta;
+%feature("kwargs") J_F_lim;
+%feature("kwargs") J_B_lim;
 %include <thermal_funcs.h>;
