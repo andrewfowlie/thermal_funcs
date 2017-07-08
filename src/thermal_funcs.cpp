@@ -25,6 +25,7 @@
 #include <gsl/gsl_sf.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_math.h>
+#include <gsl/gsl_sf_fermi_dirac.h>
 #include <stdexcept>
 #include <complex>
 #include <algorithm>
@@ -519,8 +520,8 @@ double J_F_zeta(double y_squared, int max_n) {
         printf("approx applicable for y_squared >> 0. only\n");
       }
     #endif
-    const double poly = std::real(polylog(2.5, -exp(-y), max_n));
-    return -sqrt(0.5 * M_PI) * pow(y, 1.5) * poly;
+    double poly = -gsl_sf_fermi_dirac_3half(-y);
+    return - sqrt(0.5 * M_PI) * pow(y, 1.5) * poly;
   }
 }
 
