@@ -28,7 +28,8 @@ cdouble I(double s, cdouble a, int N) {
 }
 
 cdouble T(double s, cdouble a, int N, int M) {
-  const cdouble factor = pow(a + static_cast<cdouble>(N), -s);
+  cdouble d = a + static_cast<cdouble>(N);
+  const cdouble factor = pow(d, -s);
 
   if (M > B_2n_fact_size) {
     #ifdef DEBUG
@@ -45,7 +46,7 @@ cdouble T(double s, cdouble a, int N, int M) {
   cdouble sum = 0.;
 
   for (int k = 1; k <= M; k += 1) {
-    sum += B_2n_fact[k] * gsl_sf_gamma(s + 2. * k - 1.) / gsl_sf_gamma(s) / pow(a + static_cast<cdouble>(N), 2. * k - 1.);
+    sum += B_2n_fact[k] * gsl_sf_poch(s, + 2. * k - 1.) / pow(d, 2. * k - 1.);
   }
 
   return factor * (0.5 + sum);
