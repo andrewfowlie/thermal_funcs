@@ -68,6 +68,16 @@ cdouble hurwitz_zeta(double s, cdouble a, int N) {
 }
 
 cdouble polylog(double s, cdouble a, int N) {
+  if (s > 1 && std::abs(a) <= 1) {
+    cdouble sum = 0.;
+    cdouble numerator = 1.;
+    for (int i = 1; i <= N; i += 1) {
+      numerator *= a;
+      sum += numerator / pow(i, s);
+    }
+    return sum;
+  }
+
   const cdouble j(0., 1.);
   const cdouble factor = pow(0.5 * j / M_PI, 1. - s) * gsl_sf_gamma(1. - s);
   const cdouble arg = 0.5 * j * log(a) / M_PI;
