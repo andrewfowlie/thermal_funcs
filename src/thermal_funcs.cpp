@@ -386,11 +386,12 @@ double bessel_sum(double y_squared, double abs_error, double rel_error, int max_
 
   std::complex<double> y = sqrt(std::complex<double>(y_squared));
   double sign = 2. * static_cast<double>(bosonic) - 1.;
-  double sum = 0.;
-  double term;
+  double factor = sign;
+  double sum = factor * K2(y, fast);
 
-  for (int n=1; n <= max_n; n+=1) {
-    term = -y_squared * pow(sign, n) / pow(n, 2) * K2(static_cast<double>(n) * y, fast);
+  for (int n = 2; n <= max_n; n += 1) {
+    factor *= sign * pow((static_cast<double>(n) - 1.) / static_cast<double>(n), 2);
+    const double term = factor * K2(static_cast<double>(n) * y, fast);
     sum += term;
 
     #ifdef DEBUG
@@ -401,12 +402,12 @@ double bessel_sum(double y_squared, double abs_error, double rel_error, int max_
       #ifdef DEBUG
         printf("number of terms in sum = %d\n", n);
       #endif
-      return sum;
+      break;
     } else if (isinf(sum)) {
       #ifdef THROW
         throw std::runtime_error("sum diverging");
       #endif
-      return sum;
+      break;
     }
 
     #ifdef DEBUG
@@ -416,7 +417,7 @@ double bessel_sum(double y_squared, double abs_error, double rel_error, int max_
     #endif
   }
 
-  return sum;
+  return -y_squared * sum;
 }
 
 double J_F_bessel(double y_squared, double abs_error, double rel_error, int max_n, bool fast) {
