@@ -254,7 +254,7 @@ double gamma_sum(double y_squared, double abs_error, double rel_error, int max_n
 
     sum += term;
 
-    if (std::abs(term) < std::max(abs_error, rel_error * sum)) {
+    if (std::abs(term) < std::max(abs_error, rel_error * std::abs(sum))) {
       #ifdef DEBUG
         printf("number of terms in sum = %d\n", n);
       #endif
@@ -388,7 +388,7 @@ double bessel_sum(double y_squared, double abs_error, double rel_error, int max_
       printf("term_%d = %e and sum = %e\n", n, term, sum);
     #endif
 
-    if (std::abs(term) < std::max(abs_error, rel_error * sum)) {
+    if (std::abs(term) < std::max(abs_error, rel_error * std::abs(sum))) {
       #ifdef DEBUG
         printf("number of terms in sum = %d\n", n);
       #endif
