@@ -21,6 +21,8 @@
 
 
 #include <thermal_funcs.h>
+#include <zeta.h>
+
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_sf.h>
 #include <gsl/gsl_errno.h>
