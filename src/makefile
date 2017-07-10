@@ -26,7 +26,7 @@ thermal_funcs.so: thermal_funcs.o zeta.o
 	$(CC) $(FLAGS) -fPIC -shared thermal_funcs.o zeta.o -lgsl -lgslcblas -I./ -o ../lib/thermal_funcs.so
 
 math.exe: thermal_funcs.o zeta.o
-	$(MATH) -o math.exe math.tm math.c thermal_funcs.o zeta.o -lgsl -lgslcblas
+	$(MATH) -o math.exe math.tm math.c thermal_funcs.o zeta.o -lgsl -lgslcblas $(MATH_INC)
 
 all: thermal_funcs.so _thermal_funcs.so
 
