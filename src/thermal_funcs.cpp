@@ -32,10 +32,10 @@
 #include <complex>
 #include <algorithm>
 
-const float neg_y_squared = -1.E3;
-const float pos_y_squared = 1.E3;
-const float a_b = pow(M_PI, 2) * exp(1.5 - 2. * M_EULER);  // Below eq. (2.13)
-const float a_f = 16. * a_b;  // Below eq. (2.13)
+const double neg_y_squared = -1.E3;
+const double pos_y_squared = 1.E3;
+const double a_b = pow(M_PI, 2) * exp(1.5 - 2. * M_EULER);  // Below eq. (2.13)
+const double a_f = 16. * a_b;  // Below eq. (2.13)
 
 // Thermal functions at y_squared -> 0. Found in Mathematica:
 //
@@ -44,8 +44,8 @@ const float a_f = 16. * a_b;  // Below eq. (2.13)
 //
 // or from Taylor expansions.
 
-const float J_B_0 = - pow(M_PI, 4) / 45.;
-const float J_F_0 = 7. * pow(M_PI, 4) / 360.;
+const double J_B_0 = - pow(M_PI, 4) / 45.;
+const double J_F_0 = 7. * pow(M_PI, 4) / 360.;
 
 // Thermal functions by numerical integration
 
@@ -75,7 +75,7 @@ double J_integrand_wrapper(double x, void *p) {
   return J_integrand(x, y_squared, bosonic);
 }
 
-int n_integrand_points(double y_squared, bool bosonic) {
+int n_integrand_points(double y_squared, const bool bosonic) {
   // Number of integrand points, i.e. number of singularities + 2 for endpoints
   // of integration. NB don't include an endpoint twice if it is singular. This
   // means we exclude n = 0.
@@ -181,7 +181,7 @@ double J_quad(double y_squared, double abs_error, double rel_error, int max_n, b
                          &error);
   }
 
-  double imag_y = imag(sqrt(std::complex<double>(y_squared)));
+  double imag_y = imag(sqrt(cdouble(y_squared)));
   gsl_integration_qagiu(&integrand,
                         imag_y,
                         abs_error,
@@ -228,7 +228,7 @@ double J_F_quad(double y_squared, double abs_error, double rel_error, int max_n)
 // Thermal functions by Taylor expansion
 
 
-double gamma_sum(double y_squared, double abs_error, double rel_error, int max_n, bool bosonic, double sum = 0.) {
+double gamma_sum(double y_squared, double abs_error, double rel_error, int max_n, const bool bosonic, double sum = 0.) {
   // Sum of Gamma functions in Wainwright eq. (2.18) and eq. (2.19).
 
   #ifdef THROW
@@ -291,7 +291,7 @@ double J_B_taylor(double y_squared, double abs_error, double rel_error, int max_
     #endif
   }
 
-  double real_y_cubed = std::abs(real(pow(std::complex<double>(y_squared), 1.5)));
+  double real_y_cubed = std::abs(real(pow(cdouble(y_squared), 1.5)));
 
   double taylor_sum = - pow(M_PI, 4) / 45.
                       + pow(M_PI, 2) / 12. * y_squared
@@ -337,7 +337,7 @@ double J_F_taylor(double y_squared, double abs_error, double rel_error, int max_
 // Thermal functions by infinite sum of Bessel functions
 
 
-double K2(std::complex<double> x, bool fast = false) {
+double K2(cdouble x, bool fast = false) {
   // Utilize fact that
   // Re[BesselK[2, x * I]] = 0.5 * Pi BesselY[2, x]
   // to define K2 for imaginary arguments.
@@ -374,7 +374,7 @@ double bessel_sum(double y_squared, double abs_error, double rel_error, int max_
     }
   #endif
 
-  std::complex<double> y = sqrt(std::complex<double>(y_squared));
+  cdouble y = sqrt(cdouble(y_squared));
   double sign = 2. * static_cast<double>(bosonic) - 1.;
   double factor = sign;
   double sum = factor * K2(y, fast);
@@ -451,7 +451,6 @@ const double zeta_maxima = 0.024145376807240715;
 const double zeta_minima = -0.03154228985099239;
 
 double J_B_lim(double y_squared, bool upper) {
-  // Found from Eq. (14) in http://mathworld.wolfram.com/BesselFunctionoftheSecondKind.html
   #ifdef DEBUG
     if (y_squared > neg_y_squared) {
       printf("limit applicable for y_squared << 0. only\n");
@@ -544,6 +543,6 @@ double J_B_zeta(double y_squared, int max_n) {
       }
     #endif
     const double poly = std::real(polylog(2.5, exp(-y), max_n));
-    return -sqrt(0.5 * M_PI) * pow(y, 1.5) * poly;
+    return - sqrt(0.5 * M_PI) * pow(y, 1.5) * poly;
   }
 }
