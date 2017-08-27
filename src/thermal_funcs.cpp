@@ -259,7 +259,7 @@ double gamma_sum(double y_squared, double abs_error, double rel_error, int max_n
         printf("number of terms in sum = %d\n", n);
       #endif
       return sum;
-    } else if (isinf(sum)) {
+    } else if (std::isinf(sum)) {
       #ifdef THROW
         throw std::runtime_error("sum diverging");
       #endif
@@ -393,7 +393,7 @@ double bessel_sum(double y_squared, double abs_error, double rel_error, int max_
         printf("number of terms in sum = %d\n", n);
       #endif
       break;
-    } else if (isinf(sum)) {
+    } else if (std::isinf(sum)) {
       #ifdef THROW
         throw std::runtime_error("sum diverging");
       #endif
