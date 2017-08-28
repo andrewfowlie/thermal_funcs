@@ -44,7 +44,7 @@ This is slightly more involved. This may work:
 
     make math.exe
     
-But you may have to tweak the `makefile` variables `MATH` and `MATH_INC` for the locations of your `wscc` linker and `wstp.h` header file. Try `locate wscc` and `locate wstp.h`. They should be somewhere within `GetEnvironment[{"MATHEMATICA_HOME"}]`.
+But you may have to tweak the `./src/makefile` variables `MATH` and `MATH_INC` for the locations of your `wscc` linker and `wstp.h` header file. Try `locate wscc` and `locate wstp.h`. They should be somewhere within `GetEnvironment[{"MATHEMATICA_HOME"}]`.
 You may see linker *warnings*:
 
     math.c: gcc: warning: thermal_funcs.o: linker input file unused because linking not done
