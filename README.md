@@ -59,6 +59,41 @@ These warnings can be ignored. Then within Mathematica,
     
 Note well that you should use the correct (relative or absolute) path to `./src/math.exe` in the command `Install["./src/math.exe"]`.
 
+## Debugging
+
+If the executable `./src/math.exe` was built but `Install` fails, try installing step by step to find debugging information. First, run the created executable,
+
+    ./src/math.exe
+    
+This should prompt you to `Create link:`. Enter e.g. `foo`. Don't exit that session. In Mathematica, try
+
+    $VersionNumber
+    link = LinkConnect["foo"]
+    Install[link]
+    JB[100]
+    
+to find the step that fails.
+
+You can also try one of the pre-built examples provided by Mathematica, e.g.,
+
+    Install["/usr/local/Wolfram/Mathematica/11.1/SystemFiles/Links/WSTP/DeveloperKit/Linux-x86-64/PrebuiltExamples/addtwo"]
+    AddTwo[2, 2]
+    
+and re-building it locally,
+    
+    MATH=/usr/local/Wolfram/Mathematica/11.1/SystemFiles/Links/WSTP/DeveloperKit/Linux-x86-64/
+    mkdir ~/addtwo
+    cd ~/addtwo
+    cp $MATH/WSTPExamples/addtwo* ./
+    $MATH/CompilerAdditions/wscc addtwo.tm addtwo.c -o addtwo
+    
+then in Mathematica,
+
+    Install["~/addtwo/addtwo"]
+    AddTwo[2, 2]
+    
+This may help find the origin of any problems. You must, of course, replace the paths to the ones on your machine.
+
 # Performance
 
 The functions are fast and accurate even for `y^2 << 0`:
