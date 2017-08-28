@@ -44,7 +44,7 @@ This is slightly more involved. This may work:
 
     make math.exe
     
-But you may have to tweak the `./src/makefile` variables `MATH` and `MATH_INC` for the locations of your `wscc` linker and `wstp.h` header file. Try `locate wscc` and `locate wstp.h`. They should be somewhere within `GetEnvironment[{"MATHEMATICA_HOME"}]`.
+But you may have to tweak the `./src/makefile` variable `MATH_INC` for the locations of your `wscc` linker and `wstp.h` header file. You can find this in Mathematica from `$InstallationDirectory <> "/SystemFiles/Links/WSTP/DeveloperKit/" <> $SystemID <> "/CompilerAdditions/"`.
 
 Then within Mathematica,
 

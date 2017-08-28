@@ -3,8 +3,9 @@
 FLAGS = -O3  # -D DEBUG -D THROW 
 CC = g++
 PYTHON = `pkg-config --cflags python`
-MATH = /usr/local/Wolfram/Mathematica/11.1/SystemFiles/Links/WSTP/DeveloperKit/Linux-x86-64/CompilerAdditions/wscc
-MATH_INC = -I./ -I/usr/local/Wolfram/Mathematica/11.1/SystemFiles/Links/WSTP/DeveloperKit/Linux/CompilerAdditions/ -I/usr/local/Wolfram/Mathematica/11.1/SystemFiles/Links/WSTP/DeveloperKit/Linux-x86-64/CompilerAdditions/
+MATH_INC = /usr/local/Wolfram/Mathematica/11.1/SystemFiles/Links/WSTP/DeveloperKit/Linux-x86-64/CompilerAdditions
+MATH = $(MATH_INC)/wscc
+
 
 zeta.o: zeta.h
 	$(CC) $(FLAGS) -fPIC -c zeta.cpp -lgsl -lgslcblas -I./  
@@ -26,7 +27,7 @@ thermal_funcs.so: thermal_funcs.o zeta.o
 	$(CC) $(FLAGS) -fPIC -shared thermal_funcs.o zeta.o -lgsl -lgslcblas -I./ -o ../lib/thermal_funcs.so
 
 math.exe: thermal_funcs.o zeta.o
-	$(MATH) -b64 -o math.exe math.tm math.c -Wl,thermal_funcs.o,zeta.o -lgsl -lgslcblas $(MATH_INC)
+	$(MATH) -b64 -o math.exe math.tm math.c -Wl,thermal_funcs.o,zeta.o -lgsl -lgslcblas -I$(MATH_INC) -I./
 
 all: thermal_funcs.so _thermal_funcs.so
 
