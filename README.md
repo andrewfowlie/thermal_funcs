@@ -98,3 +98,6 @@ The functions are fast and accurate even for `y^2 << 0`:
 
 The time per evaluation is typically about `1E-5` seconds.
 
+# Acknowledgements
+
+This [Stack Exchange answer](https://mathematica.stackexchange.com/a/154643/38645) was helpful for removing linker warnings from `wscc`.
