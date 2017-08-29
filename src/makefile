@@ -2,8 +2,8 @@
 
 FLAGS = -O3  # -D DEBUG -D THROW 
 CC = g++
-PYTHON = `pkg-config --cflags python`
-MATH_INC = /usr/local/Wolfram/Mathematica/11.1/SystemFiles/Links/WSTP/DeveloperKit/Linux-x86-64/CompilerAdditions
+PYTHON = $(shell pkg-config --cflags python)
+MATH_INC = $(shell echo 'FileNameJoin[{$$InstallationDirectory, "SystemFiles", "Links", "WSTP", "DeveloperKit", $$SystemID, "CompilerAdditions"}]' | math -batchoutput | tr -d '"')
 MATH = $(MATH_INC)/wscc
 
 

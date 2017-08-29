@@ -40,11 +40,11 @@ your chosen `Python.h` header.
 
 # Mathematica interface
 
-This is slightly more involved. This may work:
+This is slightly more involved. This may work in Linux if `math` is in your `PATH`:
 
     make math.exe
     
-But you may have to tweak the `./src/makefile` variable `MATH_INC` for the locations of your `wscc` linker and `wstp.h` header file. You can find this in Mathematica from `$InstallationDirectory <> "/SystemFiles/Links/WSTP/DeveloperKit/" <> $SystemID <> "/CompilerAdditions/"`.
+But otherwise you may have to tweak the `./src/makefile` variable `MATH_INC` for the locations of your `wscc` linker and `wstp.h` header file. You can find this on any platform in Mathematica from `FileNameJoin[{$InstallationDirectory, "SystemFiles", "Links", "WSTP", "DeveloperKit", $SystemID, "CompilerAdditions"}]`.
 
 Then within Mathematica,
 
