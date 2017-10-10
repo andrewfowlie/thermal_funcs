@@ -28,6 +28,10 @@ thermal_funcs.so: thermal_funcs.o zeta.o
 
 math.exe: thermal_funcs.o zeta.o
 	$(MATH) -b64 -o math.exe math.tm math.c -Wl,thermal_funcs.o,zeta.o -lgsl -lgslcblas -I$(MATH_INC) -I./
+	
+example: thermal_funcs.so
+	# $(CC) $(FLAGS) example.c thermal_funcs.o zeta.o -lgsl -lgslcblas -I./ -o ../bin/example 
+	$(CC) $(FLAGS) example.c -L$(shell echo $$PWD)/../lib -I./ -o ../bin/example -l:thermal_funcs.so -lgsl -lgslcblas
 
 all: thermal_funcs.so _thermal_funcs.so
 
@@ -41,3 +45,4 @@ clean:
 	rm -f thermal_funcs_wrap.cxx
 	rm -f thermal_funcs.pyc
 	rm -f math.exe
+	rm -f ../bin/example

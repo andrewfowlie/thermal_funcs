@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := all
 
-all: 
+all:
 	$(MAKE) -C src
 
 clean:
@@ -14,3 +14,6 @@ thermal_funcs.so:
 	
 _thermal_funcs.so:
 	$(MAKE) -C src _thermal_funcs.so
+	
+example:
+	$(MAKE) -C src example
