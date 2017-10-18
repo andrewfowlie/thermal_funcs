@@ -51,7 +51,7 @@ Then within Mathematica,
     Install["./src/math.exe"];
     Plot[{JB[ysq], JF[ysq]}, {ysq, -100, 100}]
     
-Note well that you should use the correct (relative or absolute) path to `./src/math.exe` in the command `Install["./src/math.exe"]`.
+Note well that you should use the correct (relative or absolute) path to `./src/math.exe` in the command `Install["./src/math.exe"]`. The interface was built and tested with Mathematica 11.1.1.
 
 ## Debugging
 
