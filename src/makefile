@@ -1,11 +1,11 @@
-.DEFAULT_GOAL := all
+.DEFAULT_GOAL := lib
+.PHONY: all clean mathematica python lib example
 
 FLAGS = -O3  # -D DEBUG -D THROW 
 CC = g++
 PYTHON = $(shell pkg-config --cflags python)
 MATH_INC = $(shell echo 'FileNameJoin[{$$InstallationDirectory, "SystemFiles", "Links", "WSTP", "DeveloperKit", $$SystemID, "CompilerAdditions"}]' | math -batchoutput | tr -d '"')
 MATH = $(MATH_INC)/wscc
-
 
 zeta.o: zeta.h
 	$(CC) $(FLAGS) -fPIC -c zeta.cpp -lgsl -lgslcblas -I./  
@@ -33,7 +33,10 @@ example: thermal_funcs.so
 	# $(CC) $(FLAGS) example.c thermal_funcs.o zeta.o -lgsl -lgslcblas -I./ -o ../bin/example 
 	$(CC) $(FLAGS) example.c -L$(shell echo $$PWD)/../lib -I./ -o ../bin/example -l:thermal_funcs.so -lgsl -lgslcblas
 
-all: thermal_funcs.so _thermal_funcs.so
+mathematica: math.exe
+python: _thermal_funcs.so
+lib: thermal_funcs.so
+all: lib python mathematica example
 
 clean:
 	rm -f ../lib/thermal_funcs.so

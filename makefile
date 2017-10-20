@@ -1,19 +1,20 @@
-.DEFAULT_GOAL := all
+.DEFAULT_GOAL := lib
+.PHONY: all clean mathematica python lib example
 
 all:
-	$(MAKE) -C src
+	$(MAKE) -C src all
 
 clean:
 	$(MAKE) -C src clean
 	
-math.exe:
-	$(MAKE) -C src math.exe
+mathematica:
+	$(MAKE) -C src mathematica
 	
-thermal_funcs.so:
-	$(MAKE) -C src thermal_funcs.so
+python:
+	$(MAKE) -C src python
 	
-_thermal_funcs.so:
-	$(MAKE) -C src _thermal_funcs.so
+lib:
+	$(MAKE) -C src lib
 	
 example:
 	$(MAKE) -C src example

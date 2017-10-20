@@ -14,27 +14,36 @@ representation, an approximation, a Hurwitz zeta function representation, and an
 
 # Dependencies
 
-The C++ requires `gsl` and `gslcblas`.
+The C++ requires `gsl` and `gslcblas`. The Python interface requires Python 2 or 3, SWIG and a Python.h header file (which is part of python-dev in Ubuntu). The Mathematica interface was tested for Mathematica 11.
 
 # Build
 
 Build the library via 
 
-    make
+    make lib
     
-This should build `./lib/thermal_funcs.so`. The header file is `./src/thermal_funcs.h`. It should also build a Python interface, but not a Mathematica interface. 
-If you only want the C++ library,
+This should build `./lib/thermal_funcs.so`. The header file is `./src/thermal_funcs.h`. 
 
-    make thermal_funcs.so 
+# Example
+
+There is a C example ./src/example.c, built by
+
+    make example
+    
+This should build a program `./bin/example`, which when executed prints the result of evaluating a thermal function.
 
 # Python interface
 
-The Python interface 
+Build the interface via 
+
+    make python
+
+The interface 
 
     from thermal_funcs import J_B, J_F
     J_F(100., method='quad')
     
-is compatible with Python 2 and 3, though must be built for a specific version. It has no dependencies. By default,
+is compatible with Python 2 and 3, though must be built for a specific version. It has no module dependencies. By default,
 SWIG will build for your `python --version`. To alter this, change the `PYTHON` variable in the makefile to compile with
 your chosen `Python.h` header.
 
@@ -42,9 +51,9 @@ your chosen `Python.h` header.
 
 This is slightly more involved. This may work in Linux if `math` is in your `PATH`:
 
-    make math.exe
+    make mathematica
     
-But otherwise you may have to tweak the `./src/makefile` variable `MATH_INC` for the locations of your `wscc` linker and `wstp.h` header file. You can find this on any platform in Mathematica from `FileNameJoin[{$InstallationDirectory, "SystemFiles", "Links", "WSTP", "DeveloperKit", $SystemID, "CompilerAdditions"}]`.
+But otherwise you may have to tweak the `./src/makefile` variable `MATH_INC` for the locations of your `wscc` linker and `wstp.h` header file. You can find this on any platform in Mathematica from `FileNameJoin[{$InstallationDirectory, "SystemFiles", "Links", "WSTP", "DeveloperKit", $SystemID, "CompilerAdditions"}]`. 
 
 Then within Mathematica,
 
