@@ -18,5 +18,9 @@
 %feature("kwargs") D1_J_F_bessel;
 %feature("kwargs") D2_J_B_bessel;
 %feature("kwargs") D2_J_F_bessel;
+%feature("kwargs") D1_J_B_approx;
+%feature("kwargs") D1_J_F_approx;
+%feature("kwargs") D2_J_B_approx;
+%feature("kwargs") D2_J_F_approx;
 %include <thermal_funcs.h>;
 %include <derivatives.h>;
