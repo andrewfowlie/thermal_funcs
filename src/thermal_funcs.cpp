@@ -376,7 +376,7 @@ double bessel_sum(double y_squared, double abs_error, double rel_error, int max_
 
   cdouble y = sqrt(cdouble(y_squared));
   double sign = 2. * static_cast<double>(bosonic) - 1.;
-  double factor = sign;
+  double factor = - y_squared * sign;
   double sum = factor * K2(y, fast);
 
   for (int n = 2; n <= max_n; n += 1) {
@@ -407,7 +407,7 @@ double bessel_sum(double y_squared, double abs_error, double rel_error, int max_
     #endif
   }
 
-  return -y_squared * sum;
+  return sum;
 }
 
 double J_F_bessel(double y_squared, double abs_error, double rel_error, int max_n, bool fast) {
