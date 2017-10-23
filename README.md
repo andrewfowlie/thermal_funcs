@@ -10,7 +10,8 @@ We provide a C++ library and Python and Mathematica interfaces to thermal functi
 
   
 We offer Taylor expansion, numerical integration (quadrature), a Bessel function 
-representation, an approximation, a Hurwitz zeta function representation, and an upper bound for the integrals.
+representation, an approximation, a Hurwitz zeta function representation, and an upper bound for the integrals. First and second
+derivatives are also implemented.
 
 # Dependencies
 
@@ -26,7 +27,7 @@ This should build `./lib/thermal_funcs.so`. The header file is `./src/thermal_fu
 
 # Example
 
-There is a C example ./src/example.c, built by
+There is a C example ./src/example.cpp, built by
 
     make example
     
