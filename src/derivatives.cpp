@@ -235,27 +235,30 @@ double D2_J_B_bessel(double y_squared, double abs_error, double rel_error, int m
 // Numerical derivative
 
 
-struct J_params {bool bosonic;};
+struct J_params {bool bosonic; double abs_error; double rel_error; int max_n;};
 
 double J_wrapper(double y_squared, void *p) {
   // Wrapper for J with signature required by numerical differentiation
   struct J_params *params = (struct J_params *)p;
   bool bosonic = params->bosonic;
+  double abs_error = params->abs_error; 
+  double rel_error = params->rel_error; 
+  int max_n = params->max_n;
   
   if (bosonic) {
-    return J_B_bessel(y_squared);
+    return J_B_bessel(y_squared, abs_error, rel_error, max_n);
   } else {
-    return J_F_bessel(y_squared);
+    return J_F_bessel(y_squared, abs_error, rel_error, max_n);
   }
 }
 
-double D1_J_approx(double y_squared, double step, bool bosonic) {
+double D1_J_approx(double y_squared, double step, bool bosonic, double abs_error, double rel_error, int max_n) {
     gsl_function J;
     double derivative;
     double abs_err;
 
     J.function = &J_wrapper;
-    struct J_params params = {bosonic};
+    struct J_params params = {bosonic, abs_error, rel_error, max_n};
     J.params = &params;
 
     gsl_deriv_central(&J, y_squared, step, &derivative, &abs_err);
@@ -263,23 +266,26 @@ double D1_J_approx(double y_squared, double step, bool bosonic) {
     return derivative;
 }
 
-struct D_params {double step; bool bosonic;};
+struct D_params {double step; bool bosonic; double abs_error; double rel_error; int max_n;};
 
 double D1_J_wrapper(double y_squared, void *p) {
   // Wrapper for first derivative with signature required by numerical differentiation
   struct D_params *params = (struct D_params *)p;
-  bool bosonic = params->bosonic;
   double step = params->step;
-  return D1_J_approx(y_squared, step, bosonic);
+  bool bosonic = params->bosonic;
+  double abs_error = params->abs_error; 
+  double rel_error = params->rel_error; 
+  int max_n = params->max_n;
+  return D1_J_approx(y_squared, step, bosonic, abs_error, rel_error, max_n);
 }
 
-double D2_J_approx(double y_squared, double step, bool bosonic) {
+double D2_J_approx(double y_squared, double step, bool bosonic, double abs_error, double rel_error, int max_n) {
     gsl_function D1_J;
     double derivative;
     double abs_err;
 
     D1_J.function = &D1_J_wrapper;
-    struct D_params params = {step, bosonic};
+    struct D_params params = {step, bosonic, abs_error, rel_error, max_n};
     D1_J.params = &params;
 
     gsl_deriv_central(&D1_J, y_squared, step, &derivative, &abs_err);
@@ -287,20 +293,20 @@ double D2_J_approx(double y_squared, double step, bool bosonic) {
     return derivative;
 }
 
-double D1_J_B_approx(double y_squared, double step) {
-  return D1_J_approx(y_squared, step, true);
+double D1_J_B_approx(double y_squared, double step, double abs_error, double rel_error, int max_n) {
+  return D1_J_approx(y_squared, step, true, abs_error, rel_error, max_n);
 }
 
-double D1_J_F_approx(double y_squared, double step) {
-  return D1_J_approx(y_squared, step, false);
+double D1_J_F_approx(double y_squared, double step, double abs_error, double rel_error, int max_n) {
+  return D1_J_approx(y_squared, step, false, abs_error, rel_error, max_n);
 }
 
-double D2_J_B_approx(double y_squared, double step) {
-  return D2_J_approx(y_squared, step, true);
+double D2_J_B_approx(double y_squared, double step, double abs_error, double rel_error, int max_n) {
+  return D2_J_approx(y_squared, step, true, abs_error, rel_error, max_n);
 }
 
-double D2_J_F_approx(double y_squared, double step) {
-  return D2_J_approx(y_squared, step, false);
+double D2_J_F_approx(double y_squared, double step, double abs_error, double rel_error, int max_n) {
+  return D2_J_approx(y_squared, step, false, abs_error, rel_error, max_n);
 }
 
 
