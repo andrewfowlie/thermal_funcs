@@ -17,7 +17,8 @@ double J_F(double y_squared, int order) {
   } else if (order == 2) {
     return D2_J_F_bessel(y_squared, 1E-7, 1E-7, 10000);
   } else {
-    return -1;
+    WSEvaluateString(stdlink, "JF::derivative=\"derivative must be 0, 1 or 2.\"; Message[JF::derivative]");
+    return -1.;
   }
 }
 
@@ -34,7 +35,8 @@ double J_B(double y_squared, int order) {
   } else if (order == 2) {
     return D2_J_B_bessel(y_squared, 1E-7, 1E-7, 10000);
   } else {
-    return -1;
+    WSEvaluateString(stdlink, "JB::derivative=\"derivative must be 0, 1 or 2.\"; Message[JB::derivative]");
+    return -1.;
   }
 }
 
