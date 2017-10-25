@@ -531,7 +531,7 @@ double J_B_lim(double y_squared, bool upper) {
   if (upper) {
     return -pow(y, 1.5) * 8. / 3. * pow(M_PI, 2.5) * zeta_minima;
   } else {
-    return pow(y, 1.5) * 8. / 3. * pow(M_PI, 2.5) * zeta_maxima;
+    return -pow(y, 1.5) * 8. / 3. * pow(M_PI, 2.5) * zeta_maxima;
   }
 }
 
