@@ -1,5 +1,9 @@
 /*
 
+  Hurwitz Zeta function and polylogarithm.
+
+  http://fredrikj.net/math/hurwitz_zeta.pdf
+
 */
 
 #ifndef _ZETA_H_

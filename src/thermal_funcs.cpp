@@ -1,7 +1,7 @@
 /*
 
-  Implementation of thermal functions in finite-temperature field theory. I refer
-  throughout to Thermal Resummation and Phase Transitions by Curtin et al:
+  Implementation of thermal functions in finite-temperature field theory. I
+  refer throughout to Thermal Resummation and Phase Transitions by Curtin et al:
 
   https://arxiv.org/pdf/1612.00466.pdf
 
@@ -32,10 +32,12 @@
 #include <complex>
 #include <algorithm>
 
+
 const double neg_y_squared = -1.E3;
 const double pos_y_squared = 1.E3;
 const double a_b = pow(M_PI, 2) * exp(1.5 - 2. * M_EULER);  // Below eq. (2.13)
 const double a_f = 16. * a_b;  // Below eq. (2.13)
+
 
 // Thermal functions at y_squared -> 0. Found in Mathematica:
 //
@@ -47,17 +49,20 @@ const double a_f = 16. * a_b;  // Below eq. (2.13)
 const double J_B_0 = - pow(M_PI, 4) / 45.;
 const double J_F_0 = 7. * pow(M_PI, 4) / 360.;
 
+
 // Thermal functions by numerical integration
 
 
 double J_integrand(double x, double y_squared, bool bosonic) {
-  // Integrand in Curtin eq. (2.12)
-  // x^2 Log[1 -+ Exp[-Sqrt[x^2 + y^2]]]
-  // If r^2 = x^2 + y^2 < 0, this can be written
-  // x^2 * 0.5 * Log[2. + 2. * Cos[r]]
-  double sign = 1. - 2. * static_cast<double>(bosonic);
-  double r_squared = pow(x, 2) + y_squared;
-  double abs_r = sqrt(std::abs(r_squared));
+  /**
+     @returns Integrand in Curtin eq. (2.12)
+     x^2 Log[1 -+ Exp[-Sqrt[x^2 + y^2]]]
+     If r^2 = x^2 + y^2 < 0, this can be written
+     x^2 * 0.5 * Log[2. + 2. * Cos[r]]
+  */
+  const double sign = 1. - 2. * static_cast<double>(bosonic);
+  const double r_squared = pow(x, 2) + y_squared;
+  const double abs_r = sqrt(std::abs(r_squared));
   if (r_squared >= 0.) {
     return pow(x, 2) * gsl_log1p(sign * exp(-abs_r));
   } else {
@@ -65,62 +70,75 @@ double J_integrand(double x, double y_squared, bool bosonic) {
   }
 }
 
-struct J_integrand_params {double y_squared; bool bosonic;};
+struct J_integrand_params {
+  double y_squared;
+  bool bosonic;
+};
 
 double J_integrand_wrapper(double x, void *p) {
-  // Wrapper for J_integrand with signature required by numerical integration
-  struct J_integrand_params *params = (struct J_integrand_params *)p;
-  double y_squared = params->y_squared;
-  bool bosonic = params->bosonic;
+  /**
+     Wrapper for J_integrand with signature required by numerical integration.
+  */
+  const struct J_integrand_params *params = (struct J_integrand_params *)p;
+  const double y_squared = params->y_squared;
+  const bool bosonic = params->bosonic;
   return J_integrand(x, y_squared, bosonic);
 }
 
 int n_integrand_points(double y_squared, const bool bosonic) {
-  // Number of integrand points, i.e. number of singularities + 2 for endpoints
-  // of integration. NB don't include an endpoint twice if it is singular. This
-  // means we exclude n = 0.
+  /**
+     @returns Number of integrand points, i.e. number of singularities + 2 for
+     endpoints of integration.
 
+     NB don't include an endpoint twice if it is singular. This means we exclude
+     n = 0.
+  */
   #ifdef THROW
     if (y_squared >= 0.) {
       throw std::invalid_argument("|y_squared| >= 0. - no singularities possible");
     }
   #endif
 
-  double y = sqrt(std::abs(y_squared));
+  const double y = sqrt(std::abs(y_squared));
+  const int max_n = floor(y / M_PI);
   int n_singularity;
-  int max_n = floor(y / M_PI);
 
   if (bosonic) {
-    n_singularity = static_cast<int>(floor(0.5 * max_n));  // Even numbers <= max_n (excluding 0)
+    // Even numbers <= max_n (excluding 0)
+    n_singularity = static_cast<int>(floor(0.5 * max_n));
   } else {
-    n_singularity = static_cast<int>(ceil(0.5 * max_n));  // Odd numbers <= max_n
+    // Odd numbers <= max_n
+    n_singularity = static_cast<int>(ceil(0.5 * max_n));
   }
 
   return n_singularity + 2;
 }
 
 double *integrand_points(double y_squared, bool bosonic) {
-  // Singularities in integrand, present if y_squared < 0., and boundaries of
-  // integration, in ascending order.
-  // NB don't include an endpoint twice if it is singular.
-  //
-  // Singularities occur at
-  // 0. <= x = Sqrt[-n^2 Pi^2 - y_squared] <= |y|
-  // for n even/odd for bosonic/fermionic.
+  /**
+     @returns Singularities in integrand, present if y_squared < 0.,
+     and boundaries of integration, in ascending order.
 
+     NB don't include an endpoint twice if it is singular.
+
+     Singularities occur at
+     0. <= x = Sqrt[-n^2 Pi^2 - y_squared] <= |y|
+     for n even/odd for bosonic/fermionic.
+  */
   #ifdef THROW
     if (y_squared >= 0.) {
       throw std::invalid_argument("|y_squared| >= 0. - no singularities possible");
     }
   #endif
 
-  double y = sqrt(std::abs(y_squared));
-  int n_singularity = n_integrand_points(y_squared, bosonic) - 2;
+  const double y = sqrt(std::abs(y_squared));
+  const int n_singularity = n_integrand_points(y_squared, bosonic) - 2;
   double *p = reinterpret_cast<double *>(malloc(sizeof(double) * (n_singularity + 2)));
-  int reverse_i;
 
-  for (int i=1; i <= n_singularity; i+=1) {
-    reverse_i = n_singularity - i + 1;  // Insure result is in ascending order
+  for (int i = 1; i <= n_singularity; i += 1) {
+    // Insure result is in ascending order
+    const int reverse_i = n_singularity - i + 1;
+
     if (bosonic) {
       p[reverse_i] = sqrt(-pow(2 * i, 2) * pow(M_PI, 2) - y_squared);
     } else {
@@ -146,17 +164,20 @@ double *integrand_points(double y_squared, bool bosonic) {
   return p;
 }
 
-double J_quad(double y_squared, double abs_error, double rel_error, int max_n, bool bosonic) {
-  // Numerical integration for Curtin eq. (2.12)
-  // Break integral into two domains: 0 to Im(y), Im(y) to infinity.
-  // The first domain (if non empty) may contain singularities.
-  // The locations of the singularities are calculated and supplied to the
-  // integration routine.
-  //
-  // NB For bosonic case, there is a discontinuity at the boundary, x = Im(y)
-  // if y_squared <= 0. This isn't treated explicity in either domain, though doesn't
-  // appear to be problematic.
+double J_quad(double y_squared, double abs_error, double rel_error, int max_n,
+              bool bosonic) {
+  /**
+      @returns Numerical integration for Curtin eq. (2.12)
 
+      Break integral into two domains: 0 to Im(y), Im(y) to infinity.
+      The first domain (if non empty) may contain singularities.
+      The locations of the singularities are calculated and supplied to the
+      integration routine.
+
+      NB For bosonic case, there is a discontinuity at the boundary, x = Im(y)
+      if y_squared <= 0. This isn't treated explicity in either domain, though
+      doesn't appear to be problematic.
+  */
   gsl_set_error_handler_off();  // Default handler aborts
   gsl_function integrand;
   integrand.function = &J_integrand_wrapper;
@@ -181,7 +202,7 @@ double J_quad(double y_squared, double abs_error, double rel_error, int max_n, b
                          &error);
   }
 
-  double imag_y = imag(sqrt(cdouble(y_squared)));
+  const double imag_y = imag(sqrt(cdouble(y_squared)));
   gsl_integration_qagiu(&integrand,
                         imag_y,
                         abs_error,
@@ -200,10 +221,14 @@ double J_quad(double y_squared, double abs_error, double rel_error, int max_n, b
   return d1_result + d2_result;
 }
 
-double J_B_quad(double y_squared, double abs_error, double rel_error, int max_n) {
-  double integral = J_quad(y_squared, abs_error, rel_error, max_n, true);
+double J_B_quad(double y_squared, double abs_error, double rel_error,
+                int max_n) {
+  /**
+     @returns Bosonic thermal function found by numerical integration.
+  */
+  const double integral = J_quad(y_squared, abs_error, rel_error, max_n, true);
   #ifdef THROW
-    double bound = J_B_lim(y_squared);
+    const double bound = J_B_lim(y_squared);
     if (y_squared < neg_y_squared && std::abs(integral) > bound) {
       printf("quad = %e > bound = %e\n", integral, bound);
       throw std::runtime_error("quad exceeds upper bound");
@@ -212,10 +237,14 @@ double J_B_quad(double y_squared, double abs_error, double rel_error, int max_n)
   return integral;
 }
 
-double J_F_quad(double y_squared, double abs_error, double rel_error, int max_n) {
-  double integral = J_quad(y_squared, abs_error, rel_error, max_n, false);
+double J_F_quad(double y_squared, double abs_error, double rel_error,
+                int max_n) {
+  /**
+     @returns Fermionic thermal function found by numerical integration.
+  */
+  const double integral = J_quad(y_squared, abs_error, rel_error, max_n, false);
   #ifdef THROW
-    double bound = J_F_lim(y_squared);
+    const double bound = J_F_lim(y_squared);
     if (y_squared < neg_y_squared && std::abs(integral) > bound) {
       printf("quad = %e > bound = %e\n", integral, bound);
       throw std::runtime_error("quad exceeds upper bound");
@@ -228,16 +257,19 @@ double J_F_quad(double y_squared, double abs_error, double rel_error, int max_n)
 // Thermal functions by Taylor expansion
 
 
-double gamma_sum(double y_squared, double abs_error, double rel_error, int max_n, const bool bosonic, double sum = 0.) {
-  // Sum of Gamma functions in Wainwright eq. (2.18) and eq. (2.19).
-
+double gamma_sum(double y_squared, double abs_error, double rel_error,
+                 int max_n, const bool bosonic, double sum = 0.) {
+  /**
+     @returns Sum of Gamma functions in Wainwright eq. (2.18) and eq. (2.19).
+  */
   #ifdef THROW
     if (std::abs(y_squared) >= 1.) {
       throw std::invalid_argument("|y_squared| >= 1. - Taylor expansion invalid");
     }
   #endif
 
-  double factor = 2. * pow(M_PI, -2.5) * pow(y_squared, 3) * pow(4., -3) / gsl_sf_fact(3) * gsl_sf_gamma(1.5);
+  double factor = 2. * pow(M_PI, -2.5) * pow(y_squared, 3) * pow(4., -3) /
+                  gsl_sf_fact(3) * gsl_sf_gamma(1.5);
   double zeta = gsl_sf_zeta_int(3);
   double term = factor * zeta;
   sum += term;
@@ -280,8 +312,15 @@ double gamma_sum(double y_squared, double abs_error, double rel_error, int max_n
   return sum;
 }
 
-double J_B_taylor(double y_squared, double abs_error, double rel_error, int max_n) {
-  // Taylor expansion of Curtin eq. (2.12) as in Curtin eq. (2.13). Valid for |y_squared| << 1.
+double J_B_taylor(double y_squared, double abs_error, double rel_error,
+                  int max_n) {
+  /**
+      @returns Bosonic thermal function from a Taylor expansion of
+      Curtin eq. (2.12) as in Curtin eq. (2.13).
+
+      Valid for |y_squared| << 1.
+  */
+
   // If y_squared = 0, known limit returned.
   if (y_squared == 0.) {
     return J_B_0;
@@ -291,25 +330,32 @@ double J_B_taylor(double y_squared, double abs_error, double rel_error, int max_
     #endif
   }
 
-  double real_y_cubed = std::abs(real(pow(cdouble(y_squared), 1.5)));
+  const double real_y_cubed = std::abs(real(pow(cdouble(y_squared), 1.5)));
 
   double taylor_sum = - pow(M_PI, 4) / 45.
                       + pow(M_PI, 2) / 12. * y_squared
                       - M_PI / 6. * real_y_cubed
                       - pow(y_squared, 2) * log(std::abs(y_squared) / a_b) / 32.;
 
-  double sum = gamma_sum(y_squared, abs_error, rel_error, max_n, true, taylor_sum);
+  const double sum = gamma_sum(y_squared, abs_error, rel_error, max_n, true, taylor_sum);
 
   #ifdef DEBUG
-    double gamma_sum_ = sum - taylor_sum;
+    const double gamma_sum_ = sum - taylor_sum;
     printf("gamma = %e and taylor = %e\n", gamma_sum_, taylor_sum);
   #endif
 
   return sum;
 }
 
-double J_F_taylor(double y_squared, double abs_error, double rel_error, int max_n) {
-  // Taylor expansion of Curtin eq. (2.12) as in Curtin eq. (2.13). Valid for |y_squared| << 1.
+double J_F_taylor(double y_squared, double abs_error, double rel_error,
+                  int max_n) {
+  /**
+      @returns Fermionic thermal function from a Taylor expansion of
+      Curtin eq. (2.12) as in Curtin eq. (2.13).
+
+      Valid for |y_squared| << 1.
+  */
+
   // If y_squared = 0, known limit returned.
   if (y_squared == 0.) {
     return J_F_0;
@@ -323,10 +369,10 @@ double J_F_taylor(double y_squared, double abs_error, double rel_error, int max_
                       - pow(M_PI, 2) / 24. * y_squared
                       - pow(y_squared, 2) * log(std::abs(y_squared) / a_f) / 32.;
 
-  double sum = gamma_sum(y_squared, abs_error, rel_error, max_n, false, taylor_sum);
+  const double sum = gamma_sum(y_squared, abs_error, rel_error, max_n, false, taylor_sum);
 
   #ifdef DEBUG
-    double gamma_sum_ = sum - taylor_sum;
+    const double gamma_sum_ = sum - taylor_sum;
     printf("gamma = %e and taylor = %e\n", gamma_sum_, taylor_sum);
   #endif
 
@@ -338,10 +384,12 @@ double J_F_taylor(double y_squared, double abs_error, double rel_error, int max_
 
 
 double K2(cdouble x, bool fast = false) {
-  // Utilize fact that
-  // Re[BesselK[2, x * I]] = 0.5 * Pi BesselY[2, x]
-  // to define K2 for imaginary arguments.
-
+  /**
+      @returns K2 Bessel function.
+      Utilize fact that
+      Re[BesselK[2, x * I]] = 0.5 * Pi BesselY[2, x]
+      to define K2 for imaginary arguments.
+  */
   gsl_set_error_handler_off();  // Default handler aborts
 
   if (real(x) != 0. && imag(x) != 0.) {
@@ -364,24 +412,30 @@ double K2(cdouble x, bool fast = false) {
   }
 }
 
-double bessel_sum(double y_squared, double abs_error, double rel_error, int max_n, bool fast, bool bosonic) {
-  // Curtin eq. (2.14). Converges fastest (i.e. fewer terms required) if |y_squared| >> 1, though
-  // valid for all |y_squared| except y_squared = 0.
+double bessel_sum(double y_squared, double abs_error, double rel_error,
+                  int max_n, bool fast, bool bosonic) {
+  /**
+      @returns Thermal functions from sum of Bessel functions.
 
+      Curtin eq. (2.14). Converges fastest (i.e. fewer terms required)
+      if |y_squared| >> 1, though valid for all |y_squared| except
+      y_squared = 0.
+  */
   #ifdef THROW
     if (y_squared == 0.) {
       throw std::invalid_argument("y_squared == 0 invalid");
     }
   #endif
 
-  cdouble y = sqrt(cdouble(y_squared));
-  double sign = 2. * static_cast<double>(bosonic) - 1.;
+  const cdouble y = sqrt(cdouble(y_squared));
+  const double sign = 2. * static_cast<double>(bosonic) - 1.;
   double factor = - y_squared * sign;
   double sum = factor * K2(y, fast);
 
   for (int n = 2; n <= max_n; n += 1) {
-    factor *= sign * pow((static_cast<double>(n) - 1.) / static_cast<double>(n), 2);
-    const double term = factor * K2(static_cast<double>(n) * y, fast);
+    const double n_double = static_cast<double>(n);
+    factor *= sign * pow((n_double - 1.) / n_double, 2);
+    const double term = factor * K2(n_double * y, fast);
     sum += term;
 
     #ifdef DEBUG
@@ -410,8 +464,13 @@ double bessel_sum(double y_squared, double abs_error, double rel_error, int max_
   return sum;
 }
 
-double J_F_bessel(double y_squared, double abs_error, double rel_error, int max_n, bool fast) {
-  // If y_squared = 0, known limit returned, otherwise, J_F from sum of Bessel functions.
+double J_F_bessel(double y_squared, double abs_error, double rel_error,
+                  int max_n, bool fast) {
+  /**
+      @returns Fermionic thermal functions from sum of Bessel functions.
+  */
+
+  // If y_squared = 0, known limit returned.
   if (y_squared == 0.) {
     return J_F_0;
   }
@@ -426,8 +485,13 @@ double J_F_bessel(double y_squared, double abs_error, double rel_error, int max_
   return sum;
 }
 
-double J_B_bessel(double y_squared, double abs_error, double rel_error, int max_n, bool fast) {
-  // If y_squared = 0, known limit returned, otherwise, J_B from sum of Bessel functions.
+double J_B_bessel(double y_squared, double abs_error, double rel_error,
+                  int max_n, bool fast) {
+  /**
+      @returns Bosonic thermal functions from sum of Bessel functions.
+  */
+
+  // If y_squared = 0, known limit returned.
   if (y_squared == 0.) {
     return J_B_0;
   }
@@ -442,23 +506,28 @@ double J_B_bessel(double y_squared, double abs_error, double rel_error, int max_
   return sum;
 }
 
+
 // Limits and approximations
 
 
-
 // Maxima and minima of Zeta[-3/2, x] from Mathematica
+
 const double zeta_maxima = 0.024145376807240715;
 const double zeta_minima = -0.03154228985099239;
 
 double J_B_lim(double y_squared, bool upper) {
+  /**
+      @returns Bound for bosonic thermal function.
+      Applicable for y_squared << 0.
+  */
   #ifdef DEBUG
     if (y_squared > neg_y_squared) {
       printf("limit applicable for y_squared << 0. only\n");
     }
   #endif
 
-  double y = sqrt(std::abs(y_squared));
-  double zeta;
+  const double y = sqrt(std::abs(y_squared));
+
   if (upper) {
     return -pow(y, 1.5) * 8. / 3. * pow(M_PI, 2.5) * zeta_minima;
   } else {
@@ -467,10 +536,18 @@ double J_B_lim(double y_squared, bool upper) {
 }
 
 double J_F_lim(double y_squared, bool upper) {
+  /**
+      @returns Bound for fermionic thermal function.
+      Applicable for y_squared << 0.
+  */
   return J_B_lim(y_squared, upper);
 }
 
 double J_F_approx(double y_squared) {
+  /**
+      @returns Approximation for fermionic thermal function.
+      Applicable for y_squared << 0.
+  */
   double y = sqrt(std::abs(y_squared));
   if (y_squared < 0.) {
     #ifdef DEBUG
@@ -490,10 +567,17 @@ double J_F_approx(double y_squared) {
 }
 
 double J_B_approx(double y_squared) {
+  /**
+      @returns Approximation for bosonic thermal function.
+      Applicable for y_squared << 0.
+  */
   return -J_F_approx(y_squared);
 }
 
 double shift_F(double y) {
+  /**
+      @returns Argument shifted into required domain.
+  */
   double y_shift = fmod(y, 2. * M_PI);
   if (y_shift > M_PI) {
     y_shift -= 2. * M_PI;
@@ -502,11 +586,17 @@ double shift_F(double y) {
 }
 
 double shift_B(double y) {
+  /**
+      @returns Argument shifted into required domain.
+  */
   return fmod(y, 2. * M_PI) - 2. * M_PI;
 }
 
 double J_F_zeta(double y_squared, int max_n) {
-  double y = sqrt(std::abs(y_squared));
+  /**
+      @returns Fermionic thermal function from Zeta function.
+  */
+  const double y = sqrt(std::abs(y_squared));
   if (y_squared < 0.) {
     #ifdef DEBUG
       if (y_squared > neg_y_squared) {
@@ -521,13 +611,16 @@ double J_F_zeta(double y_squared, int max_n) {
         printf("approx applicable for y_squared >> 0. only\n");
       }
     #endif
-    double poly = -gsl_sf_fermi_dirac_3half(-y);
+    const double poly = -gsl_sf_fermi_dirac_3half(-y);
     return - sqrt(0.5 * M_PI) * pow(y, 1.5) * poly;
   }
 }
 
 double J_B_zeta(double y_squared, int max_n) {
-  double y = sqrt(std::abs(y_squared));
+  /**
+      @returns Bosonic thermal function from Zeta function.
+  */
+  const double y = sqrt(std::abs(y_squared));
   if (y_squared < 0.) {
     #ifdef DEBUG
       if (y_squared > neg_y_squared) {

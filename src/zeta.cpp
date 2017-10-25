@@ -1,6 +1,6 @@
 /*
 
-  Hurwitz Zeta function.
+  Hurwitz Zeta function and polylogarithm.
 
   http://fredrikj.net/math/hurwitz_zeta.pdf
 
@@ -15,6 +15,9 @@
 
 
 cdouble S(double s, cdouble a, int N) {
+  /**
+      @returns S part of zeta function.
+  */
   cdouble sum = 0.;
 
   for (int k = 0; k <= N - 1; k += 1) {
@@ -25,11 +28,17 @@ cdouble S(double s, cdouble a, int N) {
 }
 
 cdouble I(double s, cdouble a, int N) {
+  /**
+      @returns I part of zeta function.
+  */
   return pow(a + static_cast<cdouble>(N), 1. - s) / (s - 1.);
 }
 
 cdouble T(double s, cdouble a, int N, int M) {
-  cdouble d = a + static_cast<cdouble>(N);
+  /**
+      @returns T part of zeta function.
+  */
+  const cdouble d = a + static_cast<cdouble>(N);
   const cdouble factor = pow(d, -s);
 
   if (M > B_2n_fact_size) {
@@ -54,6 +63,9 @@ cdouble T(double s, cdouble a, int N, int M) {
 }
 
 cdouble hurwitz_zeta(double s, cdouble a, int N) {
+  /**
+      @returns Hurwitz zeta function.
+  */
   if (N > B_2n_fact_size) {
     #ifdef DEBUG
       printf("N = %d > B_2n_fact_size = %d. Using N = B_2n_fact_size\n", N, B_2n_fact_size);
@@ -70,6 +82,9 @@ cdouble hurwitz_zeta(double s, cdouble a, int N) {
 }
 
 cdouble polylog(double s, cdouble a, int N) {
+  /**
+      @returns Polylogarithm function.
+  */
   if (s > 1 && std::abs(a) <= 1) {
     cdouble term = a;
     cdouble sum = term;
@@ -83,6 +98,7 @@ cdouble polylog(double s, cdouble a, int N) {
   const cdouble j(0., 1.);
   const cdouble factor = pow(0.5 * j / M_PI, 1. - s) * gsl_sf_gamma(1. - s);
   const cdouble arg = 0.5 * j * log(a) / M_PI;
-  const cdouble zeta = - pow(j, 2. * s) * hurwitz_zeta(1. - s, arg, N) + hurwitz_zeta(1. - s, 1. - arg, N);
+  const cdouble zeta = - pow(j, 2. * s) * hurwitz_zeta(1. - s, arg, N) +
+                       hurwitz_zeta(1. - s, 1. - arg, N);
   return factor * zeta;
 }

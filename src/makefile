@@ -1,14 +1,14 @@
 .DEFAULT_GOAL := lib
 .PHONY: all clean mathematica python lib example
 
-FLAGS = -O3 # -D DEBUG -D THROW 
+FLAGS = -O3 # -D DEBUG -D THROW
 CC = g++
 PYTHON = $(shell pkg-config --cflags python)
 MATH_INC = $(shell echo 'FileNameJoin[{$$InstallationDirectory, "SystemFiles", "Links", "WSTP", "DeveloperKit", $$SystemID, "CompilerAdditions"}]' | math -batchoutput | tr -d '"')
 MATH = $(MATH_INC)/wscc
 
 zeta.o: zeta.h
-	$(CC) $(FLAGS) -fPIC -c zeta.cpp -I./  
+	$(CC) $(FLAGS) -fPIC -c zeta.cpp -I./
 
 thermal_funcs.o: thermal_funcs.h
 	$(CC) $(FLAGS) -fPIC -c thermal_funcs.cpp -I./
@@ -30,11 +30,11 @@ math.exe: thermal_funcs.o zeta.o derivatives.o
 	$(MATH) -b64 -o math.exe math.tm math.c -Wl,thermal_funcs.o,zeta.o,derivatives.o -lgsl -lgslcblas -I$(MATH_INC) -I./
 	
 example: thermal_funcs.so
-	# $(CC) $(FLAGS) example.cpp thermal_funcs.o zeta.o derivatives.o -lgsl -lgslcblas -I./ -o ../bin/example 
+	# $(CC) $(FLAGS) example.cpp thermal_funcs.o zeta.o derivatives.o -lgsl -lgslcblas -I./ -o ../bin/example
 	$(CC) $(FLAGS) example.cpp -L$(shell echo $$PWD)/../lib -I./ -o ../bin/example -l:thermal_funcs.so -lgsl -lgslcblas
 
 derivatives.o:
-	$(CC) $(FLAGS) -fPIC -c derivatives.cpp -I./ 
+	$(CC) $(FLAGS) -fPIC -c derivatives.cpp -I./
 
 mathematica: math.exe
 python: _thermal_funcs.so
