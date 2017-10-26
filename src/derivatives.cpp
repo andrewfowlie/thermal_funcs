@@ -285,8 +285,8 @@ double D2_J_F_bessel(double y_squared, double abs_error, double rel_error,
   if (y_squared == 0.) {
     #ifdef THROW
       throw std::runtime_error("second derivative diverges at 0.");
-      return INF;
     #endif
+    return INF;
   }
   return D2_bessel_sum(y_squared, abs_error, rel_error, max_n, false);
 }
@@ -304,8 +304,8 @@ double D2_J_B_bessel(double y_squared, double abs_error, double rel_error,
   if (y_squared == 0.) {
     #ifdef THROW
       throw std::runtime_error("second derivative diverges at 0.");
-      return INF;
     #endif
+    return INF;
   }
   return D2_bessel_sum(y_squared, abs_error, rel_error, max_n, true);
 }
