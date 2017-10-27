@@ -33,7 +33,7 @@ const double INF = 1E10;
 // Bessel function representation of derivatives with respect to y^2.
 
 
-double K1(cdouble x, bool fast = false) {
+double K1(cdouble x) {
   /**
       @returns K1 Bessel function.
       Utilize fact that
@@ -57,7 +57,7 @@ double K1(cdouble x, bool fast = false) {
   }
 }
 
-double K0(cdouble x, bool fast = false) {
+double K0(cdouble x) {
   /**
       @returns K0 Bessel function.
       Utilize fact that
