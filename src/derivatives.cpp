@@ -36,9 +36,6 @@ const double INF = 1E10;
 double K1(cdouble x) {
   /**
       @returns K1 Bessel function.
-      Utilize fact that
-
-      to define K1 for imaginary arguments.
   */
   gsl_set_error_handler_off();  // Default handler aborts
 
@@ -60,9 +57,7 @@ double K1(cdouble x) {
 double K0(cdouble x) {
   /**
       @returns K0 Bessel function.
-      Utilize fact that
 
-      to define K0 for imaginary arguments.
   */
   gsl_set_error_handler_off();  // Default handler aborts
 
