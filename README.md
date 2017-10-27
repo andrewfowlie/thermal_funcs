@@ -46,7 +46,7 @@ The interface
     
 is compatible with Python 2 and 3, though must be built for a specific version. It has no module dependencies. By default,
 SWIG will build for your `python --version`. To alter this, change the `PYTHON` variable in the makefile to compile with
-your chosen `Python.h` header.
+your chosen `Python.h` header. The derivatives are called by a keyword argument e.g., `J_F(100., derivative=1)`.
 
 # Mathematica interface
 
@@ -61,7 +61,7 @@ Then within Mathematica,
     Install["./src/math.exe"];
     Plot[{JB[ysq], JF[ysq]}, {ysq, -100, 100}]
     
-Note well that you should use the correct (relative or absolute) path to `./src/math.exe` in the command `Install["./src/math.exe"]`. The interface was built and tested with Mathematica 11.1.1.
+Note well that you should use the correct (relative or absolute) path to `./src/math.exe` in the command `Install["./src/math.exe"]`. The interface was built and tested with Mathematica 11.1.1. The derivatives are called by a keyword argument e.g., `JB[100., derivative->1]`.
 
 ## Debugging
 
