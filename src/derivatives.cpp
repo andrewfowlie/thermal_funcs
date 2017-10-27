@@ -33,90 +33,51 @@ const double INF = 1E10;
 // Bessel function representation of derivatives with respect to y^2.
 
 
-double D_K2(double x, int order) {
+double K1(cdouble x, bool fast = false) {
   /**
-      @returns N-th derivative of K2 Bessel function.
-
-      D[BesselK[2, x], {x, n}]
-
-      @param x Argment of K2 Bessel function
-      @param order Order of deriviatve
-  */
-  #ifdef THROW
-  if (order < 0) {
-    throw std::runtime_error("Derivative order must be >= 0");
-  }
-  #endif
-
-  gsl_set_error_handler_off();  // Default handler aborts
-
-  double d = 0.;
-
-  for (int i = 0; i <= order; i += 1) {
-    d += gsl_sf_bessel_Kn(2 + 2 * i - order, x) * gsl_sf_choose(order, i);
-  }
-
-  d *= pow(-0.5, order);
-
-  return d;
-}
-
-double D_Y2(double x, int order) {
-  /**
-      @returns N-th derivative of Y2 Bessel function.
-
-      D[BesselY[2, x], {x, n}]
-
-      @param x Argment of Y2 Bessel function
-      @param order Order of deriviatve
-  */
-
-  #ifdef THROW
-  if (order < 0) {
-    throw std::runtime_error("Derivative order must be >= 0");
-  }
-  #endif
-
-  gsl_set_error_handler_off();  // Default handler aborts
-
-  double d = 0.;
-
-  for (int i = 0; i <= order; i += 1) {
-    d += pow(-1., i) * gsl_sf_bessel_Yn(2 + 2 * i - order, x) * gsl_sf_choose(order, i);
-  }
-
-  d *= pow(-0.5, order);
-
-  return d;
-}
-
-double D_real_K2(cdouble x, int order) {
-  /**
-      @returns N-th derivative of real part of K2 Bessel function.
-
-      D[BesselY[2, x], {x, n}]
-
+      @returns K1 Bessel function.
       Utilize fact that
-      Re[BesselK[2, x * I]] = 0.5 * Pi BesselY[2, x]
-      to define K2 for imaginary arguments.
 
-      @param x Argment of K2 Bessel function
-      @param order Order of deriviatve
+      to define K1 for imaginary arguments.
   */
-  #ifdef THROW
-  if (order < 0) {
-    throw std::runtime_error("Derivative order must be >= 0");
-  }
-  #endif
+  gsl_set_error_handler_off();  // Default handler aborts
 
   if (real(x) != 0. && imag(x) != 0.) {
     #ifdef THROW
-      throw std::invalid_argument("K2 derivatives only implemented for x real or imaginary");
+      throw std::invalid_argument("K1 only implemented for x real or imaginary");
+    #endif
+  } else  if (std::abs(x) == 0.) {
+    #ifdef THROW
+      throw std::invalid_argument("K1 diverges for |x| = 0");
     #endif
   } else if (real(x) != 0.) {
-    return D_K2(real(x), order);
+    return gsl_sf_bessel_Kn(1, real(x));
   } else if (imag(x) != 0.) {
-    return 0.5 * M_PI * D_Y2(imag(x), order);
+      return -0.5 * M_PI * gsl_sf_bessel_Yn(1, imag(x));
+  }
+}
+
+double K0(cdouble x, bool fast = false) {
+  /**
+      @returns K0 Bessel function.
+      Utilize fact that
+
+      to define K0 for imaginary arguments.
+  */
+  gsl_set_error_handler_off();  // Default handler aborts
+
+  if (real(x) != 0. && imag(x) != 0.) {
+    #ifdef THROW
+      throw std::invalid_argument("K0 only implemented for x real or imaginary");
+    #endif
+  } else  if (std::abs(x) == 0.) {
+    #ifdef THROW
+      throw std::invalid_argument("K0 diverges for |x| = 0");
+    #endif
+  } else if (real(x) != 0.) {
+    return gsl_sf_bessel_Kn(0, real(x));
+  } else if (imag(x) != 0.) {
+      return -0.5 * M_PI * gsl_sf_bessel_Yn(0, imag(x));
   }
 }
 
@@ -137,20 +98,13 @@ double D1_bessel_sum(double y_squared, double abs_error, double rel_error,
   const double sign = 2. * static_cast<double>(bosonic) - 1.;
   const cdouble y = sqrt(cdouble(y_squared));
   const double abs_y = std::abs(y);
-  const double sign_y_squared = (y_squared >= 0.) ? 1. : -1.;
-
-  double factor = sign;
-  double sum = (D_real_K2(y, 0) +
-                D_real_K2(y, 1) * 0.5 * sign_y_squared * abs_y)
-                * - factor;
+  double factor = 0.5 * abs_y * sign;
+  double sum = factor * K1(y);
 
   for (int n = 2; n <= max_n; n += 1) {
     const double n_double = static_cast<double>(n);
-    factor *= sign * pow((n_double - 1.) / n_double, 2);
-    const double term = (D_real_K2(n_double * y, 0) +
-                         D_real_K2(n_double * y, 1) *
-                         0.5 * n_double * sign_y_squared * abs_y)
-                         * - factor;
+    factor *= sign * (n_double - 1.) / n_double;
+    const double term = factor * K1(n_double * y);
     sum += term;
 
     #ifdef DEBUG
@@ -197,21 +151,13 @@ double D2_bessel_sum(double y_squared, double abs_error, double rel_error,
 
   const double sign = 2. * static_cast<double>(bosonic) - 1.;
   const cdouble y = sqrt(cdouble(y_squared));
-  const double abs_y = std::abs(y);
-  const double sign_y_squared = (y_squared >= 0.) ? 1. : -1.;
-
-  double factor = sign;
-  double sum = (D_real_K2(y, 1) / abs_y * 0.75 +
-                D_real_K2(y, 2) * sign_y_squared * 0.25) * - factor;
+  double factor = -0.25 * sign;
+  double sum = factor * K0(y);
 
   for (int n = 2; n <= max_n; n += 1) {
     const double n_double = static_cast<double>(n);
-    factor *= sign * pow((n_double - 1.) / n_double, 2);
-    const double term = (D_real_K2(n_double * y, 1) / abs_y *
-                         (0.5 * n_double + 0.25 * pow(n_double, 2)) +
-                         D_real_K2(n_double * y, 2) *
-                         sign_y_squared * 0.25 * pow(n_double, 2))
-                         * - factor;
+    factor *= sign;
+    const double term = factor * K0(n_double * y);
     sum += term;
 
     #ifdef DEBUG
