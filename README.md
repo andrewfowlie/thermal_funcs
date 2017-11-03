@@ -108,6 +108,31 @@ The functions are fast and accurate even for `y^2 << 0`:
 
 The time per evaluation is typically about `1E-5` seconds.
 
+# Files
+
+thermal_funcs/
+|-- bin : make example builds example program here (intentionally empty)
+|-- lib : make lib builds thermal_funcs.so here (intentionally empty)
+|-- src : Source code
+|   |-- bernoulli.h : C++ header containing Bernoulli numbers 
+|   |-- derivatives.cpp : C++ source for derivatives of thermal functions
+|   |-- derivatives.h : C/C++ header for derivatives of thermal functions
+|   |-- example.cpp : C++ example program
+|   |-- makefile : Makefile for building source code
+|   |-- math.c : C source for Mathematica interface
+|   |-- math.tm : Mathematica template for interface
+|   |-- thermal_funcs.cpp : C++ source for thermal functions
+|   |-- thermal_funcs.h : C/C++ header for thermal functions
+|   |-- thermal_funcs.i : SWIG Python interface for thermal functions
+|   |-- zeta.cpp : C++ source for Hurwitz zeta function
+|   `-- zeta.h : C++ header for Hurwitz zeta function
+|-- thermal_funcs : Python module
+|   |-- __init__.py : Python module file
+|   `-- thermal_funcs.py : Python source for wrapper for thermal functions
+|-- LICENSE : BSD 3-Clause License
+|-- makefile : Wrapper for src/makefile
+`-- README.md : This README file
+
 # Acknowledgements
 
 This [Stack Exchange answer](https://mathematica.stackexchange.com/a/154643/38645) was helpful for removing linker warnings from `wscc`, and [this one](https://mathematica.stackexchange.com/a/154664/38645) was helpful for automatically locating Mathematica header files. 
