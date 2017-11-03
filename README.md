@@ -109,7 +109,7 @@ The functions are fast and accurate even for `y^2 << 0`:
 The time per evaluation is typically about `1E-5` seconds.
 
 # Files
-
+<pre>
 thermal_funcs/
 |-- bin : make example builds example program here (intentionally empty)
 |-- lib : make lib builds thermal_funcs.so here (intentionally empty)
@@ -132,7 +132,7 @@ thermal_funcs/
 |-- LICENSE : BSD 3-Clause License
 |-- makefile : Wrapper for src/makefile
 `-- README.md : This README file
-
+</pre>
 # Acknowledgements
 
 This [Stack Exchange answer](https://mathematica.stackexchange.com/a/154643/38645) was helpful for removing linker warnings from `wscc`, and [this one](https://mathematica.stackexchange.com/a/154664/38645) was helpful for automatically locating Mathematica header files. 
