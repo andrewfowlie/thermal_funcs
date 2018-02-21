@@ -66,7 +66,7 @@ double J_integrand(double x, double y_squared, bool bosonic) {
   if (r_squared >= 0.) {
     return pow(x, 2) * gsl_log1p(sign * exp(-abs_r));
   } else {
-    return 0.5 * pow(x, 2) * (gsl_log1p(sign * cos(abs_r)) + log(2.));
+    return 0.5 * pow(x, 2) * (gsl_log1p(sign * cos(abs_r)) + M_LN2);
   }
 }
 
