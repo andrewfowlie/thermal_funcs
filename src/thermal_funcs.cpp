@@ -100,7 +100,7 @@ int n_integrand_points(double y_squared, const bool bosonic) {
   #endif
 
   const double y = sqrt(std::abs(y_squared));
-  const int max_n = floor(y / M_PI);
+  const int max_n = floor(y * M_1_PI);
   int n_singularity;
 
   if (bosonic) {
@@ -268,7 +268,7 @@ double gamma_sum(double y_squared, double abs_error, double rel_error,
     }
   #endif
 
-  double factor = 2. * pow(M_PI, -2.5) * pow(y_squared, 3) * pow(4., -3) /
+  double factor = 2. * pow(M_PI, -2) / M_SQRTPI * pow(y_squared, 3) * pow(4., -3) /
                   gsl_sf_fact(3) * gsl_sf_gamma(1.5);
   double zeta = gsl_sf_zeta_int(3);
   double term = factor * zeta;
@@ -405,9 +405,9 @@ double K2(cdouble x, bool fast = false) {
   } else if (imag(x) != 0.) {
       if (fast) {
         // This is an asymptotic approximation for Y_2 Bessel function
-        return sqrt(0.5 * M_PI / imag(x)) * sin(M_PI * 0.25 - imag(x));
+        return M_SQRTPI / M_SQRT2 / sqrt(imag(x)) * sin(M_PI_4 - imag(x));
       } else {
-        return 0.5 * M_PI * gsl_sf_bessel_Yn(2, imag(x));
+        return M_PI_2 * gsl_sf_bessel_Yn(2, imag(x));
       }
   }
 }
@@ -529,9 +529,9 @@ double J_B_lim(double y_squared, bool upper) {
   const double y = sqrt(std::abs(y_squared));
 
   if (upper) {
-    return -pow(y, 1.5) * 8. / 3. * pow(M_PI, 2.5) * zeta_minima;
+    return -pow(y, 1.5) * 8. / 3. * pow(M_PI, 2) * M_SQRTPI * zeta_minima;
   } else {
-    return -pow(y, 1.5) * 8. / 3. * pow(M_PI, 2.5) * zeta_maxima;
+    return -pow(y, 1.5) * 8. / 3. * pow(M_PI, 2) * M_SQRTPI * zeta_maxima;
   }
 }
 
@@ -555,14 +555,14 @@ double J_F_approx(double y_squared) {
         printf("approx applicable for y_squared << 0. only\n");
       }
     #endif
-    return sqrt(0.5 * M_PI) * pow(y, 1.5) * sin(y - M_PI * 0.25);
+    return M_SQRTPI / M_SQRT2 * pow(y, 1.5) * sin(y - M_PI_4);
   } else {
     #ifdef DEBUG
       if (y_squared < pos_y_squared) {
         printf("approx applicable for y_squared >> 0. only\n");
       }
     #endif
-    return sqrt(0.5 * M_PI) * pow(y, 1.5) * exp(-y);
+    return M_SQRTPI / M_SQRT2 * pow(y, 1.5) * exp(-y);
   }
 }
 
@@ -603,8 +603,8 @@ double J_F_zeta(double y_squared, int max_n) {
         printf("approx applicable for y_squared << 0. only\n");
       }
     #endif
-    const double zeta = std::real(hurwitz_zeta(-1.5, 0.5 - shift_F(y) / (2. * M_PI), max_n));
-    return - pow(y, 1.5) * 8. / 3. * pow(M_PI, 2.5) * zeta;
+    const double zeta = std::real(hurwitz_zeta(-1.5, 0.5 - shift_F(y) * 0.5 * M_1_PI, max_n));
+    return - pow(y, 1.5) * 8. / 3. * pow(M_PI, 2) * M_SQRTPI * zeta;
   } else {
     #ifdef DEBUG
       if (y_squared < pos_y_squared) {
@@ -612,7 +612,7 @@ double J_F_zeta(double y_squared, int max_n) {
       }
     #endif
     const double poly = -gsl_sf_fermi_dirac_3half(-y);
-    return - sqrt(0.5 * M_PI) * pow(y, 1.5) * poly;
+    return - M_SQRTPI / M_SQRT2 * pow(y, 1.5) * poly;
   }
 }
 
@@ -628,7 +628,7 @@ double J_B_zeta(double y_squared, int max_n) {
       }
     #endif
     const double zeta = std::real(hurwitz_zeta(-1.5, - shift_B(y) / (2. * M_PI), max_n));
-    return - pow(y, 1.5) * 8. / 3. * pow(M_PI, 2.5) * zeta;
+    return - pow(y, 1.5) * 8. / 3. * pow(M_PI, 2) * M_SQRTPI * zeta;
   } else {
     #ifdef DEBUG
       if (y_squared < pos_y_squared) {
@@ -636,6 +636,6 @@ double J_B_zeta(double y_squared, int max_n) {
       }
     #endif
     const double poly = std::real(polylog(2.5, exp(-y), max_n));
-    return - sqrt(0.5 * M_PI) * pow(y, 1.5) * poly;
+    return - M_SQRTPI / M_SQRT2 * pow(y, 1.5) * poly;
   }
 }
