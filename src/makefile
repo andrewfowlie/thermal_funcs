@@ -17,7 +17,7 @@ thermal_funcs_wrap.cxx:
 	swig -c++ -python -py3 thermal_funcs.i
 	
 thermal_funcs_wrap.o: thermal_funcs_wrap.cxx
-	$(CC) -c -fPIC derivatives.cpp thermal_funcs.cpp thermal_funcs_wrap.cxx $(PYTHON) -I./
+	$(CC) $(FLAGS) -c -fPIC derivatives.cpp thermal_funcs.cpp thermal_funcs_wrap.cxx $(PYTHON) -I./
 	
 _thermal_funcs.so: thermal_funcs_wrap.o thermal_funcs.o zeta.o derivatives.o 
 	$(CC) -shared derivatives.o thermal_funcs.o thermal_funcs_wrap.o zeta.o -lgsl -lgslcblas -I./ -o _thermal_funcs.so
