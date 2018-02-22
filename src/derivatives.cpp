@@ -25,9 +25,9 @@
 // -Sum[(-1)^n/n^2*Limit[D[xsq*BesselK[2, Sqrt[xsq]*n], xsq], xsq -> 0], {n, 1, Infinity}]
 
 
-const double D1_J_B_0 = pow(M_PI, 2) / 12.;
-const double D1_J_F_0 = -pow(M_PI, 2) / 24.;
-const double INF = 1E10;
+constexpr double D1_J_B_0 = pow(M_PI, 2) / 12.;
+constexpr double D1_J_F_0 = -pow(M_PI, 2) / 24.;
+constexpr double INF = 1E10;
 
 
 // Bessel function representation of derivatives with respect to y^2.

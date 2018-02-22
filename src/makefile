@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := lib
 .PHONY: all clean mathematica python lib example
 
-FLAGS = -O3 # -D DEBUG -D THROW
+FLAGS = -O3 -std=c++11 # -D DEBUG -D THROW
 CC = g++
 PYTHON = $(shell pkg-config --cflags python)
 MATH_INC = $(shell echo 'FileNameJoin[{$$InstallationDirectory, "SystemFiles", "Links", "WSTP", "DeveloperKit", $$SystemID, "CompilerAdditions"}]' | math -batchoutput | tr -d '"')

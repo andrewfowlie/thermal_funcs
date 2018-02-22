@@ -33,10 +33,10 @@
 #include <algorithm>
 
 
-const double neg_y_squared = -1.E3;
-const double pos_y_squared = 1.E3;
-const double a_b = pow(M_PI, 2) * exp(1.5 - 2. * M_EULER);  // Below eq. (2.13)
-const double a_f = 16. * a_b;  // Below eq. (2.13)
+constexpr double neg_y_squared = -1.E3;
+constexpr double pos_y_squared = 1.E3;
+constexpr double a_b = pow(M_PI, 2) * exp(1.5 - 2. * M_EULER);  // Below eq. (2.13)
+constexpr double a_f = 16. * a_b;  // Below eq. (2.13)
 
 
 // Thermal functions at y_squared -> 0. Found in Mathematica:
@@ -46,8 +46,8 @@ const double a_f = 16. * a_b;  // Below eq. (2.13)
 //
 // or from Taylor expansions.
 
-const double J_B_0 = - pow(M_PI, 4) / 45.;
-const double J_F_0 = 7. * pow(M_PI, 4) / 360.;
+constexpr double J_B_0 = - pow(M_PI, 4) / 45.;
+constexpr double J_F_0 = 7. * pow(M_PI, 4) / 360.;
 
 
 // Thermal functions by numerical integration

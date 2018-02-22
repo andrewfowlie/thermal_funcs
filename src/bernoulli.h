@@ -9,9 +9,9 @@
 #ifndef _BERNOULLI_H_
 #define _BERNOULLI_H_
 
-const int B_2n_fact_size = 51;
+constexpr int B_2n_fact_size = 51;
 
-const double B_2n_fact[B_2n_fact_size] = {
+constexpr double B_2n_fact[B_2n_fact_size] = {
 1,
 0.08333333333333333,
 -0.001388888888888889,
