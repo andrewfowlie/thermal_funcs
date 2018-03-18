@@ -76,7 +76,7 @@ double D1_bessel_sum(double y_squared, double abs_error, double rel_error,
       @returns First derivative thermal function with respect to y^2.
       Found by summing Bessel functions.
 
-      @param y_squared Argment of thermal function
+      @param y_squared Argument of thermal function
   */
   #ifdef THROW
     if (y_squared == 0.) {
@@ -131,7 +131,7 @@ double D2_bessel_sum(double y_squared, double abs_error, double rel_error,
       @returns Second derivative thermal function with respect to y^2.
       Found by summing Bessel functions.
 
-      @param y_squared Argment of thermal function
+      @param y_squared Argument of thermal function
   */
 
   #ifdef THROW
@@ -185,7 +185,7 @@ double D1_J_F_bessel(double y_squared, double abs_error, double rel_error,
       @returns First derivative fermionic thermal function with respect to y^2.
       Found by summing Bessel functions.
 
-      @param y_squared Argment of thermal function
+      @param y_squared Argument of thermal function
   */
 
   // If y_squared = 0, known limit returned.
@@ -201,7 +201,7 @@ double D1_J_B_bessel(double y_squared, double abs_error, double rel_error,
       @returns First derivative bosonic thermal function with respect to y^2.
       Found by summing Bessel functions.
 
-      @param y_squared Argment of thermal function
+      @param y_squared Argument of thermal function
   */
 
   // If y_squared = 0, known limit returned.
@@ -217,7 +217,7 @@ double D2_J_F_bessel(double y_squared, double abs_error, double rel_error,
       @returns Second derivative fermionic thermal function with respect to y^2.
       Found by summing Bessel functions.
 
-      @param y_squared Argment of thermal function
+      @param y_squared Argument of thermal function
   */
 
   // If y_squared = 0, known limit returned.
@@ -236,7 +236,7 @@ double D2_J_B_bessel(double y_squared, double abs_error, double rel_error,
       @returns Second derivative bosonic thermal function with respect to y^2.
       Found by summing Bessel functions.
 
-      @param y_squared Argment of thermal function
+      @param y_squared Argument of thermal function
   */
 
   // If y_squared = 0, known limit returned.
