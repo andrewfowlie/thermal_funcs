@@ -28,6 +28,7 @@
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_sf_fermi_dirac.h>
+#include <gsl/gsl_sf_pow_int.h>
 #include <stdexcept>
 #include <complex>
 #include <algorithm>
@@ -61,12 +62,12 @@ double J_integrand(double x, double y_squared, bool bosonic) {
      x^2 * 0.5 * Log[2. + 2. * Cos[r]]
   */
   const double sign = 1. - 2. * static_cast<double>(bosonic);
-  const double r_squared = pow(x, 2) + y_squared;
+  const double r_squared = gsl_sf_pow_int(x, 2) + y_squared;
   const double abs_r = sqrt(std::abs(r_squared));
   if (r_squared >= 0.) {
-    return pow(x, 2) * gsl_log1p(sign * exp(-abs_r));
+    return gsl_sf_pow_int(x, 2) * gsl_log1p(sign * exp(-abs_r));
   } else {
-    return 0.5 * pow(x, 2) * (gsl_log1p(sign * cos(abs_r)) + M_LN2);
+    return 0.5 * gsl_sf_pow_int(x, 2) * (gsl_log1p(sign * cos(abs_r)) + M_LN2);
   }
 }
 
@@ -140,9 +141,9 @@ double *integrand_points(double y_squared, bool bosonic) {
     const int reverse_i = n_singularity - i + 1;
 
     if (bosonic) {
-      p[reverse_i] = sqrt(-pow(2 * i, 2) * pow(M_PI, 2) - y_squared);
+      p[reverse_i] = sqrt(-gsl_sf_pow_int(2 * i, 2) * gsl_sf_pow_int(M_PI, 2) - y_squared);
     } else {
-      p[reverse_i] = sqrt(-pow(2 * i - 1, 2) * pow(M_PI, 2) - y_squared);
+      p[reverse_i] = sqrt(-gsl_sf_pow_int(2 * i - 1, 2) * gsl_sf_pow_int(M_PI, 2) - y_squared);
     }
 
     #ifdef DEBUG
@@ -268,20 +269,20 @@ double gamma_sum(double y_squared, double abs_error, double rel_error,
     }
   #endif
 
-  double factor = 2. * pow(M_PI, -2) / M_SQRTPI * pow(y_squared, 3) * pow(4., -3) /
+  double factor = 2. * gsl_sf_pow_int(M_PI, -2) / M_SQRTPI * gsl_sf_pow_int(y_squared, 3) * gsl_sf_pow_int(4., -3) /
                   gsl_sf_fact(3) * gsl_sf_gamma(1.5);
   double zeta = gsl_sf_zeta_int(3);
   double term = factor * zeta;
   sum += term;
 
   for (int n = 2; n <= max_n; n += 1) {
-    factor *= - y_squared * n / (n + 2.) * 0.25 / pow(M_PI, 2);
+    factor *= - y_squared * n / (n + 2.) * 0.25 / gsl_sf_pow_int(M_PI, 2);
     zeta = gsl_sf_zeta_int(2 * n + 1);
 
     if (bosonic) {
       term = zeta * factor;
     } else {
-      term = zeta * factor * (-1. + 0.125 * pow(0.25, n + 2));
+      term = zeta * factor * (-1. + 0.125 * gsl_sf_pow_int(0.25, n + 2));
     }
 
     sum += term;
@@ -332,10 +333,10 @@ double J_B_taylor(double y_squared, double abs_error, double rel_error,
 
   const double real_y_cubed = std::abs(real(pow(cdouble(y_squared), 1.5)));
 
-  double taylor_sum = - pow(M_PI, 4) / 45.
-                      + pow(M_PI, 2) / 12. * y_squared
+  double taylor_sum = - gsl_sf_pow_int(M_PI, 4) / 45.
+                      + gsl_sf_pow_int(M_PI, 2) / 12. * y_squared
                       - M_PI / 6. * real_y_cubed
-                      - pow(y_squared, 2) * log(std::abs(y_squared) / a_b) / 32.;
+                      - gsl_sf_pow_int(y_squared, 2) * log(std::abs(y_squared) / a_b) / 32.;
 
   const double sum = gamma_sum(y_squared, abs_error, rel_error, max_n, true, taylor_sum);
 
@@ -365,9 +366,9 @@ double J_F_taylor(double y_squared, double abs_error, double rel_error,
     #endif
   }
 
-  double taylor_sum = 7. / 360. * pow(M_PI, 4)
-                      - pow(M_PI, 2) / 24. * y_squared
-                      - pow(y_squared, 2) * log(std::abs(y_squared) / a_f) / 32.;
+  double taylor_sum = 7. / 360. * gsl_sf_pow_int(M_PI, 4)
+                      - gsl_sf_pow_int(M_PI, 2) / 24. * y_squared
+                      - gsl_sf_pow_int(y_squared, 2) * log(std::abs(y_squared) / a_f) / 32.;
 
   const double sum = gamma_sum(y_squared, abs_error, rel_error, max_n, false, taylor_sum);
 
@@ -390,8 +391,6 @@ double K2(cdouble x, bool fast = false) {
       Re[BesselK[2, x * I]] = 0.5 * Pi BesselY[2, x]
       to define K2 for imaginary arguments.
   */
-  gsl_set_error_handler_off();  // Default handler aborts
-
   #ifdef THROW
   if (real(x) != 0. && imag(x) != 0.) {
     throw std::invalid_argument("K2 only implemented for x real or imaginary");
@@ -434,11 +433,13 @@ double bessel_sum(double y_squared, double abs_error, double rel_error,
   const cdouble y = sqrt(cdouble(y_squared));
   const double sign = 2. * static_cast<double>(bosonic) - 1.;
   double factor = - y_squared * sign;
+
+  gsl_set_error_handler_off();  // Default handler aborts
   double sum = factor * K2(y, fast);
 
   for (int n = 2; n <= max_n; n += 1) {
     const double n_double = static_cast<double>(n);
-    factor *= sign * pow((n_double - 1.) / n_double, 2);
+    factor *= sign * gsl_sf_pow_int((n_double - 1.) / n_double, 2);
     const double term = factor * K2(n_double * y, fast);
     sum += term;
 
@@ -533,9 +534,9 @@ double J_B_lim(double y_squared, bool upper) {
   const double y = sqrt(std::abs(y_squared));
 
   if (upper) {
-    return -pow(y, 1.5) * 8. / 3. * pow(M_PI, 2) * M_SQRTPI * zeta_minima;
+    return -pow(y, 1.5) * 8. / 3. * gsl_sf_pow_int(M_PI, 2) * M_SQRTPI * zeta_minima;
   } else {
-    return -pow(y, 1.5) * 8. / 3. * pow(M_PI, 2) * M_SQRTPI * zeta_maxima;
+    return -pow(y, 1.5) * 8. / 3. * gsl_sf_pow_int(M_PI, 2) * M_SQRTPI * zeta_maxima;
   }
 }
 
@@ -608,7 +609,7 @@ double J_F_zeta(double y_squared, int max_n) {
       }
     #endif
     const double zeta = std::real(hurwitz_zeta(-1.5, 0.5 - shift_F(y) * 0.5 * M_1_PI, max_n));
-    return - pow(y, 1.5) * 8. / 3. * pow(M_PI, 2) * M_SQRTPI * zeta;
+    return - pow(y, 1.5) * 8. / 3. * gsl_sf_pow_int(M_PI, 2) * M_SQRTPI * zeta;
   } else {
     #ifdef DEBUG
       if (y_squared < pos_y_squared) {
@@ -632,7 +633,7 @@ double J_B_zeta(double y_squared, int max_n) {
       }
     #endif
     const double zeta = std::real(hurwitz_zeta(-1.5, - shift_B(y) / (2. * M_PI), max_n));
-    return - pow(y, 1.5) * 8. / 3. * pow(M_PI, 2) * M_SQRTPI * zeta;
+    return - pow(y, 1.5) * 8. / 3. * gsl_sf_pow_int(M_PI, 2) * M_SQRTPI * zeta;
   } else {
     #ifdef DEBUG
       if (y_squared < pos_y_squared) {

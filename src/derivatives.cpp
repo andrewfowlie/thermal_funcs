@@ -37,8 +37,6 @@ double K1(cdouble x) {
   /**
       @returns K1 Bessel function.
   */
-  gsl_set_error_handler_off();  // Default handler aborts
-
   #ifdef THROW
   if (real(x) != 0. && imag(x) != 0.) {
     throw std::invalid_argument("K1 only implemented for x real or imaginary");
@@ -58,8 +56,6 @@ double K0(cdouble x) {
       @returns K0 Bessel function.
 
   */
-  gsl_set_error_handler_off();  // Default handler aborts
-
   #ifdef THROW
   if (real(x) != 0. && imag(x) != 0.) {
     throw std::invalid_argument("K0 only implemented for x real or imaginary");
@@ -92,6 +88,8 @@ double D1_bessel_sum(double y_squared, double abs_error, double rel_error,
   const cdouble y = sqrt(cdouble(y_squared));
   const double abs_y = std::abs(y);
   double factor = 0.5 * abs_y * sign;
+
+  gsl_set_error_handler_off();  // Default handler aborts
   double sum = factor * K1(y);
 
   for (int n = 2; n <= max_n; n += 1) {
@@ -145,6 +143,8 @@ double D2_bessel_sum(double y_squared, double abs_error, double rel_error,
   const double sign = 2. * static_cast<double>(bosonic) - 1.;
   const cdouble y = sqrt(cdouble(y_squared));
   double factor = -0.25 * sign;
+
+  gsl_set_error_handler_off();  // Default handler aborts
   double sum = factor * K0(y);
 
   for (int n = 2; n <= max_n; n += 1) {
