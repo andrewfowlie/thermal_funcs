@@ -536,9 +536,9 @@ double J_B_lim(double y_squared, bool upper) {
   const double y = sqrt(std::abs(y_squared));
 
   if (upper) {
-    return -pow(y, 1.5) * 8. / 3. * M_PI_POW_2 * M_SQRTPI * zeta_minima;
+    return -y * sqrt(y) * 8. / 3. * M_PI_POW_2 * M_SQRTPI * zeta_minima;
   } else {
-    return -pow(y, 1.5) * 8. / 3. * M_PI_POW_2 * M_SQRTPI * zeta_maxima;
+    return -y * sqrt(y) * 8. / 3. * M_PI_POW_2 * M_SQRTPI * zeta_maxima;
   }
 }
 
@@ -562,14 +562,14 @@ double J_F_approx(double y_squared) {
         printf("approx applicable for y_squared << 0. only\n");
       }
     #endif
-    return M_SQRTPI / M_SQRT2 * pow(y, 1.5) * sin(y - M_PI_4);
+    return M_SQRTPI / M_SQRT2 * y * sqrt(y) * sin(y - M_PI_4);
   } else {
     #ifdef DEBUG
       if (y_squared < pos_y_squared) {
         printf("approx applicable for y_squared >> 0. only\n");
       }
     #endif
-    return M_SQRTPI / M_SQRT2 * pow(y, 1.5) * exp(-y);
+    return M_SQRTPI / M_SQRT2 * y * sqrt(y) * exp(-y);
   }
 }
 
@@ -611,7 +611,7 @@ double J_F_zeta(double y_squared, int max_n) {
       }
     #endif
     const double zeta = std::real(hurwitz_zeta(-1.5, 0.5 - shift_F(y) * 0.5 * M_1_PI, max_n));
-    return - pow(y, 1.5) * 8. / 3. * M_PI_POW_2 * M_SQRTPI * zeta;
+    return - y * sqrt(y) * 8. / 3. * M_PI_POW_2 * M_SQRTPI * zeta;
   } else {
     #ifdef DEBUG
       if (y_squared < pos_y_squared) {
@@ -619,7 +619,7 @@ double J_F_zeta(double y_squared, int max_n) {
       }
     #endif
     const double poly = -gsl_sf_fermi_dirac_3half(-y);
-    return - M_SQRTPI / M_SQRT2 * pow(y, 1.5) * poly;
+    return - M_SQRTPI / M_SQRT2 * y * sqrt(y) * poly;
   }
 }
 
@@ -635,7 +635,7 @@ double J_B_zeta(double y_squared, int max_n) {
       }
     #endif
     const double zeta = std::real(hurwitz_zeta(-1.5, - shift_B(y) / (2. * M_PI), max_n));
-    return - pow(y, 1.5) * 8. / 3. * M_PI_POW_2 * M_SQRTPI * zeta;
+    return - y * sqrt(y) * 8. / 3. * M_PI_POW_2 * M_SQRTPI * zeta;
   } else {
     #ifdef DEBUG
       if (y_squared < pos_y_squared) {
@@ -643,6 +643,6 @@ double J_B_zeta(double y_squared, int max_n) {
       }
     #endif
     const double poly = std::real(polylog(2.5, exp(-y), max_n));
-    return - M_SQRTPI / M_SQRT2 * pow(y, 1.5) * poly;
+    return - M_SQRTPI / M_SQRT2 * y * sqrt(y) * poly;
   }
 }
