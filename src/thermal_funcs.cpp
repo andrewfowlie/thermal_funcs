@@ -401,7 +401,12 @@ double K2(cdouble x, bool fast = false) {
       throw std::invalid_argument("K2 diverges for |x| = 0");
     #endif
   } else if (real(x) != 0.) {
-    return gsl_sf_bessel_Kn(2, real(x));
+    if (fast) {
+      // This is an asymptotic approximation for K_2 Bessel function
+      return M_SQRTPI / M_SQRT2 / sqrt(real(x)) * exp(-real(x));
+    } else {
+      return gsl_sf_bessel_Kn(2, real(x));
+    }
   } else if (imag(x) != 0.) {
       if (fast) {
         // This is an asymptotic approximation for Y_2 Bessel function
