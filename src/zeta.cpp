@@ -56,7 +56,7 @@ cdouble T(double s, cdouble a, int N, int M) {
   cdouble sum = 0.;
 
   for (int k = 1; k <= M; k += 1) {
-    sum += B_2n_fact[k] * gsl_sf_poch(s, + 2. * k - 1.) / pow(d, 2. * k - 1.);
+    sum += B_2n_fact[k] * gsl_sf_poch(s, 2. * k - 1.) / pow(d, 2 * k - 1);
   }
 
   return factor * (0.5 + sum);
