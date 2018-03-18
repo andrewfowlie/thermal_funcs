@@ -392,15 +392,14 @@ double K2(cdouble x, bool fast = false) {
   */
   gsl_set_error_handler_off();  // Default handler aborts
 
+  #ifdef THROW
   if (real(x) != 0. && imag(x) != 0.) {
-    #ifdef THROW
-      throw std::invalid_argument("K2 only implemented for x real or imaginary");
-    #endif
+    throw std::invalid_argument("K2 only implemented for x real or imaginary");
   } else  if (std::abs(x) == 0.) {
-    #ifdef THROW
-      throw std::invalid_argument("K2 diverges for |x| = 0");
-    #endif
-  } else if (real(x) != 0.) {
+    throw std::invalid_argument("K2 diverges for |x| = 0");
+  } else
+  #endif
+  if (real(x) != 0.) {
     if (fast) {
       // This is an asymptotic approximation for K_2 Bessel function
       return M_SQRTPI / M_SQRT2 / sqrt(real(x)) * exp(-real(x));

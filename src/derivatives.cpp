@@ -39,15 +39,14 @@ double K1(cdouble x) {
   */
   gsl_set_error_handler_off();  // Default handler aborts
 
+  #ifdef THROW
   if (real(x) != 0. && imag(x) != 0.) {
-    #ifdef THROW
-      throw std::invalid_argument("K1 only implemented for x real or imaginary");
-    #endif
+    throw std::invalid_argument("K1 only implemented for x real or imaginary");
   } else  if (std::abs(x) == 0.) {
-    #ifdef THROW
-      throw std::invalid_argument("K1 diverges for |x| = 0");
-    #endif
-  } else if (real(x) != 0.) {
+    throw std::invalid_argument("K1 diverges for |x| = 0");
+  } else
+  #endif
+  if (real(x) != 0.) {
     return gsl_sf_bessel_Kn(1, real(x));
   } else if (imag(x) != 0.) {
       return -0.5 * M_PI * gsl_sf_bessel_Yn(1, imag(x));
@@ -61,15 +60,14 @@ double K0(cdouble x) {
   */
   gsl_set_error_handler_off();  // Default handler aborts
 
+  #ifdef THROW
   if (real(x) != 0. && imag(x) != 0.) {
-    #ifdef THROW
-      throw std::invalid_argument("K0 only implemented for x real or imaginary");
-    #endif
+    throw std::invalid_argument("K0 only implemented for x real or imaginary");
   } else  if (std::abs(x) == 0.) {
-    #ifdef THROW
-      throw std::invalid_argument("K0 diverges for |x| = 0");
-    #endif
-  } else if (real(x) != 0.) {
+    throw std::invalid_argument("K0 diverges for |x| = 0");
+  } else
+  #endif
+  if (real(x) != 0.) {
     return gsl_sf_bessel_Kn(0, real(x));
   } else if (imag(x) != 0.) {
       return -0.5 * M_PI * gsl_sf_bessel_Yn(0, imag(x));
