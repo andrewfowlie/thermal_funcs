@@ -333,7 +333,13 @@ double J_B_taylor(double y_squared, double abs_error, double rel_error,
     #endif
   }
 
-  const double real_y_cubed = std::abs(real(pow(cdouble(y_squared), 1.5)));
+  double real_y_cubed;
+
+  if (y_squared >= 0.) {
+    real_y_cubed = y_squared * sqrt(y_squared);
+  } else {
+    real_y_cubed = std::abs(y_squared) * sqrt(std::abs(y_squared)) * M_SQRT1_2;
+  }
 
   double taylor_sum = - M_PI_POW_4 / 45.
                       + M_PI_POW_2 / 12. * y_squared
