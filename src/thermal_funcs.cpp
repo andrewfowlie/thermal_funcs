@@ -39,6 +39,7 @@ constexpr double pos_y_squared = 1.E3;
 constexpr double a_b = pow(M_PI, 2) * exp(1.5 - 2. * M_EULER);  // Below eq. (2.13)
 constexpr double a_f = 16. * a_b;  // Below eq. (2.13)
 constexpr double M_PI_POW_2 = pow(M_PI, 2);
+constexpr double M_PI_POW_M2 = pow(M_PI, -2);
 constexpr double M_PI_POW_4 = pow(M_PI, 4);
 
 
@@ -260,6 +261,8 @@ double J_F_quad(double y_squared, double abs_error, double rel_error,
 
 // Thermal functions by Taylor expansion
 
+const double prefactor = 2. * gsl_sf_gamma(1.5) * gsl_sf_pow_int(4., -3) / (gsl_sf_fact(3) * M_PI_POW_2 * M_SQRTPI);
+const double zeta_3 = gsl_sf_zeta_int(3);
 
 double gamma_sum(double y_squared, double abs_error, double rel_error,
                  int max_n, const bool bosonic, double sum = 0.) {
@@ -272,14 +275,13 @@ double gamma_sum(double y_squared, double abs_error, double rel_error,
     }
   #endif
 
-  double factor = 2. * gsl_sf_gamma(1.5) * gsl_sf_pow_int(y_squared, 3) * gsl_sf_pow_int(4., -3) /
-                  (gsl_sf_fact(3) * M_PI_POW_2 * M_SQRTPI);
-  double zeta = gsl_sf_zeta_int(3);
+  double factor = gsl_sf_pow_int(y_squared, 3) * prefactor;
+  double zeta = zeta_3;
   double term = factor * zeta;
   sum += term;
 
   for (int n = 2; n <= max_n; n += 1) {
-    factor *= - y_squared * n / (n + 2.) * 0.25 / M_PI_POW_2;
+    factor *= - y_squared * n / (n + 2.) * 0.25 * M_PI_POW_M2;
     zeta = gsl_sf_zeta_int(2 * n + 1);
 
     if (bosonic) {
