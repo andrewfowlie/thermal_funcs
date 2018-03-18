@@ -180,7 +180,7 @@ double J_quad(double y_squared, double abs_error, double rel_error, int max_n,
       integration routine.
 
       NB For bosonic case, there is a discontinuity at the boundary, x = Im(y)
-      if y_squared <= 0. This isn't treated explicity in either domain, though
+      if y_squared <= 0. This isn't treated explicitly in either domain, though
       doesn't appear to be problematic.
   */
   gsl_set_error_handler_off();  // Default handler aborts
