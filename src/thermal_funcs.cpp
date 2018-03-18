@@ -38,6 +38,8 @@ constexpr double neg_y_squared = -1.E3;
 constexpr double pos_y_squared = 1.E3;
 constexpr double a_b = pow(M_PI, 2) * exp(1.5 - 2. * M_EULER);  // Below eq. (2.13)
 constexpr double a_f = 16. * a_b;  // Below eq. (2.13)
+constexpr double M_PI_POW_2 = pow(M_PI, 2);
+constexpr double M_PI_POW_4 = pow(M_PI, 4);
 
 
 // Thermal functions at y_squared -> 0. Found in Mathematica:
@@ -141,9 +143,9 @@ double *integrand_points(double y_squared, bool bosonic) {
     const int reverse_i = n_singularity - i + 1;
 
     if (bosonic) {
-      p[reverse_i] = sqrt(-gsl_sf_pow_int(2 * i, 2) * gsl_sf_pow_int(M_PI, 2) - y_squared);
+      p[reverse_i] = sqrt(-gsl_sf_pow_int(2 * i, 2) * M_PI_POW_2 - y_squared);
     } else {
-      p[reverse_i] = sqrt(-gsl_sf_pow_int(2 * i - 1, 2) * gsl_sf_pow_int(M_PI, 2) - y_squared);
+      p[reverse_i] = sqrt(-gsl_sf_pow_int(2 * i - 1, 2) * M_PI_POW_2 - y_squared);
     }
 
     #ifdef DEBUG
@@ -269,14 +271,14 @@ double gamma_sum(double y_squared, double abs_error, double rel_error,
     }
   #endif
 
-  double factor = 2. * gsl_sf_pow_int(M_PI, -2) / M_SQRTPI * gsl_sf_pow_int(y_squared, 3) * gsl_sf_pow_int(4., -3) /
+  double factor = 2. / M_PI_POW_2 / M_SQRTPI * gsl_sf_pow_int(y_squared, 3) * gsl_sf_pow_int(4., -3) /
                   gsl_sf_fact(3) * gsl_sf_gamma(1.5);
   double zeta = gsl_sf_zeta_int(3);
   double term = factor * zeta;
   sum += term;
 
   for (int n = 2; n <= max_n; n += 1) {
-    factor *= - y_squared * n / (n + 2.) * 0.25 / gsl_sf_pow_int(M_PI, 2);
+    factor *= - y_squared * n / (n + 2.) * 0.25 / M_PI_POW_2;
     zeta = gsl_sf_zeta_int(2 * n + 1);
 
     if (bosonic) {
@@ -333,8 +335,8 @@ double J_B_taylor(double y_squared, double abs_error, double rel_error,
 
   const double real_y_cubed = std::abs(real(pow(cdouble(y_squared), 1.5)));
 
-  double taylor_sum = - gsl_sf_pow_int(M_PI, 4) / 45.
-                      + gsl_sf_pow_int(M_PI, 2) / 12. * y_squared
+  double taylor_sum = - M_PI_POW_4 / 45.
+                      + M_PI_POW_2 / 12. * y_squared
                       - M_PI / 6. * real_y_cubed
                       - gsl_sf_pow_int(y_squared, 2) * log(std::abs(y_squared) / a_b) / 32.;
 
@@ -366,8 +368,8 @@ double J_F_taylor(double y_squared, double abs_error, double rel_error,
     #endif
   }
 
-  double taylor_sum = 7. / 360. * gsl_sf_pow_int(M_PI, 4)
-                      - gsl_sf_pow_int(M_PI, 2) / 24. * y_squared
+  double taylor_sum = 7. / 360. * M_PI_POW_4
+                      - M_PI_POW_2 / 24. * y_squared
                       - gsl_sf_pow_int(y_squared, 2) * log(std::abs(y_squared) / a_f) / 32.;
 
   const double sum = gamma_sum(y_squared, abs_error, rel_error, max_n, false, taylor_sum);
@@ -534,9 +536,9 @@ double J_B_lim(double y_squared, bool upper) {
   const double y = sqrt(std::abs(y_squared));
 
   if (upper) {
-    return -pow(y, 1.5) * 8. / 3. * gsl_sf_pow_int(M_PI, 2) * M_SQRTPI * zeta_minima;
+    return -pow(y, 1.5) * 8. / 3. * M_PI_POW_2 * M_SQRTPI * zeta_minima;
   } else {
-    return -pow(y, 1.5) * 8. / 3. * gsl_sf_pow_int(M_PI, 2) * M_SQRTPI * zeta_maxima;
+    return -pow(y, 1.5) * 8. / 3. * M_PI_POW_2 * M_SQRTPI * zeta_maxima;
   }
 }
 
@@ -609,7 +611,7 @@ double J_F_zeta(double y_squared, int max_n) {
       }
     #endif
     const double zeta = std::real(hurwitz_zeta(-1.5, 0.5 - shift_F(y) * 0.5 * M_1_PI, max_n));
-    return - pow(y, 1.5) * 8. / 3. * gsl_sf_pow_int(M_PI, 2) * M_SQRTPI * zeta;
+    return - pow(y, 1.5) * 8. / 3. * M_PI_POW_2 * M_SQRTPI * zeta;
   } else {
     #ifdef DEBUG
       if (y_squared < pos_y_squared) {
@@ -633,7 +635,7 @@ double J_B_zeta(double y_squared, int max_n) {
       }
     #endif
     const double zeta = std::real(hurwitz_zeta(-1.5, - shift_B(y) / (2. * M_PI), max_n));
-    return - pow(y, 1.5) * 8. / 3. * gsl_sf_pow_int(M_PI, 2) * M_SQRTPI * zeta;
+    return - pow(y, 1.5) * 8. / 3. * M_PI_POW_2 * M_SQRTPI * zeta;
   } else {
     #ifdef DEBUG
       if (y_squared < pos_y_squared) {
