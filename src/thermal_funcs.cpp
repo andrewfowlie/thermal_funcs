@@ -512,8 +512,8 @@ double J_B_bessel(double y_squared, double abs_error, double rel_error,
 
 // Maxima and minima of Zeta[-3/2, x] from Mathematica
 
-const double zeta_maxima = 0.024145376807240715;
-const double zeta_minima = -0.03154228985099239;
+constexpr double zeta_maxima = 0.024145376807240715;
+constexpr double zeta_minima = -0.03154228985099239;
 
 double J_B_lim(double y_squared, bool upper) {
   /**
