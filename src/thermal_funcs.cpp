@@ -64,12 +64,13 @@ double J_integrand(double x, double y_squared, bool bosonic) {
      x^2 * 0.5 * Log[2. + 2. * Cos[r]]
   */
   const double sign = 1. - 2. * static_cast<double>(bosonic);
-  const double r_squared = gsl_sf_pow_int(x, 2) + y_squared;
+  const double x_squared = gsl_sf_pow_int(x, 2);
+  const double r_squared = x_squared + y_squared;
   const double abs_r = sqrt(std::abs(r_squared));
   if (r_squared >= 0.) {
-    return gsl_sf_pow_int(x, 2) * gsl_log1p(sign * exp(-abs_r));
+    return x_squared * gsl_log1p(sign * exp(-abs_r));
   } else {
-    return 0.5 * gsl_sf_pow_int(x, 2) * (gsl_log1p(sign * cos(abs_r)) + M_LN2);
+    return 0.5 * x_squared * (gsl_log1p(sign * cos(abs_r)) + M_LN2);
   }
 }
 
