@@ -271,8 +271,8 @@ double gamma_sum(double y_squared, double abs_error, double rel_error,
     }
   #endif
 
-  double factor = 2. / M_PI_POW_2 / M_SQRTPI * gsl_sf_pow_int(y_squared, 3) * gsl_sf_pow_int(4., -3) /
-                  gsl_sf_fact(3) * gsl_sf_gamma(1.5);
+  double factor = 2. * gsl_sf_gamma(1.5) * gsl_sf_pow_int(y_squared, 3) * gsl_sf_pow_int(4., -3) /
+                  (gsl_sf_fact(3) * M_PI_POW_2 * M_SQRTPI);
   double zeta = gsl_sf_zeta_int(3);
   double term = factor * zeta;
   sum += term;
