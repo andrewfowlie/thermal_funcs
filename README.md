@@ -8,10 +8,22 @@ We provide a C++ library and Python and Mathematica interfaces to thermal functi
   <img src="https://latex.codecogs.com/png.latex?J_{B/F}(y^2)=\Re\int_0^{\infty}dx\,x^2&space;\ln(1\mp\exp(-\sqrt{x^2&plus;y^2}))"/>
 </p>    
 
-  
 We offer Taylor expansion, numerical integration (quadrature), a Bessel function 
 representation, an approximation, a Hurwitz zeta function representation, and an upper bound for the integrals. First and second
 derivatives are also implemented.
+
+The accompanying manual is [1802.02720](https://arxiv.org/abs/1802.02720). If you use this library, please cite,
+
+    @article{Fowlie:2018eiu,
+        author         = "Fowlie, Andrew",
+        title          = "{A fast C++ implementation of thermal functions}",
+        doi            = "10.1016/j.cpc.2018.02.015",
+        year           = "2018",
+        eprint         = "1802.02720",
+        archivePrefix  = "arXiv",
+        primaryClass   = "hep-ph"
+    }
+
 
 # Dependencies
 
