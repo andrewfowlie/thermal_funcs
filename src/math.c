@@ -2,8 +2,6 @@
 #include <wstp.h>
 #include <thermal_funcs.h>
 #include <derivatives.h>
-#include <stdio.h>
-
 
 // This is a hack to fix a Mathematica bug. See
 // https://mathematica.stackexchange.com/q/171464/38645
