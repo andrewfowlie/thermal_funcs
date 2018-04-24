@@ -1,55 +1,50 @@
 .DEFAULT_GOAL := lib
 .PHONY: all clean mathematica python lib example
 
-FLAGS = -O3 -std=c++11 # -D DEBUG -D THROW
-CC = g++
+CXXFLAGS = -O3 -std=c++11 # -D DEBUG -D THROW
+CFLAGS = -O3 # -D DEBUG -D THROW
+CXX = g++
 PYTHON = $(shell pkg-config --cflags python)
 MATH_INC = $(shell echo 'FileNameJoin[{$$InstallationDirectory, "SystemFiles", "Links", "WSTP", "DeveloperKit", $$SystemID, "CompilerAdditions"}]' | math -batchoutput | tr -d '"')
 MATH = $(MATH_INC)/wscc
+OBJECTS = zeta.o thermal_funcs.o derivatives.o
 
-zeta.o: zeta.h
-	$(CC) $(FLAGS) -fPIC -c zeta.cpp -I./
-
-thermal_funcs.o: thermal_funcs.h
-	$(CC) $(FLAGS) -fPIC -c thermal_funcs.cpp -I./
+$(OBJECTS): %.o: %.cpp
+	$(CXX) $(CXXFLAGS) -fPIC -I./ -c $< 
 	
-thermal_funcs_wrap.cxx:
-	swig -c++ -python -py3 thermal_funcs.i
+thermal_funcs_wrap.cxx: thermal_funcs.i
+	swig -c++ -python -py3 $<
 	
-thermal_funcs_wrap.o: thermal_funcs_wrap.cxx
-	$(CC) $(FLAGS) -c -fPIC derivatives.cpp thermal_funcs.cpp thermal_funcs_wrap.cxx $(PYTHON) -I./
+thermal_funcs_wrap.o: thermal_funcs_wrap.cxx derivatives.cpp thermal_funcs.cpp
+	$(CXX) $(CXXFLAGS) -fPIC $(PYTHON) -I./ -c $^
 	
-_thermal_funcs.so: thermal_funcs_wrap.o thermal_funcs.o zeta.o derivatives.o 
-	$(CC) -shared derivatives.o thermal_funcs.o thermal_funcs_wrap.o zeta.o -lgsl -lgslcblas -I./ -o _thermal_funcs.so
-	cd ../thermal_funcs && ln -sf ../src/_thermal_funcs.so .
+../thermal_funcs/_thermal_funcs.so: thermal_funcs_wrap.o thermal_funcs.o zeta.o derivatives.o 
+	$(CXX) $(CXXFLAGS) -shared $^ -lgsl -lgslcblas -I./ -o $@
 
-thermal_funcs.so: thermal_funcs.o zeta.o derivatives.o
-	$(CC) $(FLAGS) -fPIC -shared derivatives.o thermal_funcs.o zeta.o -lgsl -lgslcblas -I./ -o ../lib/thermal_funcs.so
+../lib/thermal_funcs.so: thermal_funcs.o zeta.o derivatives.o
+	$(CXX) $(CXXFLAGS) -fPIC -shared $^ -lgsl -lgslcblas -I./ -o $@
 
-math.exe: thermal_funcs.o zeta.o derivatives.o
-	$(MATH) -b64 -o math.exe math.tm math.c -Wl,thermal_funcs.o,zeta.o,derivatives.o -lgsl -lgslcblas -I$(MATH_INC) -I./
+math.exe: thermal_funcs.o zeta.o derivatives.o math.tm math.c
+	$(MATH) $(CFLAGS) -b64 -Wl,thermal_funcs.o,zeta.o,derivatives.o -lgsl -lgslcblas -I$(MATH_INC) -I./ math.tm math.c -o $@
 	
-example: thermal_funcs.so
-	# $(CC) $(FLAGS) example.cpp thermal_funcs.o zeta.o derivatives.o -lgsl -lgslcblas -I./ -o ../bin/example
-	$(CC) $(FLAGS) example.cpp -L$(shell echo $$PWD)/../lib -I./ -o ../bin/example -l:thermal_funcs.so -lgsl -lgslcblas
+../bin/example: example.cpp ../lib/thermal_funcs.so
+	# $(CXX) $(CXXFLAGS) $< -lgsl -lgslcblas -I./ thermal_funcs.o zeta.o derivatives.o -o $@
+	$(CXX) $(CXXFLAGS) $< -L$(shell echo $$PWD)/../lib -l:thermal_funcs.so -lgsl -lgslcblas -I./ -o $@
 
-derivatives.o:
-	$(CC) $(FLAGS) -fPIC -c derivatives.cpp -I./
-
+example: ../bin/example
 mathematica: math.exe
-python: _thermal_funcs.so
-lib: thermal_funcs.so
+python: ../thermal_funcs/_thermal_funcs.so
+lib: ../lib/thermal_funcs.so
 all: lib python mathematica example
 
 clean:
-	rm -f ../lib/thermal_funcs.so
-	rm -f _thermal_funcs.so
-	rm -f thermal_funcs_wrap.o
-	rm -f thermal_funcs.o
-	rm -f zeta.o
-	rm -f derivatives.o
-	rm -f thermal_funcs.py
-	rm -f thermal_funcs_wrap.cxx
-	rm -f thermal_funcs.pyc
-	rm -f math.exe
-	rm -f ../bin/example
+	-rm ../lib/thermal_funcs.so
+	-rm ../thermal_funcs/_thermal_funcs.so
+	-rm thermal_funcs_wrap.o
+	-rm thermal_funcs.o
+	-rm zeta.o
+	-rm derivatives.o
+	-rm thermal_funcs.py
+	-rm thermal_funcs_wrap.cxx
+	-rm math.exe
+	-rm ../bin/example
