@@ -16,6 +16,7 @@
 #include <gsl/gsl_errno.h>
 #include <stdexcept>
 #include <algorithm>
+#include <limits>
 
 
 // First derivatives of thermal functions with respect to y^2 at y^2 -> 0.
@@ -27,7 +28,7 @@
 
 constexpr double D1_J_B_0 = pow(M_PI, 2) / 12.;
 constexpr double D1_J_F_0 = -pow(M_PI, 2) / 24.;
-constexpr double INF = 1E10;
+constexpr double INF = std::numeric_limits<double>::infinity();
 
 
 // Bessel function representation of derivatives with respect to y^2.
@@ -126,7 +127,6 @@ double D1_bessel_sum(double y_squared, double abs_error, double rel_error,
 
 double D2_bessel_sum(double y_squared, double abs_error, double rel_error,
                      int max_n, bool bosonic) {
-  //
   /**
       @returns Second derivative thermal function with respect to y^2.
       Found by summing Bessel functions.
