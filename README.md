@@ -1,11 +1,9 @@
 # Thermal functions
 
 We provide a C++ library and Python and Mathematica interfaces to thermal functions, defined
-
-    J_{B/F}(y^2)=\Re\int_0^{\infty}dx\,x^2 \ln(1\mp\exp(-\sqrt{x^2+y^2}))
     
 <p align="center">
-  <img src="https://latex.codecogs.com/png.latex?J_{B/F}(y^2)=\Re\int_0^{\infty}dx\,x^2&space;\ln(1\mp\exp(-\sqrt{x^2&plus;y^2}))"/>
+  <img src="https://latex.codecogs.com/png.latex?\dpi{300}J_{B/F}(y^2)=\Re\int_0^{\infty}dx\,x^2&space;\ln(1\mp\exp(-\sqrt{x^2&plus;y^2}))"/>
 </p>    
 
 We offer Taylor expansion, numerical integration (quadrature), a Bessel function 
@@ -27,7 +25,7 @@ The accompanying manual is [1802.02720](https://arxiv.org/abs/1802.02720). If yo
 
 # Dependencies
 
-The C++ requires `gsl` and `gslcblas`. The Python interface requires Python 2 or 3, SWIG and a Python.h header file (which is part of python-dev in Ubuntu). The Mathematica interface was tested for Mathematica 11.
+The C++ requires `gsl` and `gslcblas` and a `c++11` compiler. The Python interface requires Python 2 or 3, SWIG and a `Python.h` header file (which is part of `python-dev` in Ubuntu). The Mathematica interface was tested for Mathematica 11.
 
 # Build
 
@@ -39,7 +37,7 @@ This should build `./lib/thermal_funcs.so`. The header file is `./src/thermal_fu
 
 # Example
 
-There is a C example ./src/example.cpp, built by
+There is a C example `./src/example.cpp`, built by
 
     make example
     
@@ -110,41 +108,6 @@ then in Mathematica,
     
 This may help find the origin of any problems. You must, of course, replace the paths to the ones on your machine.
 
-# Performance
-
-The functions are fast and accurate even for `y^2 << 0`:
-
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/3758193/27900262-fad8eaf8-6270-11e7-8324-4e745fd04301.png"/>
-</p>
-
-The time per evaluation is typically about `1E-5` seconds.
-
-# Files
-<pre>
-thermal_funcs/
-|-- bin : make example builds example program here (intentionally empty)
-|-- lib : make lib builds thermal_funcs.so here (intentionally empty)
-|-- src : Source code
-|   |-- bernoulli.h : C++ header containing Bernoulli numbers 
-|   |-- derivatives.cpp : C++ source for derivatives of thermal functions
-|   |-- derivatives.h : C/C++ header for derivatives of thermal functions
-|   |-- example.cpp : C++ example program
-|   |-- makefile : Makefile for building source code
-|   |-- math.c : C source for Mathematica interface
-|   |-- math.tm : Mathematica template for interface
-|   |-- thermal_funcs.cpp : C++ source for thermal functions
-|   |-- thermal_funcs.h : C/C++ header for thermal functions
-|   |-- thermal_funcs.i : SWIG Python interface for thermal functions
-|   |-- zeta.cpp : C++ source for Hurwitz zeta function
-|   `-- zeta.h : C++ header for Hurwitz zeta function
-|-- thermal_funcs : Python module
-|   |-- __init__.py : Python module file
-|   `-- thermal_funcs.py : Python source for wrapper for thermal functions
-|-- LICENSE : BSD 3-Clause License
-|-- makefile : Wrapper for src/makefile
-`-- README.md : This README file
-</pre>
 # Acknowledgements
 
 This [Stack Exchange answer](https://mathematica.stackexchange.com/a/154643/38645) was helpful for removing linker warnings from `wscc`, and [this one](https://mathematica.stackexchange.com/a/154664/38645) was helpful for automatically locating Mathematica header files. 
