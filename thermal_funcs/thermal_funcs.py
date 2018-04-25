@@ -2,7 +2,7 @@
 Wrapper for thermal functions from C++ library with SWIG
 ========================================================
 
-There are various implmentations of the thermal functions J_F(y^2) and J_B(y^2), 
+There are various implmentations of the thermal functions J_F(y^2) and J_B(y^2),
 and their first- and second-derivatives.
 
 They should be called via
@@ -72,7 +72,7 @@ array([ -2.16951985e-04,  -2.55114955e-04,   6.97032234e-05,
         -3.38789396e-04,  -2.70543819e-04,   3.85995679e-07,
          1.32647813e-08,   1.30533110e-07,   1.23921645e-07,
         -3.70553466e-08])
-        
+
 >>> np.vectorize(J_B)(y_squared, derivative=2, method="bessel") - np.vectorize(J_B)(y_squared, derivative=2, method="approx")
 array([ -1.18211875e-02,  -1.07143055e-02,  -2.78539577e-03,
          1.84933021e-02,   1.84354041e-01,   5.28891196e-02,
