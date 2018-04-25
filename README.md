@@ -3,7 +3,7 @@
 We provide a C++ library and Python and Mathematica interfaces to thermal functions, defined
     
 <p align="center">
-  <img src="https://latex.codecogs.com/png.latex?\dpi{300}J_{B/F}(y^2)=\Re\int_0^{\infty}dx\,x^2&space;\ln(1\mp\exp(-\sqrt{x^2&plus;y^2}))"/>
+  <img src="https://latex.codecogs.com/png.latex?\dpi{300}J_{B/F}(y^2)=\Re\int_0^{\infty}dx\,x^2&space;\ln(1\mp\exp(-\sqrt{x^2&plus;y^2}))" width=500/>
 </p>    
 
 We offer Taylor expansion, numerical integration (quadrature), a Bessel function 
