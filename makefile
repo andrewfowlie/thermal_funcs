@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := lib
-.PHONY: all clean mathematica python lib example
+.PHONY: all clean mathematica python lib example fortran
 
 all:
 	$(MAKE) -C src all
@@ -18,3 +18,6 @@ lib:
 	
 example:
 	$(MAKE) -C src example
+
+fortran:
+	$(MAKE) -C src fortran
