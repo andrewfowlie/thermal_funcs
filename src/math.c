@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <wstp.h>
 #include <thermal_funcs.h>
 #include <derivatives.h>

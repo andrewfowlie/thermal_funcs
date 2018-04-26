@@ -9,6 +9,7 @@
 #ifdef __cplusplus
 #define DEFAULT(x) = x
 #else
+#include <stdbool.h>
 #define DEFAULT(x)
 #endif
 
