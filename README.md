@@ -1,6 +1,6 @@
 # Thermal functions
 
-We provide a C++ library and Python and Mathematica interfaces to thermal functions, defined
+We provide a C++ library and Python, Mathematica and Fortran interfaces to thermal functions, defined
     
 <p align="center">
   <img src="https://latex.codecogs.com/png.latex?\dpi{300}J_{B/F}(y^2)=\Re\int_0^{\infty}dx\,x^2&space;\ln(1\mp\exp(-\sqrt{x^2&plus;y^2}))" width=500/>
@@ -107,6 +107,18 @@ then in Mathematica,
     AddTwo[2, 2]
     
 This may help find the origin of any problems. You must, of course, replace the paths to the ones on your machine.
+
+# Fortran interface
+
+There is a basic Fortran example, built by
+
+    make fortran
+    
+and executed by
+
+    ./bin/fortran_example
+    
+This requires a Fortran compiler with support for `iso_c_binding`, which is included in the Fortran 2003 or later standard and GNU extensions.
 
 # Acknowledgements
 
