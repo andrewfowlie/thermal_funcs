@@ -59,11 +59,11 @@ double J_integrand(double x, double y_squared, bool bosonic) {
 
       Integrand in Curtin eq. (2.12)
       
-      \f[x^2 \log(1 \mp \exp(-\sqrt(x^2 + y^2)))\f]
+      \f[x^2 \log(1 \mp \exp(-\sqrt{x^2 + y^2}))\f]
       
       If \f$r^2 = x^2 + y^2 < 0\f$, this can be written
       
-      \f[\frac12 x^2 \log(2 + 2\cos r))\f]
+      \f[\frac12 x^2 \log(2 + 2\cos r)\f]
 
       @param x Argument of integrand
       @param y_squared Argument of thermal function
@@ -140,7 +140,7 @@ double *integrand_points(double y_squared, bool bosonic) {
       NB don't include an endpoint twice if it is singular.
 
       Singularities occur at
-      \f[0 \le x = \sqrt(-n^2 \pi^2 - y^2) \le |y|\f]
+      \f[0 \le x = \sqrt{-n^2 \pi^2 - y^2}\le |y|\f]
       for \f$n\f$ even/odd for bosonic/fermionic.
 
       @param y_squared Argument of thermal function
