@@ -63,7 +63,7 @@ double J_integrand(double x, double y_squared, bool bosonic) {
       
       If \f$r^2 = x^2 + y^2 < 0\f$, this can be written
       
-      \f[\frac12 x^2 \log(2 + 2\cos))\f]
+      \f[\frac12 x^2 \log(2 + 2\cos r))\f]
 
       @param x Argument of integrand
       @param y_squared Argument of thermal function
