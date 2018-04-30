@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := lib
-.PHONY: all clean mathematica python lib example fortran
+.PHONY: all clean mathematica python lib example fortran docs
 
 all:
 	$(MAKE) -C src all
@@ -21,3 +21,7 @@ example:
 
 fortran:
 	$(MAKE) -C src fortran
+
+docs: doxygen.config
+	doxygen $<
+	xdg-open ./docs/html/index.html

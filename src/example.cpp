@@ -1,8 +1,11 @@
-/*
-    Example program that links to thermal_funcs library. To build,
-    
-    make example
-    
+/**
+    @file
+    @brief Example program that links to thermal_funcs library.
+
+    To build,
+
+      make example
+
     builds an executable ./bin/example
 */
 

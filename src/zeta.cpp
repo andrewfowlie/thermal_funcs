@@ -1,9 +1,8 @@
-/*
+/**
+    @file
+    @brief Hurwitz Zeta function and polylogarithm.
 
-  Hurwitz Zeta function and polylogarithm.
-
-  http://fredrikj.net/math/hurwitz_zeta.pdf
-
+    For implemenation, see http://fredrikj.net/math/hurwitz_zeta.pdf
 */
 
 #include <zeta.h>
@@ -16,7 +15,10 @@
 
 cdouble S(double s, cdouble a, int N) {
   /**
-      @returns S part of zeta function.
+      @returns S part of zeta function
+      @param s
+      @param a
+      @param N
   */
   cdouble sum = 0.;
 
@@ -29,14 +31,21 @@ cdouble S(double s, cdouble a, int N) {
 
 cdouble I(double s, cdouble a, int N) {
   /**
-      @returns I part of zeta function.
+      @returns I part of zeta function
+      @param s
+      @param a
+      @param N
   */
   return pow(a + static_cast<cdouble>(N), 1. - s) / (s - 1.);
 }
 
 cdouble T(double s, cdouble a, int N, int M) {
   /**
-      @returns T part of zeta function.
+      @returns T part of zeta function
+      @param s
+      @param a
+      @param N
+      @param M
   */
   const cdouble d = a + static_cast<cdouble>(N);
   const cdouble factor = pow(d, -s);
@@ -64,7 +73,10 @@ cdouble T(double s, cdouble a, int N, int M) {
 
 cdouble hurwitz_zeta(double s, cdouble a, int N) {
   /**
-      @returns Hurwitz zeta function.
+      @returns Hurwitz zeta function
+      @param s
+      @param a
+      @param N
   */
   if (N > B_2n_fact_size) {
     #ifdef DEBUG
@@ -83,7 +95,10 @@ cdouble hurwitz_zeta(double s, cdouble a, int N) {
 
 cdouble polylog(double s, cdouble a, int N) {
   /**
-      @returns Polylogarithm function.
+      @returns Polylogarithm function
+      @param s
+      @param a
+      @param N
   */
   if (s > 1 && std::abs(a) <= 1) {
     cdouble term = a;

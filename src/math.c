@@ -1,3 +1,8 @@
+/**
+    @file
+    @brief Mathematica interface to thermal functions.
+*/
+
 #include <wstp.h>
 #include <thermal_funcs.h>
 #include <derivatives.h>
@@ -13,9 +18,14 @@
 double J_F(double y_squared, int order, double abs_error, double rel_error,
            int max_n, bool fast) {
   /**
-      @returns Fermionic thermal function from Bessel functions
+      @returns Fermionic thermal function from Bessel function
       @param y_squared Argument of thermal function
       @param order Order of derivative
+      @param y_squared Argument of thermal function     
+      @param abs_error Minimum absolute error
+      @param rel_error Minimum relative error
+      @param max_n Maximum number of terms in sum
+      @param fast Whether to use fast approximations
   */
   if (order == 0) {
     return J_F_bessel(y_squared, abs_error, rel_error, max_n, fast);
@@ -33,9 +43,14 @@ double J_F(double y_squared, int order, double abs_error, double rel_error,
 double J_B(double y_squared, int order, double abs_error, double rel_error,
            int max_n, bool fast) {
   /**
-      @returns Bosonic thermal function from Bessel functions
+      @returns Bosonic thermal function from Bessel function
       @param y_squared Argument of thermal function
       @param order Order of derivative
+      @param y_squared Argument of thermal function     
+      @param abs_error Minimum absolute error
+      @param rel_error Minimum relative error
+      @param max_n Maximum number of terms in sum
+      @param fast Whether to use fast approximations
   */
   if (order == 0) {
     return J_B_bessel(y_squared, abs_error, rel_error, max_n, fast);

@@ -1,9 +1,9 @@
-/*
+/**
+    @file
+    @brief First and second derivatives of thermal functions with respect to
+    y^2.
 
-  First and second derivatives of thermal functions with respect to y^2.
-
-  The Bessel representation is differentiated analytically and numerically.
-
+    The Bessel representation is differentiated analytically and numerically.
 */
 
 
@@ -31,12 +31,13 @@ constexpr double D1_J_F_0 = -pow(M_PI, 2) / 24.;
 constexpr double INF = std::numeric_limits<double>::infinity();
 
 
-// Bessel function representation of derivatives with respect to y^2.
+// Bessel functionrepresentation of derivatives with respect to y^2.
 
 
 double K1(cdouble x) {
   /**
-      @returns K1 Bessel function.
+      @returns K_1 Bessel function
+      @param x
   */
   #ifdef THROW
   if (real(x) != 0. && imag(x) != 0.) {
@@ -54,8 +55,8 @@ double K1(cdouble x) {
 
 double K0(cdouble x) {
   /**
-      @returns K0 Bessel function.
-
+      @returns K_0 Bessel function
+      @param x
   */
   #ifdef THROW
   if (real(x) != 0. && imag(x) != 0.) {
@@ -74,10 +75,15 @@ double K0(cdouble x) {
 double D1_bessel_sum(double y_squared, double abs_error, double rel_error,
                      int max_n, bool bosonic) {
   /**
-      @returns First derivative thermal function with respect to y^2.
+      @returns First derivative thermal function with respect to y^2
+      
       Found by summing Bessel functions.
 
       @param y_squared Argument of thermal function
+      @param abs_error Minimum absolute error
+      @param rel_error Minimum relative error
+      @param max_n Maximum number of terms in sum
+      @param bosonic Whether bosonic (or fermionic) function required
   */
   #ifdef THROW
     if (y_squared == 0.) {
@@ -128,10 +134,15 @@ double D1_bessel_sum(double y_squared, double abs_error, double rel_error,
 double D2_bessel_sum(double y_squared, double abs_error, double rel_error,
                      int max_n, bool bosonic) {
   /**
-      @returns Second derivative thermal function with respect to y^2.
+      @returns Second derivative thermal function with respect to y^2
+      
       Found by summing Bessel functions.
 
       @param y_squared Argument of thermal function
+      @param abs_error Minimum absolute error
+      @param rel_error Minimum relative error
+      @param max_n Maximum number of terms in sum
+      @param bosonic Whether bosonic (or fermionic) function required
   */
 
   #ifdef THROW
@@ -182,10 +193,15 @@ double D2_bessel_sum(double y_squared, double abs_error, double rel_error,
 double D1_J_F_bessel(double y_squared, double abs_error, double rel_error,
                      int max_n) {
   /**
-      @returns First derivative fermionic thermal function with respect to y^2.
+      @returns First derivative of fermionic thermal function with respect to
+      y^2
+      
       Found by summing Bessel functions.
 
       @param y_squared Argument of thermal function
+      @param abs_error Minimum absolute error
+      @param rel_error Minimum relative error
+      @param max_n Maximum number of terms in sum
   */
 
   // If y_squared = 0, known limit returned.
@@ -198,10 +214,15 @@ double D1_J_F_bessel(double y_squared, double abs_error, double rel_error,
 double D1_J_B_bessel(double y_squared, double abs_error, double rel_error,
                      int max_n) {
   /**
-      @returns First derivative bosonic thermal function with respect to y^2.
+      @returns First derivative of bosonic thermal function with respect to
+      y^2
+      
       Found by summing Bessel functions.
 
       @param y_squared Argument of thermal function
+      @param abs_error Minimum absolute error
+      @param rel_error Minimum relative error
+      @param max_n Maximum number of terms in sum
   */
 
   // If y_squared = 0, known limit returned.
@@ -214,10 +235,15 @@ double D1_J_B_bessel(double y_squared, double abs_error, double rel_error,
 double D2_J_F_bessel(double y_squared, double abs_error, double rel_error,
                      int max_n) {
   /**
-      @returns Second derivative fermionic thermal function with respect to y^2.
+      @returns Second derivative of fermionic thermal function with respect to
+      y^2
+      
       Found by summing Bessel functions.
 
       @param y_squared Argument of thermal function
+      @param abs_error Minimum absolute error
+      @param rel_error Minimum relative error
+      @param max_n Maximum number of terms in sum
   */
 
   // If y_squared = 0, known limit returned.
@@ -233,10 +259,15 @@ double D2_J_F_bessel(double y_squared, double abs_error, double rel_error,
 double D2_J_B_bessel(double y_squared, double abs_error, double rel_error,
                      int max_n) {
   /**
-      @returns Second derivative bosonic thermal function with respect to y^2.
+      @returns Second derivative of bosonic thermal function with respect to
+      y^2
+      
       Found by summing Bessel functions.
 
       @param y_squared Argument of thermal function
+      @param abs_error Minimum absolute error
+      @param rel_error Minimum relative error
+      @param max_n Maximum number of terms in sum
   */
 
   // If y_squared = 0, known limit returned.
@@ -262,8 +293,11 @@ struct J_params {
 
 double J_wrapper(double y_squared, void *p) {
   /**
-     Wrapper for thermal functions with signature required by numerical
-     differentiation.
+      @brief Wrapper for thermal functions with signature requiredby numerical
+      differentiation.
+      
+      @returns Thermal function
+      @param y_squared Argument of thermal function 
   */
   const struct J_params *params = (struct J_params *)p;
   const bool bosonic = params->bosonic;
@@ -281,7 +315,13 @@ double J_wrapper(double y_squared, void *p) {
 double D1_J_approx(double y_squared, double step, bool bosonic,
                    double abs_error, double rel_error, int max_n) {
   /**
-     @returns Numerical derivative of thermal function.
+      @returns Numerical derivative of thermal function
+      @param y_squared Argument of thermal function
+      @param y_squared step Initial step size for derivative
+      @param bosonic Whether bosonic (or fermionic) function required
+      @param abs_error Minimum absolute error
+      @param rel_error Minimum relative error
+      @param max_n Maximum number of terms in sum
   */
   gsl_function J;
   double derivative;
@@ -306,8 +346,11 @@ struct D_params {
 
 double D1_J_wrapper(double y_squared, void *p) {
   /**
-     Wrapper for first derivative of thermal functions with signature required
-     by numerical differentiation.
+      @brief Wrapper for derivative of thermal functions with signature
+      requiredby numerical differentiation.
+      
+      @returns Thermal function
+      @param y_squared Argument of thermal function 
   */
   const struct D_params *params = (struct D_params *)p;
   const double step = params->step;
@@ -321,7 +364,13 @@ double D1_J_wrapper(double y_squared, void *p) {
 double D2_J_approx(double y_squared, double step, bool bosonic,
                    double abs_error, double rel_error, int max_n) {
   /**
-     @returns Numerical second derivative of thermal function.
+      @returns Numerical second derivative of thermal function
+      @param y_squared Argument of thermal function
+      @param y_squared step Initial step size for derivative
+      @param bosonic Whether bosonic (or fermionic) function required
+      @param abs_error Minimum absolute error
+      @param rel_error Minimum relative error
+      @param max_n Maximum number of terms in sum
   */
   gsl_function D1_J;
   double derivative;
@@ -339,7 +388,12 @@ double D2_J_approx(double y_squared, double step, bool bosonic,
 double D1_J_B_approx(double y_squared, double step, double abs_error,
                      double rel_error, int max_n) {
   /**
-     @returns Numerical derivative of bosonic thermal function.
+      @returns Numerical derivative of bosonic thermal function
+      @param y_squared Argument of thermal function
+      @param y_squared step Initial step size for derivative
+      @param abs_error Minimum absolute error
+      @param rel_error Minimum relative error
+      @param max_n Maximum number of terms in sum
   */
   return D1_J_approx(y_squared, step, true, abs_error, rel_error, max_n);
 }
@@ -347,7 +401,12 @@ double D1_J_B_approx(double y_squared, double step, double abs_error,
 double D1_J_F_approx(double y_squared, double step, double abs_error,
                      double rel_error, int max_n) {
   /**
-     @returns Numerical derivative of fermionic thermal function.
+      @returns Numerical derivative of fermionic thermal function
+      @param y_squared Argument of thermal function
+      @param y_squared step Initial step size for derivative
+      @param abs_error Minimum absolute error
+      @param rel_error Minimum relative error
+      @param max_n Maximum number of terms in sum
   */
   return D1_J_approx(y_squared, step, false, abs_error, rel_error, max_n);
 }
@@ -355,7 +414,12 @@ double D1_J_F_approx(double y_squared, double step, double abs_error,
 double D2_J_B_approx(double y_squared, double step, double abs_error,
                      double rel_error, int max_n) {
   /**
-     @returns Numerical second derivative of bosonic thermal function.
+      @returns Numerical second derivative of bosonic thermal function
+      @param y_squared Argument of thermal function
+      @param y_squared step Initial step size for derivative
+      @param abs_error Minimum absolute error
+      @param rel_error Minimum relative error
+      @param max_n Maximum number of terms in sum
   */
   return D2_J_approx(y_squared, step, true, abs_error, rel_error, max_n);
 }
@@ -363,7 +427,12 @@ double D2_J_B_approx(double y_squared, double step, double abs_error,
 double D2_J_F_approx(double y_squared, double step, double abs_error,
                      double rel_error, int max_n) {
   /**
-     @returns Numerical second derivative of fermionic thermal function.
+      @returns Numerical second derivative of fermionic thermal function
+      @param y_squared Argument of thermal function
+      @param y_squared step Initial step size for derivative
+      @param abs_error Minimum absolute error
+      @param rel_error Minimum relative error
+      @param max_n Maximum number of terms in sum
   */
   return D2_J_approx(y_squared, step, false, abs_error, rel_error, max_n);
 }

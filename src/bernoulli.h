@@ -1,9 +1,10 @@
-/*
+/**
+    @file
+    @brief Bernoulli numbers.
 
-  Bernoulli numbers from Mathematica:
+    Found from Mathematica by
 
-  Table[BernoulliB[2 n] / Factorial[2n], {n, 0, 50}] // CForm
-
+    Table[BernoulliB[2 n] / Factorial[2n], {n, 0, 50}] // CForm
 */
 
 #ifndef _BERNOULLI_H_

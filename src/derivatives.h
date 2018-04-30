@@ -1,9 +1,9 @@
-/*
+/**
+    @file
+    @brief First and second derivatives of thermal functions with respect to
+    y^2.
 
-  First and second derivatives of thermal functions with respect to y^2.
-
-  The Bessel representation is differentiated analytically and numerically.
-
+    The Bessel representation is differentiated analytically and numerically.
 */
 
 #ifndef _DERIVATIVES_H_

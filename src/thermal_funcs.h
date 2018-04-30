@@ -1,5 +1,6 @@
-/*
-
+/**
+    @file
+    @brief Thermal functions in finite-temperature field theory.
 */
 
 #ifndef _THERMAL_FUNCS_H_

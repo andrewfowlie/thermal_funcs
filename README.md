@@ -22,6 +22,9 @@ The accompanying manual is [1802.02720](https://arxiv.org/abs/1802.02720). If yo
         primaryClass   = "hep-ph"
     }
 
+To build the documentation in `doxygen`,
+
+    make docs
 
 # Dependencies
 
