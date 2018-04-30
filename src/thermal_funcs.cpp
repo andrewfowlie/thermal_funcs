@@ -204,8 +204,8 @@ double J_quad(double y_squared, double abs_error, double rel_error,
       either domain, though doesn't appear to be problematic.
 
       @param y_squared Argument of thermal function     
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of subdivisions for memory allocation
       @param bosonic Whether bosonic (or fermionic) function required
   */
@@ -257,8 +257,8 @@ double J_B_quad(double y_squared, double abs_error, double rel_error,
   /**
       @returns Bosonic thermal function found by numerical integration
       @param y_squared Argument of thermal function     
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of subdivisions for memory allocation
   */
   const double integral = J_quad(y_squared, abs_error, rel_error, max_n, true);
@@ -277,8 +277,8 @@ double J_F_quad(double y_squared, double abs_error, double rel_error,
   /**
       @returns Fermionic thermal function found by numerical integration
       @param y_squared Argument of thermal function     
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of subdivisions for memory allocation
   */
   const double integral = J_quad(y_squared, abs_error, rel_error, max_n, false);
@@ -305,8 +305,8 @@ double gamma_sum(double y_squared, double abs_error, double rel_error,
       @returns Sum of gamma functions in Wainwright eq. (2.18) and eq. (2.19)
 
       @param y_squared Argument of thermal function     
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
       @param bosonic Whether bosonic (or fermionic) function required
       @param sum Taylor expansion without gamma functions
@@ -370,8 +370,8 @@ double J_B_taylor(double y_squared, double abs_error, double rel_error,
       Valid for \f$|y^2| \ll 1\f$.
       
       @param y_squared Argument of thermal function     
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
   */
 
@@ -419,8 +419,8 @@ double J_F_taylor(double y_squared, double abs_error, double rel_error,
       Valid for \f$|y^2| \ll 1\f$.
       
       @param y_squared Argument of thermal function     
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
   */
 
@@ -499,8 +499,8 @@ double bessel_sum(double y_squared, double abs_error, double rel_error,
       \f$y^2 = 0\f$.
       
       @param y_squared Argument of thermal function     
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
       @param fast Whether to use fast approximations
       @param bosonic Whether bosonic (or fermionic) function required
@@ -556,8 +556,8 @@ double J_F_bessel(double y_squared, double abs_error, double rel_error,
       @returns Fermionic thermal functions from sum of Bessel functions
 
       @param y_squared Argument of thermal function     
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
       @param fast Whether to use fast approximations
   */
@@ -583,8 +583,8 @@ double J_B_bessel(double y_squared, double abs_error, double rel_error,
       @returns Bosonic thermal functions from sum of Bessel functions
       
       @param y_squared Argument of thermal function     
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
       @param fast Whether to use fast approximations
   */

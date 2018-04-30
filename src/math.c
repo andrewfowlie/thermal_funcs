@@ -22,8 +22,8 @@ double J_F(double y_squared, int order, double abs_error, double rel_error,
       @param y_squared Argument of thermal function
       @param order Order of derivative
       @param y_squared Argument of thermal function     
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
       @param fast Whether to use fast approximations
   */
@@ -47,8 +47,8 @@ double J_B(double y_squared, int order, double abs_error, double rel_error,
       @param y_squared Argument of thermal function
       @param order Order of derivative
       @param y_squared Argument of thermal function     
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
       @param fast Whether to use fast approximations
   */

@@ -31,7 +31,7 @@ constexpr double D1_J_F_0 = -pow(M_PI, 2) / 24.;
 constexpr double INF = std::numeric_limits<double>::infinity();
 
 
-// Bessel functionrepresentation of derivatives with respect to \f$y^2\f$.
+// Bessel function representation of derivatives with respect to \f$y^2\f$.
 
 
 double K1(cdouble x) {
@@ -80,8 +80,8 @@ double D1_bessel_sum(double y_squared, double abs_error, double rel_error,
       Found by summing Bessel functions.
 
       @param y_squared Argument of thermal function
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
       @param bosonic Whether bosonic (or fermionic) function required
   */
@@ -139,8 +139,8 @@ double D2_bessel_sum(double y_squared, double abs_error, double rel_error,
       Found by summing Bessel functions.
 
       @param y_squared Argument of thermal function
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
       @param bosonic Whether bosonic (or fermionic) function required
   */
@@ -199,8 +199,8 @@ double D1_J_F_bessel(double y_squared, double abs_error, double rel_error,
       Found by summing Bessel functions.
 
       @param y_squared Argument of thermal function
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
   */
 
@@ -220,8 +220,8 @@ double D1_J_B_bessel(double y_squared, double abs_error, double rel_error,
       Found by summing Bessel functions.
 
       @param y_squared Argument of thermal function
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
   */
 
@@ -241,8 +241,8 @@ double D2_J_F_bessel(double y_squared, double abs_error, double rel_error,
       Found by summing Bessel functions.
 
       @param y_squared Argument of thermal function
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
   */
 
@@ -265,8 +265,8 @@ double D2_J_B_bessel(double y_squared, double abs_error, double rel_error,
       Found by summing Bessel functions.
 
       @param y_squared Argument of thermal function
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
   */
 
@@ -319,8 +319,8 @@ double D1_J_approx(double y_squared, double step, bool bosonic,
       @param y_squared Argument of thermal function
       @param y_squared step Initial step size for derivative
       @param bosonic Whether bosonic (or fermionic) function required
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
   */
   gsl_function J;
@@ -368,8 +368,8 @@ double D2_J_approx(double y_squared, double step, bool bosonic,
       @param y_squared Argument of thermal function
       @param y_squared step Initial step size for derivative
       @param bosonic Whether bosonic (or fermionic) function required
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
   */
   gsl_function D1_J;
@@ -391,8 +391,8 @@ double D1_J_B_approx(double y_squared, double step, double abs_error,
       @returns Numerical derivative of bosonic thermal function
       @param y_squared Argument of thermal function
       @param y_squared step Initial step size for derivative
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
   */
   return D1_J_approx(y_squared, step, true, abs_error, rel_error, max_n);
@@ -404,8 +404,8 @@ double D1_J_F_approx(double y_squared, double step, double abs_error,
       @returns Numerical derivative of fermionic thermal function
       @param y_squared Argument of thermal function
       @param y_squared step Initial step size for derivative
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
   */
   return D1_J_approx(y_squared, step, false, abs_error, rel_error, max_n);
@@ -417,8 +417,8 @@ double D2_J_B_approx(double y_squared, double step, double abs_error,
       @returns Numerical second derivative of bosonic thermal function
       @param y_squared Argument of thermal function
       @param y_squared step Initial step size for derivative
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
   */
   return D2_J_approx(y_squared, step, true, abs_error, rel_error, max_n);
@@ -430,8 +430,8 @@ double D2_J_F_approx(double y_squared, double step, double abs_error,
       @returns Numerical second derivative of fermionic thermal function
       @param y_squared Argument of thermal function
       @param y_squared step Initial step size for derivative
-      @param abs_error Minimum absolute error
-      @param rel_error Minimum relative error
+      @param abs_error Maximum absolute error
+      @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
   */
   return D2_J_approx(y_squared, step, false, abs_error, rel_error, max_n);
