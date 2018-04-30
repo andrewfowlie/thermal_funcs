@@ -1,6 +1,6 @@
 /**
     @file
-    @brief Example program that links to thermal_funcs library.
+    @brief Example program that links to `thermal_funcs` library.
 
     To build,
 

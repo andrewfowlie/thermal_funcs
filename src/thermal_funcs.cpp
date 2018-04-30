@@ -2,21 +2,14 @@
     @file
     @brief Thermal functions in finite-temperature field theory.
 
-    I refer throughout to Thermal Resummation and Phase Transitions by Curtin
-    et al:
-
-    https://arxiv.org/pdf/1612.00466.pdf
-
+    I refer throughout to <a href="https://arxiv.org/pdf/1612.00466.pdf">
+    Thermal Resummation and Phase Transitions by Curtin et al.</a>
     The thermal functions are eq. (2.12):
-
-    J_{B/F}(y^2) = \int_0^\infnty dx x^2 \log(1 \mp \exp(-\sqrt{x^2 + y^2}))
-
+    \f[J_{B/F}(y^2) = \Re \int_0^\infty dx x^2 \log(1 \mp \exp(-\sqrt{x^2 + y^2}))\f]
     We calculate only the real part.
 
-    I also refer to Phase Transitions in the Early Universe by Wainwright:
-
-    http://escholarship.org/uc/item/2r84s7h9
-
+    I also refer to <a href="http://escholarship.org/uc/item/2r84s7h9">
+    Phase Transitions in the Early Universe by Wainwright</a>
     for eq. (2.18) and (2.19).
 */
 
@@ -65,9 +58,12 @@ double J_integrand(double x, double y_squared, bool bosonic) {
       @returns Integrand for thermal function
 
       Integrand in Curtin eq. (2.12)
-      x^2 Log[1 -+ Exp[-Sqrt[x^2 + y^2]]]
-      If r^2 = x^2 + y^2 < 0, this can be written
-      x^2 * 0.5 * Log[2. + 2. * Cos[r]]
+      
+      \f[x^2 \log(1 \mp \exp(-\sqrt(x^2 + y^2)))\f]
+      
+      If \f$r^2 = x^2 + y^2 < 0\f$, this can be written
+      
+      \f[\frac12 x^2 \log(2 + 2\cos))\f]
 
       @param x Argument of integrand
       @param y_squared Argument of thermal function
@@ -110,7 +106,7 @@ int n_integrand_points(double y_squared, const bool bosonic) {
       endpoints of integration
 
       NB don't include an endpoint twice if it is singular. This means we
-      exclude n = 0.
+      exclude \f$n = 0\f$.
 
       @param y_squared Argument of thermal function
       @param bosonic Whether bosonic (or fermionic) function required
@@ -144,8 +140,8 @@ double *integrand_points(double y_squared, bool bosonic) {
       NB don't include an endpoint twice if it is singular.
 
       Singularities occur at
-      0. <= x = Sqrt[-n^2 Pi^2 - y_squared] <= |y|
-      for n even/odd for bosonic/fermionic.
+      \f[0 \le x = \sqrt(-n^2 \pi^2 - y^2) \le |y|\f]
+      for \f$n\f$ even/odd for bosonic/fermionic.
 
       @param y_squared Argument of thermal function
       @param bosonic Whether bosonic (or fermionic) function required
@@ -198,14 +194,14 @@ double J_quad(double y_squared, double abs_error, double rel_error,
   /**
       @returns Numerical integration for Curtin eq. (2.12)
 
-      Break integral into two domains: 0 to Im(y), Im(y) to infinity.
+      Break integral into two domains: \f$0\f$ to \f$\Im y \f$, \f$\Im y\f$ to infinity.
       The first domain (if non empty) may contain singularities.
       The locations of the singularities are calculated and supplied to the
       integration routine.
 
-      NB For bosonic case, there is a discontinuity at the boundary, x = Im(y)
-      if y_squared <= 0. This isn't treated explicitly in either domain, though
-      doesn't appear to be problematic.
+      NB For bosonic case, there is a discontinuity at the boundary,
+      \f$x = Im y \f$ if \f$y^2 \le 0\f$. This isn't treated explicitly in
+      either domain, though doesn't appear to be problematic.
 
       @param y_squared Argument of thermal function     
       @param abs_error Minimum absolute error
@@ -306,14 +302,14 @@ const double zeta_3 = gsl_sf_zeta_int(3);
 double gamma_sum(double y_squared, double abs_error, double rel_error,
                  int max_n, const bool bosonic, double sum = 0.) {
   /**
-      @returns Sum of Gamma functions in Wainwright eq. (2.18) and eq. (2.19)
+      @returns Sum of gamma functions in Wainwright eq. (2.18) and eq. (2.19)
 
       @param y_squared Argument of thermal function     
       @param abs_error Minimum absolute error
       @param rel_error Minimum relative error
       @param max_n Maximum number of terms in sum
       @param bosonic Whether bosonic (or fermionic) function required
-      @param sum Taylor expansion without Gamma functions
+      @param sum Taylor expansion without gamma functions
   */
   #ifdef THROW
     if (std::abs(y_squared) >= 1.) {
@@ -371,7 +367,7 @@ double J_B_taylor(double y_squared, double abs_error, double rel_error,
       @returns Bosonic thermal function from a Taylor expansion of
       Curtin eq. (2.12) as in Curtin eq. (2.13)
 
-      Valid for |y_squared| << 1.
+      Valid for \f$|y^2| \ll 1\f$.
       
       @param y_squared Argument of thermal function     
       @param abs_error Minimum absolute error
@@ -420,7 +416,7 @@ double J_F_taylor(double y_squared, double abs_error, double rel_error,
       @returns Fermionic thermal function from a Taylor expansion of
       Curtin eq. (2.12) as in Curtin eq. (2.13)
 
-      Valid for |y_squared| << 1.
+      Valid for \f$|y^2| \ll 1\f$.
       
       @param y_squared Argument of thermal function     
       @param abs_error Minimum absolute error
@@ -463,8 +459,8 @@ double K2(cdouble x, bool fast = false) {
       @returns K_2 Bessel function
       
       Utilize fact that
-      Re[BesselK[2, x * I]] = 0.5 * Pi BesselY[2, x]
-      to define K2 for imaginary arguments.
+      \f[\Re K_2(x i) = \frac12 \pi Y_2(x)\f]
+      to define \f$K_2\f$ for imaginary arguments.
       
       @param x
       @param fast Whether to use fast approximations
@@ -498,9 +494,9 @@ double bessel_sum(double y_squared, double abs_error, double rel_error,
   /**
       @returns Thermal functions from sum of Bessel functions
 
-      Curtin eq. (2.14). Converges fastest (i.e. fewer terms required
-      if |y_squared| >> 1, though valid for all |y_squared| except
-      y_squared = 0.
+      Curtin eq. (2.14). Converges fastest (i.e. fewer terms required)
+      if \f$|y^2| \gg 1\f$, though valid for all \f$y^2\f$ except
+      \f$y^2 = 0\f$.
       
       @param y_squared Argument of thermal function     
       @param abs_error Minimum absolute error
@@ -621,7 +617,7 @@ double J_B_lim(double y_squared, bool upper) {
   /**
       @returns Bound for bosonic thermal function
       
-      Applicable for y_squared << 0.
+      Applicable for \f$|y^2| \ll 0\f$.
       
       @param y_squared Argument of thermal function     
       @param upper Whether to return upper (or lower) bound
@@ -645,7 +641,7 @@ double J_F_lim(double y_squared, bool upper) {
   /**
       @returns Bound for fermionic thermal function
       
-      Applicable for y_squared << 0.
+      Applicable for \f$|y^2| \ll 0\f$.
 
       @param y_squared Argument of thermal function     
       @param upper Whether to return upper (or lower) bound
@@ -657,7 +653,7 @@ double J_F_approx(double y_squared) {
   /**
       @returns Approximation for fermionic thermal function
       
-      Applicable for y_squared << 0.
+      Applicable for \f$|y^2| \ll 0\f$.
       
       @param y_squared Argument of thermal function     
   */
@@ -683,7 +679,7 @@ double J_B_approx(double y_squared) {
   /**
       @returns Approximation for bosonic thermal function
       
-      Applicable for y_squared << 0.
+      Applicable for \f$|y^2| \ll 0\f$.
       
       @param y_squared Argument of thermal function  
   */
@@ -712,7 +708,7 @@ double shift_B(double y) {
 
 double J_F_zeta(double y_squared, int max_n) {
   /**
-      @returns Fermionic thermal function from Zeta function
+      @returns Fermionic thermal function from zeta function
       
       @param y_squared Argument of thermal function 
       @param max_n Maximum number of terms in sum 
@@ -739,7 +735,7 @@ double J_F_zeta(double y_squared, int max_n) {
 
 double J_B_zeta(double y_squared, int max_n) {
   /**
-      @returns Bosonic thermal function from Zeta function
+      @returns Bosonic thermal function from zeta function
 
       @param y_squared Argument of thermal function 
       @param max_n Maximum number of terms in sum 

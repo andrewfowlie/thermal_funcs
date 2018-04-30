@@ -1,7 +1,7 @@
 /**
     @file
     @brief First and second derivatives of thermal functions with respect to
-    y^2.
+    \f$y^2\f$.
 
     The Bessel representation is differentiated analytically and numerically.
 */
@@ -19,7 +19,7 @@
 #include <limits>
 
 
-// First derivatives of thermal functions with respect to y^2 at y^2 -> 0.
+// First derivatives of thermal functions with respect to \f$y^2\f$ at y^2 -> 0.
 // Found in Mathematica:
 
 // -Sum[1/n^2*Limit[D[xsq*BesselK[2,Sqrt[xsq]*n],xsq],xsq->0],{n,1,Infinity}]
@@ -31,12 +31,12 @@ constexpr double D1_J_F_0 = -pow(M_PI, 2) / 24.;
 constexpr double INF = std::numeric_limits<double>::infinity();
 
 
-// Bessel functionrepresentation of derivatives with respect to y^2.
+// Bessel functionrepresentation of derivatives with respect to \f$y^2\f$.
 
 
 double K1(cdouble x) {
   /**
-      @returns K_1 Bessel function
+      @returns \f$K_1\f$ Bessel function
       @param x
   */
   #ifdef THROW
@@ -55,7 +55,7 @@ double K1(cdouble x) {
 
 double K0(cdouble x) {
   /**
-      @returns K_0 Bessel function
+      @returns \f$K_0\f$ Bessel function
       @param x
   */
   #ifdef THROW
@@ -75,7 +75,7 @@ double K0(cdouble x) {
 double D1_bessel_sum(double y_squared, double abs_error, double rel_error,
                      int max_n, bool bosonic) {
   /**
-      @returns First derivative thermal function with respect to y^2
+      @returns First derivative thermal function with respect to \f$y^2\f$
       
       Found by summing Bessel functions.
 
@@ -134,7 +134,7 @@ double D1_bessel_sum(double y_squared, double abs_error, double rel_error,
 double D2_bessel_sum(double y_squared, double abs_error, double rel_error,
                      int max_n, bool bosonic) {
   /**
-      @returns Second derivative thermal function with respect to y^2
+      @returns Second derivative thermal function with respect to \f$y^2\f$
       
       Found by summing Bessel functions.
 
@@ -194,7 +194,7 @@ double D1_J_F_bessel(double y_squared, double abs_error, double rel_error,
                      int max_n) {
   /**
       @returns First derivative of fermionic thermal function with respect to
-      y^2
+      \f$y^2\f$
       
       Found by summing Bessel functions.
 
@@ -215,7 +215,7 @@ double D1_J_B_bessel(double y_squared, double abs_error, double rel_error,
                      int max_n) {
   /**
       @returns First derivative of bosonic thermal function with respect to
-      y^2
+      \f$y^2\f$
       
       Found by summing Bessel functions.
 
@@ -236,7 +236,7 @@ double D2_J_F_bessel(double y_squared, double abs_error, double rel_error,
                      int max_n) {
   /**
       @returns Second derivative of fermionic thermal function with respect to
-      y^2
+      \f$y^2\f$
       
       Found by summing Bessel functions.
 
@@ -260,7 +260,7 @@ double D2_J_B_bessel(double y_squared, double abs_error, double rel_error,
                      int max_n) {
   /**
       @returns Second derivative of bosonic thermal function with respect to
-      y^2
+      \f$y^2\f$
       
       Found by summing Bessel functions.
 
@@ -281,7 +281,7 @@ double D2_J_B_bessel(double y_squared, double abs_error, double rel_error,
 }
 
 
-// Numerical derivatives of thermal functions with respect to y^2.
+// Numerical derivatives of thermal functions with respect to \f$y^2\f$.
 
 
 struct J_params {

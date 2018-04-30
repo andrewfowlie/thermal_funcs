@@ -1,7 +1,7 @@
 /**
     @file
     @brief First and second derivatives of thermal functions with respect to
-    y^2.
+    \f$y^2\f$.
 
     The Bessel representation is differentiated analytically and numerically.
 */

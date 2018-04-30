@@ -1,6 +1,6 @@
 /**
     @file
-    @brief Hurwitz Zeta function and polylogarithm.
+    @brief Hurwitz zeta function and polylogarithm.
 
     For implemenation, see http://fredrikj.net/math/hurwitz_zeta.pdf
 */
@@ -15,7 +15,7 @@
 
 cdouble S(double s, cdouble a, int N) {
   /**
-      @returns S part of zeta function
+      @returns \f$S\f$ part of zeta function
       @param s
       @param a
       @param N
@@ -31,7 +31,7 @@ cdouble S(double s, cdouble a, int N) {
 
 cdouble I(double s, cdouble a, int N) {
   /**
-      @returns I part of zeta function
+      @returns \f$I\f$ part of zeta function
       @param s
       @param a
       @param N
@@ -41,7 +41,7 @@ cdouble I(double s, cdouble a, int N) {
 
 cdouble T(double s, cdouble a, int N, int M) {
   /**
-      @returns T part of zeta function
+      @returns \f$T\f$ part of zeta function
       @param s
       @param a
       @param N

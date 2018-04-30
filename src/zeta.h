@@ -1,6 +1,6 @@
 /**
     @file
-    @brief Hurwitz Zeta function and polylogarithm.
+    @brief Hurwitz zeta function and polylogarithm.
 */
 
 #ifndef _ZETA_H_
