@@ -37,8 +37,10 @@
 
 constexpr double neg_y_squared = -1.E3;
 constexpr double pos_y_squared = 1.E3;
-constexpr double a_b = pow(M_PI, 2) * exp(1.5 - 2. * M_EULER);  // Below eq. (2.13)
-constexpr double a_f = 16. * a_b;  // Below eq. (2.13)
+// Below eq. (2.13)
+constexpr double a_b = pow(M_PI, 2) * exp(1.5 - 2. * M_EULER);
+// Below eq. (2.13)
+constexpr double a_f = 16. * a_b;
 constexpr double M_PI_POW_2 = pow(M_PI, 2);
 constexpr double M_PI_POW_M2 = pow(M_PI, -2);
 constexpr double M_PI_POW_4 = pow(M_PI, 4);
@@ -107,8 +109,8 @@ int n_integrand_points(double y_squared, const bool bosonic) {
       @returns Number of integrand points, i.e. number of singularities + 2 for
       endpoints of integration
 
-      NB don't include an endpoint twice if it is singular. This means we exclude
-      n = 0.
+      NB don't include an endpoint twice if it is singular. This means we
+      exclude n = 0.
 
       @param y_squared Argument of thermal function
       @param bosonic Whether bosonic (or fermionic) function required
@@ -150,22 +152,26 @@ double *integrand_points(double y_squared, bool bosonic) {
   */
   #ifdef THROW
     if (y_squared >= 0.) {
-      throw std::invalid_argument("|y_squared| >= 0. - no singularities possible");
+      throw std::invalid_argument("|y_squared| >= 0."
+                                   " - no singularities possible");
     }
   #endif
 
   const double y = sqrt(std::abs(y_squared));
   const int n_singularity = n_integrand_points(y_squared, bosonic) - 2;
-  double *p = reinterpret_cast<double *>(malloc(sizeof(double) * (n_singularity + 2)));
+  double *p = reinterpret_cast<double *>(malloc(sizeof(double)
+    * (n_singularity + 2)));
 
   for (int i = 1; i <= n_singularity; i += 1) {
     // Insure result is in ascending order
     const int reverse_i = n_singularity - i + 1;
 
     if (bosonic) {
-      p[reverse_i] = sqrt(-gsl_sf_pow_int(2 * i, 2) * M_PI_POW_2 - y_squared);
+      p[reverse_i] = sqrt(-gsl_sf_pow_int(2 * i, 2) * M_PI_POW_2
+        - y_squared);
     } else {
-      p[reverse_i] = sqrt(-gsl_sf_pow_int(2 * i - 1, 2) * M_PI_POW_2 - y_squared);
+      p[reverse_i] = sqrt(-gsl_sf_pow_int(2 * i - 1, 2) * M_PI_POW_2
+        - y_squared);
     }
 
     #ifdef DEBUG
@@ -187,8 +193,8 @@ double *integrand_points(double y_squared, bool bosonic) {
   return p;
 }
 
-double J_quad(double y_squared, double abs_error, double rel_error, int max_n,
-              bool bosonic) {
+double J_quad(double y_squared, double abs_error, double rel_error,
+              int max_n, bool bosonic) {
   /**
       @returns Numerical integration for Curtin eq. (2.12)
 
@@ -204,7 +210,7 @@ double J_quad(double y_squared, double abs_error, double rel_error, int max_n,
       @param y_squared Argument of thermal function     
       @param abs_error Minimum absolute error
       @param rel_error Minimum relative error
-      @param max_n Maximum number of terms in sum
+      @param max_n Maximum number of subdivisions for memory allocation
       @param bosonic Whether bosonic (or fermionic) function required
   */
   gsl_set_error_handler_off();  // Default handler aborts
@@ -257,7 +263,7 @@ double J_B_quad(double y_squared, double abs_error, double rel_error,
       @param y_squared Argument of thermal function     
       @param abs_error Minimum absolute error
       @param rel_error Minimum relative error
-      @param max_n Maximum number of terms in sum
+      @param max_n Maximum number of subdivisions for memory allocation
   */
   const double integral = J_quad(y_squared, abs_error, rel_error, max_n, true);
   #ifdef THROW
@@ -277,7 +283,7 @@ double J_F_quad(double y_squared, double abs_error, double rel_error,
       @param y_squared Argument of thermal function     
       @param abs_error Minimum absolute error
       @param rel_error Minimum relative error
-      @param max_n Maximum number of terms in sum
+      @param max_n Maximum number of subdivisions for memory allocation
   */
   const double integral = J_quad(y_squared, abs_error, rel_error, max_n, false);
   #ifdef THROW
@@ -293,7 +299,8 @@ double J_F_quad(double y_squared, double abs_error, double rel_error,
 
 // Thermal functions by Taylor expansion
 
-const double prefactor = 2. * gsl_sf_gamma(1.5) * gsl_sf_pow_int(4., -3) / (gsl_sf_fact(3) * M_PI_POW_2 * M_SQRTPI);
+const double prefactor = 2. * gsl_sf_gamma(1.5) * gsl_sf_pow_int(4., -3) /
+  (gsl_sf_fact(3) * M_PI_POW_2 * M_SQRTPI);
 const double zeta_3 = gsl_sf_zeta_int(3);
 
 double gamma_sum(double y_squared, double abs_error, double rel_error,
@@ -310,7 +317,8 @@ double gamma_sum(double y_squared, double abs_error, double rel_error,
   */
   #ifdef THROW
     if (std::abs(y_squared) >= 1.) {
-      throw std::invalid_argument("|y_squared| >= 1. - Taylor expansion invalid");
+      throw std::invalid_argument("|y_squared| >= 1."
+                                   " - Taylor expansion invalid");
     }
   #endif
 
@@ -376,7 +384,8 @@ double J_B_taylor(double y_squared, double abs_error, double rel_error,
     return J_B_0;
   } else if (std::abs(y_squared) >= 1.) {
     #ifdef THROW
-      throw std::invalid_argument("|y_squared| >= 1. - Taylor expansion invalid");
+      throw std::invalid_argument("|y_squared| >= 1."
+                                   "- Taylor expansion invalid");
     #endif
   }
 
@@ -391,9 +400,11 @@ double J_B_taylor(double y_squared, double abs_error, double rel_error,
   double taylor_sum = - M_PI_POW_4 / 45.
                       + M_PI_POW_2 / 12. * y_squared
                       - M_PI / 6. * real_y_cubed
-                      - gsl_sf_pow_int(y_squared, 2) * log(std::abs(y_squared) / a_b) / 32.;
+                      - gsl_sf_pow_int(y_squared, 2)
+                        * log(std::abs(y_squared) / a_b) / 32.;
 
-  const double sum = gamma_sum(y_squared, abs_error, rel_error, max_n, true, taylor_sum);
+  const double sum = gamma_sum(y_squared, abs_error, rel_error, max_n, true,
+    taylor_sum);
 
   #ifdef DEBUG
     const double gamma_sum_ = sum - taylor_sum;
@@ -422,15 +433,18 @@ double J_F_taylor(double y_squared, double abs_error, double rel_error,
     return J_F_0;
   } else if (std::abs(y_squared) >= 1.) {
     #ifdef THROW
-      throw std::invalid_argument("|y_squared| >= 1. - Taylor expansion invalid");
+      throw std::invalid_argument("|y_squared| >= 1."
+                                   " - Taylor expansion invalid");
     #endif
   }
 
   double taylor_sum = 7. / 360. * M_PI_POW_4
                       - M_PI_POW_2 / 24. * y_squared
-                      - gsl_sf_pow_int(y_squared, 2) * log(std::abs(y_squared) / a_f) / 32.;
+                      - gsl_sf_pow_int(y_squared, 2)
+                        * log(std::abs(y_squared) / a_f) / 32.;
 
-  const double sum = gamma_sum(y_squared, abs_error, rel_error, max_n, false, taylor_sum);
+  const double sum = gamma_sum(y_squared, abs_error, rel_error, max_n, false,
+    taylor_sum);
 
   #ifdef DEBUG
     const double gamma_sum_ = sum - taylor_sum;
@@ -737,7 +751,8 @@ double J_B_zeta(double y_squared, int max_n) {
         printf("approx applicable for y_squared << 0. only\n");
       }
     #endif
-    const double zeta = std::real(hurwitz_zeta(-1.5, - shift_B(y) / (2. * M_PI), max_n));
+    const double zeta = std::real(hurwitz_zeta(-1.5, - shift_B(y)
+      / (2. * M_PI), max_n));
     return - y * sqrt(y) * 8. / 3. * M_PI_POW_2 * M_SQRTPI * zeta;
   } else {
     #ifdef DEBUG

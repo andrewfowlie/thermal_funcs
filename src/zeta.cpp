@@ -52,7 +52,8 @@ cdouble T(double s, cdouble a, int N, int M) {
 
   if (M > B_2n_fact_size) {
     #ifdef DEBUG
-      printf("M = %d > B_2n_fact_size = %d. Using M = B_2n_fact_size\n", M, B_2n_fact_size);
+      printf("M = %d > B_2n_fact_size = %d. Using M = B_2n_fact_size\n",
+        M, B_2n_fact_size);
     #endif
 
     #ifdef THROW
@@ -80,7 +81,8 @@ cdouble hurwitz_zeta(double s, cdouble a, int N) {
   */
   if (N > B_2n_fact_size) {
     #ifdef DEBUG
-      printf("N = %d > B_2n_fact_size = %d. Using N = B_2n_fact_size\n", N, B_2n_fact_size);
+      printf("N = %d > B_2n_fact_size = %d. Using N = B_2n_fact_size\n",
+        N, B_2n_fact_size);
     #endif
 
     #ifdef THROW
