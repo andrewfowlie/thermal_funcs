@@ -11,6 +11,9 @@
     I also refer to <a href="http://escholarship.org/uc/item/2r84s7h9">
     Phase Transitions in the Early Universe by Wainwright</a>
     for eq. (2.18) and (2.19).
+    
+    @example fortran_example.f
+    @example example.cpp
 */
 
 
