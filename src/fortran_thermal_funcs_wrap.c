@@ -1,6 +1,5 @@
 /**
-    @file file
-    @example fortran_example.f
+    @file
     @brief Fortran wrapper for `thermal_funcs` library.
 */
 

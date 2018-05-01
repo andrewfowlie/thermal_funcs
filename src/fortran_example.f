@@ -1,14 +1,19 @@
-! @file
-! @example fortran_example.f
-! @brief Fortran interface to `thermal_funcs`
-! Build with `make fortran` to create `./bin/fortran_example`
+!>
+!! @file
+!! @brief Fortran interface to `thermal_funcs`
+!!
+!! Build with `make fortran` to create `./bin/fortran_example`
 
+!>
+!! @brief Program that prints bosonic thermal function
 program thermal_funcs
 
   use iso_c_binding
 
   implicit none
   
+  !>
+  !! @brief Fortran interface to `thermal_funcs`
   interface
     function j_b(y_squared) bind (c)
       use iso_c_binding
