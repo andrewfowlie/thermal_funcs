@@ -1,5 +1,7 @@
 # Thermal functions
 
+[![Documentation](https://codedocs.xyz/andrewfowlie/thermal_funcs.svg)](https://codedocs.xyz/andrewfowlie/thermal_funcs/)
+
 We provide a C++ library and Python, Mathematica and Fortran interfaces to thermal functions, defined
 \f[
 J_{B/F}(y^2)=\Re\int_0^{\infty} dx\,x^2 \ln(1\mp\exp(-\sqrt{x^2 + y^2})).
