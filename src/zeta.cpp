@@ -74,7 +74,7 @@ cdouble T(double s, cdouble a, int N, int M) {
 
 cdouble hurwitz_zeta(double s, cdouble a, int N) {
   /**
-      @returns Hurwitz zeta function
+      @returns Hurwitz zeta function, \f$\zeta_s(a)\f$
       @param s
       @param a
       @param N
@@ -97,7 +97,7 @@ cdouble hurwitz_zeta(double s, cdouble a, int N) {
 
 cdouble polylog(double s, cdouble a, int N) {
   /**
-      @returns Polylogarithm function
+      @returns Polylogarithm function, \f$\textrm{Li}_s(a)\f$
       @param s
       @param a
       @param N

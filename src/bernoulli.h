@@ -1,6 +1,6 @@
 /**
     @file
-    @brief Bernoulli numbers.
+    @brief Bernoulli numbers divided by factorial, \f$ B_{2n} / (2n)!\f$
 
     Found from Mathematica by `Table[BernoulliB[2 n] / Factorial[2n], {n, 0, 50}] // CForm`
 */
@@ -8,8 +8,10 @@
 #ifndef _BERNOULLI_H_
 #define _BERNOULLI_H_
 
+/*! Number of entries */
 constexpr int B_2n_fact_size = 51;
 
+/*! Bernoulli numbers divided by factorial, \f$ B_{2n} / (2n)!\f$ */
 constexpr double B_2n_fact[B_2n_fact_size] = {
 1,
 0.08333333333333333,

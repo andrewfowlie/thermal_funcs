@@ -8,6 +8,7 @@
 
 #include <complex>
 
+/*! A complex double */
 typedef std::complex<double> cdouble;
 
 #ifdef __cplusplus

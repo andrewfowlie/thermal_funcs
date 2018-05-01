@@ -27,26 +27,33 @@
 #include <complex>
 #include <algorithm>
 
-
+/*! \f$y^2\f$ that is considered \f$y^2 \ll 0\f$ */
 constexpr double neg_y_squared = -1.E3;
+/*! \f$y^2\f$ that is considered \f$y^2 \gg 1\f$ */
 constexpr double pos_y_squared = 1.E3;
-// Below eq. (2.13)
+// 
+/*! Term in bosonic sum defined below eq. (2.13) */
 constexpr double a_b = pow(M_PI, 2) * exp(1.5 - 2. * M_EULER);
-// Below eq. (2.13)
+/*! Term in fermionic sum defined below eq. (2.13) */
 constexpr double a_f = 16. * a_b;
+/*! \f$\pi^2\f$ */
 constexpr double M_PI_POW_2 = pow(M_PI, 2);
+/*! \f$1/\pi^2\f$ */
 constexpr double M_PI_POW_M2 = pow(M_PI, -2);
+/*! \f$\pi^4\f$ */
 constexpr double M_PI_POW_4 = pow(M_PI, 4);
 
-
-// Thermal functions at y_squared -> 0. Found in Mathematica:
-//
-// -Sum[1/n^2 * Limit[x^2 * BesselK[2, x *n], x -> 0], {n, 1, Infinity}]
-// -Sum[(-1)^n/n^2 * Limit[x^2 * BesselK[2, x *n], x -> 0], {n, 1, Infinity}]
-//
-// or from Taylor expansions.
-
+/*!
+    Bosonic thermal function at \f$y^2 \to 0\f$. Found in Mathematica:
+    `-Sum[1/n^2 * Limit[x^2 * BesselK[2, x *n], x -> 0], {n, 1, Infinity}]`
+    or from Taylor expansions.
+*/
 constexpr double J_B_0 = - pow(M_PI, 4) / 45.;
+/*!
+    Fermionic thermal function at \f$y^2 \to 0\f$. Found in Mathematica:
+    `-Sum[(-1)^n/n^2 * Limit[x^2 * BesselK[2, x *n], x -> 0], {n, 1, Infinity}]`
+    or from Taylor expansions.
+*/
 constexpr double J_F_0 = 7. * pow(M_PI, 4) / 360.;
 
 
@@ -81,7 +88,9 @@ double J_integrand(double x, double y_squared, bool bosonic) {
 }
 
 struct J_integrand_params {
+  /*! Argument of integrand */
   double y_squared;
+  /*! Whether bosonic (or fermionic) function required */
   bool bosonic;
 };
 
@@ -93,6 +102,7 @@ double J_integrand_wrapper(double x, void *p) {
       @returns Integrand for thermal function
 
       @param x Argument of integrand
+      @param p Additional arguments including whether bosonic function required
   */
   const struct J_integrand_params *params = (struct J_integrand_params *)p;
   const double y_squared = params->y_squared;
@@ -295,8 +305,10 @@ double J_F_quad(double y_squared, double abs_error, double rel_error,
 
 // Thermal functions by Taylor expansion
 
+/*! Factor that appears in terms in sum */
 const double prefactor = 2. * gsl_sf_gamma(1.5) * gsl_sf_pow_int(4., -3) /
   (gsl_sf_fact(3) * M_PI_POW_2 * M_SQRTPI);
+/*! \f$\zeta(3)\f$ */
 const double zeta_3 = gsl_sf_zeta_int(3);
 
 double gamma_sum(double y_squared, double abs_error, double rel_error,
@@ -608,10 +620,10 @@ double J_B_bessel(double y_squared, double abs_error, double rel_error,
 // Limits and approximations
 
 
-// Maxima and minima of Zeta[-3/2, x] from Mathematica
-
-constexpr double zeta_maxima = 0.024145376807240715;
-constexpr double zeta_minima = -0.03154228985099239;
+/*! Maximum of \f$\zeta_{-3/2}(x)\f$ from Mathematica */
+constexpr double zeta_maximum = 0.024145376807240715;
+/*! Minimum of \f$\zeta_{-3/2}(x)\f$ from Mathematica */
+constexpr double zeta_minimum = -0.03154228985099239;
 
 double J_B_lim(double y_squared, bool upper) {
   /**
@@ -631,9 +643,9 @@ double J_B_lim(double y_squared, bool upper) {
   const double y = sqrt(std::abs(y_squared));
 
   if (upper) {
-    return -y * sqrt(y) * 8. / 3. * M_PI_POW_2 * M_SQRTPI * zeta_minima;
+    return -y * sqrt(y) * 8. / 3. * M_PI_POW_2 * M_SQRTPI * zeta_minimum;
   } else {
-    return -y * sqrt(y) * 8. / 3. * M_PI_POW_2 * M_SQRTPI * zeta_maxima;
+    return -y * sqrt(y) * 8. / 3. * M_PI_POW_2 * M_SQRTPI * zeta_maximum;
   }
 }
 

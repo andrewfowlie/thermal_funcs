@@ -1,4 +1,7 @@
-! Fortran interface to thermal_funcs
+! @file
+! @example fortran_example.f
+! @brief Fortran interface to `thermal_funcs`
+! Build with `make fortran` to create `./bin/fortran_example`
 
 program thermal_funcs
 

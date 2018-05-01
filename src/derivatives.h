@@ -9,11 +9,10 @@
 #ifndef _DERIVATIVES_H_
 #define _DERIVATIVES_H_
 
-
+/*! Turn off default arguments if we use `C`*/ 
 #ifdef __cplusplus
 #define DEFAULT(x) = x
 #else
-#include <stdbool.h>
 #define DEFAULT(x)
 #endif
 

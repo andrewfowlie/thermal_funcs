@@ -6,7 +6,7 @@
 #ifndef _THERMAL_FUNCS_H_
 #define _THERMAL_FUNCS_H_
 
-
+/*! Turn off default arguments if we use `C`*/ 
 #ifdef __cplusplus
 #define DEFAULT(x) = x
 #else
@@ -49,8 +49,8 @@ double J_B_lim(double y_squared, bool upper DEFAULT(true));
 double J_F_lim(double y_squared, bool upper DEFAULT(true));
 double J_B_approx(double y_squared);
 double J_F_approx(double y_squared);
-double J_B_zeta(double y_squared, int n DEFAULT(25));
-double J_F_zeta(double y_squared, int n DEFAULT(25));
+double J_B_zeta(double y_squared, int max_n DEFAULT(25));
+double J_F_zeta(double y_squared, int max_n DEFAULT(25));
 
 #ifdef __cplusplus
 }

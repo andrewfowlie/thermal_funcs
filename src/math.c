@@ -7,8 +7,11 @@
 #include <thermal_funcs.h>
 #include <derivatives.h>
 
-// This is a hack to fix a Mathematica bug. See
-// https://mathematica.stackexchange.com/q/171464/38645
+/*!
+  This is a hack to fix a
+  <a href="https://mathematica.stackexchange.com/q/171464/38645">
+  Mathematica bug.</a>
+*/
 #ifdef _REBRAND_H_
   #define EVALSTRING MLEvaluateString
 #else
@@ -18,7 +21,7 @@
 double J_F(double y_squared, int order, double abs_error, double rel_error,
            int max_n, bool fast) {
   /**
-      @returns Fermionic thermal function from Bessel function
+      @returns Fermionic thermal function from Bessel functions
       @param y_squared Argument of thermal function
       @param order Order of derivative
       @param y_squared Argument of thermal function     
@@ -43,7 +46,7 @@ double J_F(double y_squared, int order, double abs_error, double rel_error,
 double J_B(double y_squared, int order, double abs_error, double rel_error,
            int max_n, bool fast) {
   /**
-      @returns Bosonic thermal function from Bessel function
+      @returns Bosonic thermal function from Bessel functions
       @param y_squared Argument of thermal function
       @param order Order of derivative
       @param y_squared Argument of thermal function     
@@ -66,5 +69,8 @@ double J_B(double y_squared, int order, double abs_error, double rel_error,
 }
 
 int main(int argc, char *argv[]) {
+  /**
+      @brief Interface for `Mathematica` callers.
+  */
   return WSMain(argc, argv);
 }
