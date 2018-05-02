@@ -2,7 +2,10 @@
     @file
     @brief Hurwitz zeta function and polylogarithm.
 
-    For implemenation, see http://fredrikj.net/math/hurwitz_zeta.pdf
+    For implemenation, see 
+    <a href="http://fredrikj.net/math/hurwitz_zeta.pdf">
+    Fredrik Johansson.</a>
+    
 */
 
 #include <zeta.h>

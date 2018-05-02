@@ -34,7 +34,7 @@ constexpr double D1_J_B_0 = pow(M_PI, 2) / 12.;
     `-Sum[(-1)^n/n^2*Limit[D[xsq*BesselK[2, Sqrt[xsq]*n], xsq], xsq -> 0], {n, 1, Infinity}]`    
 */
 constexpr double D1_J_F_0 = -pow(M_PI, 2) / 24.;
-/*! Second derivative diverges - return infinity */
+/*! Second derivative diverges for \f$y^2\to0\f$ - return infinity */
 constexpr double INF = std::numeric_limits<double>::infinity();
 
 
@@ -85,6 +85,8 @@ double D1_bessel_sum(double y_squared, double abs_error, double rel_error,
       @returns First derivative thermal function with respect to \f$y^2\f$
       
       Found by summing Bessel functions.
+      
+      @warning Invalid for \f$y^2 = 0 \f$
 
       @param y_squared Argument of thermal function
       @param abs_error Maximum absolute error
@@ -144,6 +146,8 @@ double D2_bessel_sum(double y_squared, double abs_error, double rel_error,
       @returns Second derivative thermal function with respect to \f$y^2\f$
       
       Found by summing Bessel functions.
+
+      @warning Invalid for \f$y^2 = 0 \f$
 
       @param y_squared Argument of thermal function
       @param abs_error Maximum absolute error
@@ -246,6 +250,8 @@ double D2_J_F_bessel(double y_squared, double abs_error, double rel_error,
       \f$y^2\f$
       
       Found by summing Bessel functions.
+      
+      @warning Diverges for \f$y^2 \to 0 \f$
 
       @param y_squared Argument of thermal function
       @param abs_error Maximum absolute error
@@ -270,6 +276,8 @@ double D2_J_B_bessel(double y_squared, double abs_error, double rel_error,
       \f$y^2\f$
       
       Found by summing Bessel functions.
+      
+      @warning Diverges for \f$y^2 \to 0 \f$
 
       @param y_squared Argument of thermal function
       @param abs_error Maximum absolute error
@@ -290,8 +298,8 @@ double D2_J_B_bessel(double y_squared, double abs_error, double rel_error,
 
 // Numerical derivatives of thermal functions with respect to \f$y^2\f$.
 
-
-struct J_params {
+/** Parameters for first derivative contained in a struct */
+struct D1_params {
   /*! Whether bosonic (or fermionic) function required */
   bool bosonic;
   /*! Maximum absolute error */
@@ -304,14 +312,14 @@ struct J_params {
 
 double J_wrapper(double y_squared, void *p) {
   /**
-      @brief Wrapper for thermal functions with signature requiredby numerical
+      @brief Wrapper for thermal functions with signature required by numerical
       differentiation.
       
       @returns Thermal function
       @param y_squared Argument of thermal function
       @param p Additional arguments including maximum errors
   */
-  const struct J_params *params = (struct J_params *)p;
+  const struct D1_params *params = (struct D1_params *)p;
   const bool bosonic = params->bosonic;
   const double abs_error = params->abs_error;
   const double rel_error = params->rel_error;
@@ -340,7 +348,7 @@ double D1_J_approx(double y_squared, double step, bool bosonic,
   double abs_err;
 
   J.function = &J_wrapper;
-  struct J_params params = {bosonic, abs_error, rel_error, max_n};
+  struct D1_params params = {bosonic, abs_error, rel_error, max_n};
   J.params = &params;
 
   gsl_deriv_central(&J, y_squared, step, &derivative, &abs_err);
@@ -348,7 +356,8 @@ double D1_J_approx(double y_squared, double step, bool bosonic,
   return derivative;
 }
 
-struct D_params {
+/** Parameters for second derivative contained in a struct */
+struct D2_params {
   /*! Initial step size for derivative */
   double step;
   /*! Whether bosonic (or fermionic) function required */
@@ -364,13 +373,13 @@ struct D_params {
 double D1_J_wrapper(double y_squared, void *p) {
   /**
       @brief Wrapper for derivative of thermal functions with signature
-      requiredby numerical differentiation.
+      required by numerical differentiation.
       
       @returns Thermal function
       @param y_squared Argument of thermal function 
       @param p Additional arguments including maximum errors
   */
-  const struct D_params *params = (struct D_params *)p;
+  const struct D2_params *params = (struct D2_params *)p;
   const double step = params->step;
   const bool bosonic = params->bosonic;
   const double abs_error = params->abs_error;
@@ -395,7 +404,7 @@ double D2_J_approx(double y_squared, double step, bool bosonic,
   double abs_err;
 
   D1_J.function = &D1_J_wrapper;
-  struct D_params params = {step, bosonic, abs_error, rel_error, max_n};
+  struct D2_params params = {step, bosonic, abs_error, rel_error, max_n};
   D1_J.params = &params;
 
   gsl_deriv_central(&D1_J, y_squared, step, &derivative, &abs_err);

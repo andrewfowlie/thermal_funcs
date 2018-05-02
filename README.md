@@ -4,12 +4,12 @@
 
 We provide a C++ library and Python, Mathematica and Fortran interfaces to thermal functions, defined
 \f[
-J_{B/F}(y^2)=\Re\int_0^{\infty} dx\,x^2 \ln(1\mp\exp(-\sqrt{x^2 + y^2})).
+J_{B/F}(y^2)=\Re\int_0^{\infty} dx\,x^2 \ln\left(1\mp\exp\left(-\sqrt{x^2 + y^2}\right)\right).
 \f]
 
 We offer Taylor expansion, numerical integration (quadrature), a Bessel function 
 representation, an approximation, a Hurwitz zeta function representation, and an upper bound for the integrals. First and second
-derivatives are also implemented.
+derivatives with respect to \f$y^2\f$ are also implemented.
 
 The accompanying manual is [1802.02720](https://arxiv.org/abs/1802.02720). If you use this library, please cite,
 

@@ -5,7 +5,9 @@
     I refer throughout to <a href="https://arxiv.org/pdf/1612.00466.pdf">
     Thermal Resummation and Phase Transitions by Curtin et al.</a>
     The thermal functions are eq. (2.12):
-    \f[J_{B/F}(y^2) = \Re \int_0^\infty dx x^2 \log(1 \mp \exp(-\sqrt{x^2 + y^2}))\f]
+    \f[
+    J_{B/F}(y^2)=\Re\int_0^{\infty} dx\,x^2 \ln\left(1\mp\exp\left(-\sqrt{x^2 + y^2}\right)\right).
+    \f]
     We calculate only the real part.
 
     I also refer to <a href="http://escholarship.org/uc/item/2r84s7h9">
@@ -69,11 +71,11 @@ double J_integrand(double x, double y_squared, bool bosonic) {
 
       Integrand in Curtin eq. (2.12)
       
-      \f[x^2 \log(1 \mp \exp(-\sqrt{x^2 + y^2}))\f]
+      \f[x^2 \log\left(1 \mp \exp\left(-\sqrt{x^2 + y^2}\right)\right)\f]
       
       If \f$r^2 = x^2 + y^2 < 0\f$, this can be written
       
-      \f[\frac12 x^2 \log(2 + 2\cos r)\f]
+      \f[\frac12 x^2 \log\left(2 + 2\cos r\right)\f]
 
       @param x Argument of integrand
       @param y_squared Argument of thermal function
@@ -90,6 +92,7 @@ double J_integrand(double x, double y_squared, bool bosonic) {
   }
 }
 
+/** Parameters for quadrature contained in a struct */
 struct J_integrand_params {
   /*! Argument of integrand */
   double y_squared;
@@ -99,7 +102,7 @@ struct J_integrand_params {
 
 double J_integrand_wrapper(double x, void *p) {
   /**
-      @brief Wrapper for J_integrand with signature requiredby
+      @brief Wrapper for J_integrand with signature required by
       numerical integration.
 
       @returns Integrand for thermal function
@@ -118,8 +121,8 @@ int n_integrand_points(double y_squared, const bool bosonic) {
       @returns Number of integrand points, i.e. number of singularities + 2 for
       endpoints of integration
 
-      NB don't include an endpoint twice if it is singular. This means we
-      exclude \f$n = 0\f$.
+      @warning We don't include an endpoint twice if it is singular.
+      This means we exclude \f$n = 0\f$.
 
       @param y_squared Argument of thermal function
       @param bosonic Whether bosonic (or fermionic) function required
@@ -147,10 +150,10 @@ int n_integrand_points(double y_squared, const bool bosonic) {
 
 double *integrand_points(double y_squared, bool bosonic) {
   /**
-      @returns Singularities in integrand, present if y_squared < 0.,
+      @returns Singularities in integrand, present if \f$y^2 < 0\f$,
       and boundaries of integration, in ascending order
 
-      NB don't include an endpoint twice if it is singular.
+      @warning We don't include an endpoint twice if it is singular.
 
       Singularities occur at
       \f[0 \le x = \sqrt{-n^2 \pi^2 - y^2}\le |y|\f]
@@ -212,8 +215,8 @@ double J_quad(double y_squared, double abs_error, double rel_error,
       The locations of the singularities are calculated and supplied to the
       integration routine.
 
-      NB For bosonic case, there is a discontinuity at the boundary,
-      \f$x = Im y \f$ if \f$y^2 \le 0\f$. This isn't treated explicitly in
+      @warning For bosonic case, there is a discontinuity at the boundary,
+      \f$x = \Im y \f$ if \f$y^2 \le 0\f$. This isn't treated explicitly in
       either domain, though doesn't appear to be problematic.
 
       @param y_squared Argument of thermal function     
@@ -382,7 +385,7 @@ double J_B_taylor(double y_squared, double abs_error, double rel_error,
       @returns Bosonic thermal function from a Taylor expansion of
       Curtin eq. (2.12) as in Curtin eq. (2.13)
 
-      Valid for \f$|y^2| \ll 1\f$.
+      @warning Valid for \f$|y^2| \ll 1\f$
       
       @param y_squared Argument of thermal function     
       @param abs_error Maximum absolute error
@@ -431,7 +434,7 @@ double J_F_taylor(double y_squared, double abs_error, double rel_error,
       @returns Fermionic thermal function from a Taylor expansion of
       Curtin eq. (2.12) as in Curtin eq. (2.13)
 
-      Valid for \f$|y^2| \ll 1\f$.
+      @warning Valid for \f$|y^2| \ll 1\f$
       
       @param y_squared Argument of thermal function     
       @param abs_error Maximum absolute error
@@ -471,10 +474,10 @@ double J_F_taylor(double y_squared, double abs_error, double rel_error,
 
 double K2(cdouble x, bool fast = false) {
   /**
-      @returns K_2 Bessel function
+      @returns \f$K_2\f$ Bessel function
       
       Utilize fact that
-      \f[\Re K_2(x i) = \frac12 \pi Y_2(x)\f]
+      \f[\Re K_2(x i) = \frac{\pi}{2} Y_2(x)\f]
       to define \f$K_2\f$ for imaginary arguments.
       
       @param x
@@ -509,7 +512,9 @@ double bessel_sum(double y_squared, double abs_error, double rel_error,
   /**
       @returns Thermal functions from sum of Bessel functions
 
-      Curtin eq. (2.14). Converges fastest (i.e. fewer terms required)
+      Curtin eq. (2.14). 
+      
+      @warning Converges fastest (i.e. fewer terms required)
       if \f$|y^2| \gg 1\f$, though valid for all \f$y^2\f$ except
       \f$y^2 = 0\f$.
       
@@ -632,7 +637,7 @@ double J_B_lim(double y_squared, bool upper) {
   /**
       @returns Bound for bosonic thermal function
       
-      Applicable for \f$|y^2| \ll 0\f$.
+      @warning Valid for \f$y^2 \ll 0\f$
       
       @param y_squared Argument of thermal function     
       @param upper Whether to return upper (or lower) bound
@@ -656,7 +661,7 @@ double J_F_lim(double y_squared, bool upper) {
   /**
       @returns Bound for fermionic thermal function
       
-      Applicable for \f$|y^2| \ll 0\f$.
+      @warning Valid for \f$y^2 \ll 0\f$
 
       @param y_squared Argument of thermal function     
       @param upper Whether to return upper (or lower) bound
@@ -668,7 +673,7 @@ double J_F_approx(double y_squared) {
   /**
       @returns Approximation for fermionic thermal function
       
-      Applicable for \f$|y^2| \ll 0\f$.
+      @warning Valid for \f$y^2 \ll 0\f$
       
       @param y_squared Argument of thermal function     
   */
@@ -694,7 +699,7 @@ double J_B_approx(double y_squared) {
   /**
       @returns Approximation for bosonic thermal function
       
-      Applicable for \f$|y^2| \ll 0\f$.
+      @warning Valid for \f$y^2 \ll 0\f$
       
       @param y_squared Argument of thermal function  
   */
@@ -725,6 +730,8 @@ double J_F_zeta(double y_squared, int max_n) {
   /**
       @returns Fermionic thermal function from zeta function
       
+      @warning Valid for \f$|y^2| \gg 1\f$
+      
       @param y_squared Argument of thermal function 
       @param max_n Maximum number of terms in sum 
   */
@@ -732,7 +739,7 @@ double J_F_zeta(double y_squared, int max_n) {
   if (y_squared < 0.) {
     #ifdef DEBUG
       if (y_squared > neg_y_squared) {
-        printf("approx applicable for y_squared << 0. only\n");
+        printf("approx applicable for |y_squared| >> 1. only\n");
       }
     #endif
     const double zeta = std::real(hurwitz_zeta(-1.5, 0.5 - shift_F(y) * 0.5 * M_1_PI, max_n));
@@ -740,7 +747,7 @@ double J_F_zeta(double y_squared, int max_n) {
   } else {
     #ifdef DEBUG
       if (y_squared < pos_y_squared) {
-        printf("approx applicable for y_squared >> 0. only\n");
+        printf("approx applicable for |y_squared| >> 1. only\n");
       }
     #endif
     const double poly = -gsl_sf_fermi_dirac_3half(-y);
@@ -752,6 +759,8 @@ double J_B_zeta(double y_squared, int max_n) {
   /**
       @returns Bosonic thermal function from zeta function
 
+      @warning Valid for \f$|y^2| \gg 1\f$
+
       @param y_squared Argument of thermal function 
       @param max_n Maximum number of terms in sum 
   */
@@ -759,7 +768,7 @@ double J_B_zeta(double y_squared, int max_n) {
   if (y_squared < 0.) {
     #ifdef DEBUG
       if (y_squared > neg_y_squared) {
-        printf("approx applicable for y_squared << 0. only\n");
+        printf("approx applicable for |y_squared| >> 1. only\n");
       }
     #endif
     const double zeta = std::real(hurwitz_zeta(-1.5, - shift_B(y)
@@ -768,7 +777,7 @@ double J_B_zeta(double y_squared, int max_n) {
   } else {
     #ifdef DEBUG
       if (y_squared < pos_y_squared) {
-        printf("approx applicable for y_squared >> 0. only\n");
+        printf("approx applicable for |y_squared| >> 1. only\n");
       }
     #endif
     const double poly = std::real(polylog(2.5, exp(-y), max_n));
