@@ -14,23 +14,23 @@ body, table, div, p, dl {
   color: #E7976D; 
 }
 
-.tabs, .tabs2, .tabs3, .tablist li  {
-  background-image: url('');
+.tabs, .tabs2, .tabs3, .tablist li, .sm-dox  {
+  background-image: none;
   background-color: #EBEFF6; 
 }
 
-.tablist a:hover {
-  background-image: url('');
+.tablist a:hover, .sm-dox a:hover {
+  background-image: none;
   background-color: #e9cec3;
 }
 
-.tablist li.current a {
-  background-image: url('');
+.tablist li.current a, .sm-dox a.highlighted {
+  background-image: none;
   background-color: #E7976D;
 }
 
 .tablist a {
-  background-image:url('');
+  background-image: none;
 }
 
 #titlearea {
