@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css?family=Alegreya|Alegreya+Sans|Merriweather|Merriweather+Sans|Nunito|Nunito+Sans|Quattrocento|Quattrocento+Sans|Roboto|Roboto+Mono|Roboto+Slab');
+
+pre.fragment, td, script{
+  font-family: 'Roboto Mono', monospace;
+  color: #908568;
+}
+
+body, table, div, p, dl {
+  font-family: 'Alegreya', serif;
+}
+
+.title, h1, h2, h3, div.tabs, #projectname, #MSearchField, .SelectItem {
+  font-family: 'Alegreya Sans', sans-serif;
+  color: #E7976D; 
+}
+
+.tabs, .tabs2, .tabs3, .tablist li  {
+  background-image: url('');
+  background-color: #EBEFF6; 
+}
+
+.tablist a:hover {
+  background-image: url('');
+  background-color: #e9cec3;
+}
+
+.tablist li.current a {
+  background-image: url('');
+  background-color: #E7976D;
+}
+
+.tablist a {
+  background-image:url('');
+}
+
+#titlearea {
+  border-bottom: 1px solid #E7976D;
+}
