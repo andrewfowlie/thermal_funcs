@@ -14,7 +14,7 @@ body, table, div, p, dl {
   color: #E7976D; 
 }
 
-.tabs, .tabs2, .tabs3, .tablist li, .sm-dox  {
+.tabs, .tabs2, .tabs3, .tablist li, .sm-dox li  {
   background-image: none;
   background-color: #EBEFF6; 
 }
@@ -24,12 +24,12 @@ body, table, div, p, dl {
   background-color: #e9cec3;
 }
 
-.tablist li.current a, .sm-dox a.highlighted {
+.tablist li.current a, .sm-dox li.current {
   background-image: none;
   background-color: #E7976D;
 }
 
-.tablist a {
+.tablist a, , .sm-dox a {
   background-image: none;
 }
 
