@@ -14,9 +14,13 @@ body, table, div, p, dl {
   color: #E7976D; 
 }
 
-.tabs, .tabs2, .tabs3, .tablist li, .sm-dox li  {
+.tabs, .tabs2, .tabs3, .tablist li, .sm-dox li, .sm-dox  {
   background-image: none;
   background-color: #EBEFF6; 
+}
+
+.sm-dox a, .sm-dox a:focus, .sm-dox a:hover, .sm-dox a:active {
+  font-family: 'Alegreya Sans', serif !important;
 }
 
 .tablist a:hover, .sm-dox a:hover {
@@ -24,7 +28,7 @@ body, table, div, p, dl {
   background-color: #e9cec3;
 }
 
-.tablist li.current a, .sm-dox li.current {
+.tablist li.current a, .sm-dox a.current, .sm-dox a.highlighted {
   background-image: none;
   background-color: #E7976D;
 }
