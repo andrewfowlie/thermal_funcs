@@ -3,19 +3,23 @@
     @brief Mathematica interface to thermal functions.
 */
 
-#include <wstp.h>
+//#include <wstp.h>
 #include <thermal_funcs.h>
 #include <derivatives.h>
 
 /*!
-  This is a hack to fix a
+  Do not use EvaluateString methods unless explicitly desired. Aovids
   <a href="https://mathematica.stackexchange.com/q/171464/38645">
   Mathematica bug.</a>
 */
-#ifdef _REBRAND_H_
+#ifdef MATHLINK
   #define EVALSTRING MLEvaluateString
 #else
-  #define EVALSTRING WSEvaluateString
+  #ifdef WSTP
+    #define EVALSTRING WSEvaluateString
+  #else
+    #define EVALSTRING(x, y)
+  #endif
 #endif
 
 double J_F(double y_squared, int order, double abs_error, double rel_error,
@@ -24,7 +28,7 @@ double J_F(double y_squared, int order, double abs_error, double rel_error,
       @returns Fermionic thermal function from Bessel functions
       @param y_squared Argument of thermal function
       @param order Order of derivative
-      @param y_squared Argument of thermal function     
+      @param y_squared Argument of thermal function
       @param abs_error Maximum absolute error
       @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
@@ -49,7 +53,7 @@ double J_B(double y_squared, int order, double abs_error, double rel_error,
       @returns Bosonic thermal function from Bessel functions
       @param y_squared Argument of thermal function
       @param order Order of derivative
-      @param y_squared Argument of thermal function     
+      @param y_squared Argument of thermal function
       @param abs_error Maximum absolute error
       @param rel_error Maximum relative error
       @param max_n Maximum number of terms in sum
