@@ -31,6 +31,7 @@
 #include <stdexcept>
 #include <complex>
 #include <algorithm>
+#include <limits>
 
 /*! \f$y^2\f$ that is considered \f$y^2 \ll 0\f$ */
 constexpr double neg_y_squared = -1.E3;
@@ -505,6 +506,7 @@ double K2(cdouble x, bool fast = false) {
         return M_PI_2 * gsl_sf_bessel_Yn(2, imag(x));
       }
   }
+  return std::numeric_limits<double>::quiet_NaN();
 }
 
 double bessel_sum(double y_squared, double abs_error, double rel_error,

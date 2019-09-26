@@ -58,6 +58,7 @@ double K1(cdouble x) {
   } else if (imag(x) != 0.) {
       return -0.5 * M_PI * gsl_sf_bessel_Yn(1, imag(x));
   }
+  return std::numeric_limits<double>::quiet_NaN();
 }
 
 double K0(cdouble x) {
@@ -77,6 +78,7 @@ double K0(cdouble x) {
   } else if (imag(x) != 0.) {
       return -0.5 * M_PI * gsl_sf_bessel_Yn(0, imag(x));
   }
+  return std::numeric_limits<double>::quiet_NaN();
 }
 
 double D1_bessel_sum(double y_squared, double abs_error, double rel_error,
