@@ -25,3 +25,6 @@ fortran:
 docs: doxygen.config
 	doxygen $<
 	xdg-open ./docs/html/index.html
+
+test: python
+	python thermal_funcs/thermal_funcs.py
