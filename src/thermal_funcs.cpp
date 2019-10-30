@@ -39,28 +39,28 @@ constexpr double neg_y_squared = -1.E3;
 constexpr double pos_y_squared = 1.E3;
 // 
 /*! Term in bosonic sum defined below eq. (2.13) */
-constexpr double a_b = pow(M_PI, 2) * exp(1.5 - 2. * M_EULER);
+const double a_b = pow(M_PI, 2) * exp(1.5 - 2. * M_EULER);
 /*! Term in fermionic sum defined below eq. (2.13) */
-constexpr double a_f = 16. * a_b;
+const double a_f = 16. * a_b;
 /*! \f$\pi^2\f$ */
-constexpr double M_PI_POW_2 = pow(M_PI, 2);
+const double M_PI_POW_2 = pow(M_PI, 2);
 /*! \f$1/\pi^2\f$ */
-constexpr double M_PI_POW_M2 = pow(M_PI, -2);
+const double M_PI_POW_M2 = pow(M_PI, -2);
 /*! \f$\pi^4\f$ */
-constexpr double M_PI_POW_4 = pow(M_PI, 4);
+const double M_PI_POW_4 = pow(M_PI, 4);
 
 /*!
     Bosonic thermal function at \f$y^2 \to 0\f$. Found in Mathematica:
     `-Sum[1/n^2 * Limit[x^2 * BesselK[2, x *n], x -> 0], {n, 1, Infinity}]`
     or from Taylor expansions.
 */
-constexpr double J_B_0 = - pow(M_PI, 4) / 45.;
+const double J_B_0 = - pow(M_PI, 4) / 45.;
 /*!
     Fermionic thermal function at \f$y^2 \to 0\f$. Found in Mathematica:
     `-Sum[(-1)^n/n^2 * Limit[x^2 * BesselK[2, x *n], x -> 0], {n, 1, Infinity}]`
     or from Taylor expansions.
 */
-constexpr double J_F_0 = 7. * pow(M_PI, 4) / 360.;
+const double J_F_0 = 7. * pow(M_PI, 4) / 360.;
 
 
 // Thermal functions by numerical integration
