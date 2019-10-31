@@ -180,10 +180,10 @@ double *integrand_points(double y_squared, bool bosonic) {
     const int reverse_i = n_singularity - i + 1;
 
     if (bosonic) {
-      p[reverse_i] = sqrt(-gsl_sf_pow_int(2 * i, 2) * M_PI_POW_2
+      p[reverse_i] = sqrt(-gsl_pow_2(2 * i) * M_PI_POW_2
         - y_squared);
     } else {
-      p[reverse_i] = sqrt(-gsl_sf_pow_int(2 * i - 1, 2) * M_PI_POW_2
+      p[reverse_i] = sqrt(-gsl_pow_2(2 * i - 1) * M_PI_POW_2
         - y_squared);
     }
 
@@ -341,6 +341,7 @@ double gamma_sum(double y_squared, double abs_error, double rel_error,
   double zeta = zeta_3;
   double term = factor * zeta;
   sum += term;
+  double fraction = 1. / 512.;
 
   for (int n = 2; n <= max_n; n += 1) {
     factor *= - y_squared * n / (n + 2.) * 0.25 * M_PI_POW_M2;
@@ -349,7 +350,8 @@ double gamma_sum(double y_squared, double abs_error, double rel_error,
     if (bosonic) {
       term = zeta * factor;
     } else {
-      term = zeta * factor * (-1. + 0.125 * gsl_sf_pow_int(0.25, n + 2));
+      fraction *= 0.25;
+      term = zeta * factor * (fraction - 1.);
     }
 
     sum += term;
@@ -407,9 +409,9 @@ double J_B_taylor(double y_squared, double abs_error, double rel_error,
   double real_y_cubed;
 
   if (y_squared >= 0.) {
-    real_y_cubed = y_squared * sqrt(y_squared);
+    real_y_cubed = pow(y_squared, 1.5);
   } else {
-    real_y_cubed = std::abs(y_squared) * sqrt(std::abs(y_squared)) * M_SQRT1_2;
+    real_y_cubed = pow(std::abs(y_squared), 1.5) * M_SQRT1_2;
   }
 
   double taylor_sum = - M_PI_POW_4 / 45.
