@@ -1,6 +1,6 @@
 /**
     @file
-    @brief Example program that links to the `thermal_funcs` library  in `C`.
+    @brief Example program that links to the `thermal_funcs` library in `C`.
     
     To build, `make example` builds an executable `./bin/example`.
     
@@ -14,7 +14,7 @@
 
 int main() {
   /**
-      This is an example of a call to the `thermal_funcs` library  in `C`.
+      This is an example of a call to the `thermal_funcs` library in `C`.
   */
   printf("J_B = %e\n", J_B_bessel(100.));
   printf("D1_J_B_bessel = %e\n", D1_J_B_bessel(100.));
