@@ -12,7 +12,6 @@
 #include <bernoulli.h>
 
 #include <gsl/gsl_sf.h>
-#include <gsl/gsl_math.h>
 #include <complex>
 #include <stdexcept>
 
@@ -111,7 +110,7 @@ cdouble polylog(double s, cdouble a, int N) {
     cdouble sum = term;
     for (int i = 2; i <= N; i += 1) {
       const double x = (i - 1) / static_cast<double>(i);
-      term *= a * gsl_pow_2(x) * sqrt(x);
+      term *= a * pow(x, 2.5);
       sum += term;
     }
     return sum;
