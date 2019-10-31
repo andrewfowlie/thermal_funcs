@@ -3,7 +3,7 @@
     @brief Mathematica interface to thermal functions.
 */
 
-//#include <wstp.h>
+#include <wstp.h>
 #include <thermal_funcs.h>
 #include <derivatives.h>
 

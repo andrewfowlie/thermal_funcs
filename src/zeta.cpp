@@ -109,7 +109,8 @@ cdouble polylog(double s, cdouble a, int N) {
     cdouble term = a;
     cdouble sum = term;
     for (int i = 2; i <= N; i += 1) {
-      term *= a * pow((i - 1) / i, 2.5);
+      const double x = (i - 1) / static_cast<double>(i);
+      term *= a * pow(x, 2.5);
       sum += term;
     }
     return sum;

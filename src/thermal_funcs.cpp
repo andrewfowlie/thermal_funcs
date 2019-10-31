@@ -39,28 +39,28 @@ constexpr double neg_y_squared = -1.E3;
 constexpr double pos_y_squared = 1.E3;
 // 
 /*! Term in bosonic sum defined below eq. (2.13) */
-constexpr double a_b = pow(M_PI, 2) * exp(1.5 - 2. * M_EULER);
+const double a_b = gsl_pow_2(M_PI) * exp(1.5 - 2. * M_EULER);
 /*! Term in fermionic sum defined below eq. (2.13) */
-constexpr double a_f = 16. * a_b;
+const double a_f = 16. * a_b;
 /*! \f$\pi^2\f$ */
-constexpr double M_PI_POW_2 = pow(M_PI, 2);
+const double M_PI_POW_2 = gsl_pow_2(M_PI);
 /*! \f$1/\pi^2\f$ */
-constexpr double M_PI_POW_M2 = pow(M_PI, -2);
+const double M_PI_POW_M2 = gsl_sf_pow_int(M_PI, -2);
 /*! \f$\pi^4\f$ */
-constexpr double M_PI_POW_4 = pow(M_PI, 4);
+const double M_PI_POW_4 = gsl_pow_4(M_PI);
 
 /*!
     Bosonic thermal function at \f$y^2 \to 0\f$. Found in Mathematica:
     `-Sum[1/n^2 * Limit[x^2 * BesselK[2, x *n], x -> 0], {n, 1, Infinity}]`
     or from Taylor expansions.
 */
-constexpr double J_B_0 = - pow(M_PI, 4) / 45.;
+const double J_B_0 = - gsl_pow_4(M_PI) / 45.;
 /*!
     Fermionic thermal function at \f$y^2 \to 0\f$. Found in Mathematica:
     `-Sum[(-1)^n/n^2 * Limit[x^2 * BesselK[2, x *n], x -> 0], {n, 1, Infinity}]`
     or from Taylor expansions.
 */
-constexpr double J_F_0 = 7. * pow(M_PI, 4) / 360.;
+const double J_F_0 = 7. * gsl_pow_4(M_PI) / 360.;
 
 
 // Thermal functions by numerical integration
@@ -83,7 +83,7 @@ double J_integrand(double x, double y_squared, bool bosonic) {
       @param bosonic Whether bosonic (or fermionic) function required
   */
   const double sign = 1. - 2. * static_cast<double>(bosonic);
-  const double x_squared = gsl_sf_pow_int(x, 2);
+  const double x_squared = gsl_pow_2(x);
   const double r_squared = x_squared + y_squared;
   const double abs_r = sqrt(std::abs(r_squared));
   if (r_squared >= 0.) {
@@ -180,10 +180,10 @@ double *integrand_points(double y_squared, bool bosonic) {
     const int reverse_i = n_singularity - i + 1;
 
     if (bosonic) {
-      p[reverse_i] = sqrt(-gsl_sf_pow_int(2 * i, 2) * M_PI_POW_2
+      p[reverse_i] = sqrt(-gsl_pow_2(2 * i) * M_PI_POW_2
         - y_squared);
     } else {
-      p[reverse_i] = sqrt(-gsl_sf_pow_int(2 * i - 1, 2) * M_PI_POW_2
+      p[reverse_i] = sqrt(-gsl_pow_2(2 * i - 1) * M_PI_POW_2
         - y_squared);
     }
 
@@ -313,7 +313,7 @@ double J_F_quad(double y_squared, double abs_error, double rel_error,
 // Thermal functions by Taylor expansion
 
 /*! Factor that appears in terms in sum */
-const double prefactor = 2. * gsl_sf_gamma(1.5) * gsl_sf_pow_int(4., -3) /
+const double prefactor = 2. * gsl_sf_gamma(1.5) * gsl_pow_3(0.25) /
   (gsl_sf_fact(3) * M_PI_POW_2 * M_SQRTPI);
 /*! \f$\zeta(3)\f$ */
 const double zeta_3 = gsl_sf_zeta_int(3);
@@ -337,10 +337,11 @@ double gamma_sum(double y_squared, double abs_error, double rel_error,
     }
   #endif
 
-  double factor = gsl_sf_pow_int(y_squared, 3) * prefactor;
+  double factor = gsl_pow_3(y_squared) * prefactor;
   double zeta = zeta_3;
   double term = factor * zeta;
   sum += term;
+  double fraction = 1. / 512.;
 
   for (int n = 2; n <= max_n; n += 1) {
     factor *= - y_squared * n / (n + 2.) * 0.25 * M_PI_POW_M2;
@@ -349,7 +350,8 @@ double gamma_sum(double y_squared, double abs_error, double rel_error,
     if (bosonic) {
       term = zeta * factor;
     } else {
-      term = zeta * factor * (-1. + 0.125 * gsl_sf_pow_int(0.25, n + 2));
+      fraction *= 0.25;
+      term = zeta * factor * (fraction - 1.);
     }
 
     sum += term;
@@ -407,15 +409,15 @@ double J_B_taylor(double y_squared, double abs_error, double rel_error,
   double real_y_cubed;
 
   if (y_squared >= 0.) {
-    real_y_cubed = y_squared * sqrt(y_squared);
+    real_y_cubed = pow(y_squared, 1.5);
   } else {
-    real_y_cubed = std::abs(y_squared) * sqrt(std::abs(y_squared)) * M_SQRT1_2;
+    real_y_cubed = pow(std::abs(y_squared), 1.5) * M_SQRT1_2;
   }
 
   double taylor_sum = - M_PI_POW_4 / 45.
                       + M_PI_POW_2 / 12. * y_squared
                       - M_PI / 6. * real_y_cubed
-                      - gsl_sf_pow_int(y_squared, 2)
+                      - gsl_pow_2(y_squared)
                         * log(std::abs(y_squared) / a_b) / 32.;
 
   const double sum = gamma_sum(y_squared, abs_error, rel_error, max_n, true,
@@ -455,7 +457,7 @@ double J_F_taylor(double y_squared, double abs_error, double rel_error,
 
   double taylor_sum = 7. / 360. * M_PI_POW_4
                       - M_PI_POW_2 / 24. * y_squared
-                      - gsl_sf_pow_int(y_squared, 2)
+                      - gsl_pow_2(y_squared)
                         * log(std::abs(y_squared) / a_f) / 32.;
 
   const double sum = gamma_sum(y_squared, abs_error, rel_error, max_n, false,
@@ -542,7 +544,7 @@ double bessel_sum(double y_squared, double abs_error, double rel_error,
 
   for (int n = 2; n <= max_n; n += 1) {
     const double n_double = static_cast<double>(n);
-    factor *= sign * gsl_sf_pow_int((n_double - 1.) / n_double, 2);
+    factor *= sign * gsl_pow_2((n_double - 1.) / n_double);
     const double term = factor * K2(n_double * y, fast);
     sum += term;
 
