@@ -32,7 +32,7 @@ math.exe: thermal_funcs.o zeta.o derivatives.o math.tm math.c
 	
 ../bin/example: example.cpp ../lib/thermal_funcs.so
 	# $(CXX) $(CXXFLAGS) $< -lgsl -lgslcblas -I./ thermal_funcs.o zeta.o derivatives.o -o $@
-	$(CXX) $(CXXFLAGS) $< -L$(shell echo $$PWD)/../lib -l:thermal_funcs.so -lgsl -lgslcblas -I./ -o $@
+	$(CXX) $(CXXFLAGS) $< -L$(shell echo $$PWD)/../lib -Wl,-rpath=$(shell echo $$PWD)/../lib -l:thermal_funcs.so -lgsl -lgslcblas -I./ -o $@
 
 fortran_example.o: fortran_example.f
 	$(FORTRAN) $(FFLAGS) -c $<
@@ -41,7 +41,7 @@ fortran_thermal_funcs_wrap.o: fortran_thermal_funcs_wrap.c ../lib/thermal_funcs.
 	$(CC) $(CFLAGS) -L$(shell echo $$PWD)/../lib -l:thermal_funcs.so -I./ -c $<
 
 ../bin/fortran_example: fortran_thermal_funcs_wrap.o fortran_example.o
-	$(FORTRAN) $^ -L$(shell echo $$PWD)/../lib -l:thermal_funcs.so -o $@
+	$(FORTRAN) $^ -L$(shell echo $$PWD)/../lib -Wl,-rpath=$(shell echo $$PWD)/../lib -l:thermal_funcs.so -o $@
 
 fortran: ../bin/fortran_example
 example: ../bin/example
