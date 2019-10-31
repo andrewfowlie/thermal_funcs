@@ -25,7 +25,7 @@
     Found in Mathematica from 
     `-Sum[1/n^2*Limit[D[xsq*BesselK[2,Sqrt[xsq]*n],xsq],xsq->0],{n,1,Infinity}]`    
 */
-constexpr double D1_J_B_0 = pow(M_PI, 2) / 12.;
+const double D1_J_B_0 = gsl_pow_2(M_PI) / 12.;
 /*!
     First derivatives of thermal functions with respect to
     \f$y^2\f$ at \f$y^2 \to 0\f$.
@@ -33,9 +33,9 @@ constexpr double D1_J_B_0 = pow(M_PI, 2) / 12.;
     Found in Mathematica from 
     `-Sum[(-1)^n/n^2*Limit[D[xsq*BesselK[2, Sqrt[xsq]*n], xsq], xsq -> 0], {n, 1, Infinity}]`    
 */
-constexpr double D1_J_F_0 = -pow(M_PI, 2) / 24.;
+const double D1_J_F_0 = -gsl_pow_2(M_PI) / 24.;
 /*! Second derivative diverges for \f$y^2\to0\f$ - return infinity */
-constexpr double INF = std::numeric_limits<double>::infinity();
+const double INF = std::numeric_limits<double>::infinity();
 
 
 // Bessel function representation of derivatives with respect to \f$y^2\f$.
