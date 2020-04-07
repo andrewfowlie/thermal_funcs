@@ -1,6 +1,7 @@
 # Thermal functions
 
 [![Documentation](https://codedocs.xyz/andrewfowlie/thermal_funcs.svg)](https://codedocs.xyz/andrewfowlie/thermal_funcs/)
+[![Build Status](https://travis-ci.org/andrewfowlie/thermal_funcs.svg?branch=master)](https://travis-ci.org/andrewfowlie/thermal_funcs)
 
 We provide a C++ library and Python, Mathematica and Fortran interfaces to thermal functions, defined
 \f[
