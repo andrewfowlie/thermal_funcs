@@ -18,7 +18,7 @@ matrix:
             - g++-4.8
             - libgslcblas0
             - libgsl-dev
-            - python-dev
+            - swig
       compiler: gcc
       env:
         - MATRIX_EVAL="CC=gcc-4.8 && CXX=g++-4.8"
