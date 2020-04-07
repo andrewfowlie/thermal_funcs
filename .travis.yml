@@ -16,7 +16,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-4.8
-            - libgslcblas  
+            - libgslcblas0
             - libgsl-dev
             - python-dev
       compiler: gcc
