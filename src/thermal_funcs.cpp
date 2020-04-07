@@ -406,14 +406,7 @@ double J_B_taylor(double y_squared, double abs_error, double rel_error,
     #endif
   }
 
-  double real_y_cubed;
-
-  if (y_squared >= 0.) {
-    real_y_cubed = pow(y_squared, 1.5);
-  } else {
-    real_y_cubed = pow(std::abs(y_squared), 1.5) * M_SQRT1_2;
-  }
-
+  const double real_y_cubed = y_squared >= 0. ? pow(y_squared, 1.5) : 0.;
   double taylor_sum = - M_PI_POW_4 / 45.
                       + M_PI_POW_2 / 12. * y_squared
                       - M_PI / 6. * real_y_cubed
