@@ -1,22 +1,38 @@
 @import url('https://fonts.googleapis.com/css?family=Alegreya|Alegreya+Sans|Merriweather|Merriweather+Sans|Nunito|Nunito+Sans|Quattrocento|Quattrocento+Sans|Roboto|Roboto+Mono|Roboto+Slab');
 
-pre.fragment, td, script{
+pre.fragment, td, script {
   font-family: 'Roboto Mono', monospace;
   color: #908568;
+  font-size: 13pt;
+}
+
+pre.fragment {
+  border: 3px solid #8C9F8C;
+  border-radius: 15px;
+  color: #FFF;
+  background-color: #404040;
+  padding: 16px;
+  margin: 4px 8px 4px 2px;
+  overflow: auto;
+  word-wrap: break-word;
+  font-size: 12pt;
+  line-height: 125%;
+  font-family: 'Roboto Mono', monospace;
 }
 
 body, table, div, p, dl {
+  font-size: 14pt;
   font-family: 'Alegreya', serif;
 }
 
-.title, h1, h2, h3, div.tabs, #projectname, #MSearchField, .SelectItem {
+.title, h1, h2, h3, div.tabs, #projectname, #projectbrief, #MSearchField, .SelectItem {
   font-family: 'Alegreya Sans', sans-serif;
-  color: #E7976D; 
+  color: #908568;
 }
 
 .tabs, .tabs2, .tabs3, .tablist li, .sm-dox li, .sm-dox  {
   background-image: none;
-  background-color: #EBEFF6; 
+  background-color: #EBEFF6;
 }
 
 .sm-dox a, .sm-dox a:focus, .sm-dox a:hover, .sm-dox a:active {
@@ -25,12 +41,12 @@ body, table, div, p, dl {
 
 .tablist a:hover, .sm-dox a:hover {
   background-image: none;
-  background-color: #e9cec3;
+  background-color: #908568;
 }
 
 .tablist li.current a, .sm-dox a.current, .sm-dox a.highlighted {
   background-image: none;
-  background-color: #E7976D;
+  background-color: #908568;
 }
 
 .tablist a, , .sm-dox a {
@@ -38,5 +54,22 @@ body, table, div, p, dl {
 }
 
 #titlearea {
-  border-bottom: 1px solid #E7976D;
+  border-bottom: 1px solid  #908568;
+}
+
+div.contents {
+  box-shadow: 0px 3px 10px #777;
+  margin-left: auto;
+  margin-right: auto;
+  width: 1060px;
+  background-color: white;
+  padding: 10px 20px;
+}
+
+div.headertitle {
+  padding: 5px 0px 5px 0px;
+  text-align: center;
+
+  margin-bottom: 8px;
+  opacity: 1;
 }
